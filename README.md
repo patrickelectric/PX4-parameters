@@ -1,4 +1,4 @@
-# PX4-parameters
+# PX4-parameters ![GitHub last commit](https://img.shields.io/github/last-commit/patrickelectric/px4-parameters)
 
 > Note: This is not the official repository for PX4 parameters, no. This is just a tribute.
 
