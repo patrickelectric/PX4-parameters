@@ -8800,17 +8800,17 @@ table {
  <td>m</td>
 </tr>
 <tr>
- <td><strong id="ASPD_FS_T_START">ASPD_FS_T_START</strong> (INT32)</td>
+ <td><strong id="ASPD_FS_T_START">ASPD_FS_T_START</strong> (FLOAT)</td>
  <td>Airspeed failsafe start delay <p><strong>Comment:</strong> Delay before switching back to using airspeed sensor if checks indicate sensor is good. Set to a negative value to disable the re-enabling in flight.</p>   </td>
- <td>[-1, 1000] </td>
- <td>-1</td>
+ <td>[-1.0, ?] </td>
+ <td>-1.</td>
  <td>s</td>
 </tr>
 <tr>
- <td><strong id="ASPD_FS_T_STOP">ASPD_FS_T_STOP</strong> (INT32)</td>
+ <td><strong id="ASPD_FS_T_STOP">ASPD_FS_T_STOP</strong> (FLOAT)</td>
  <td>Airspeed failsafe stop delay <p><strong>Comment:</strong> Delay before stopping use of airspeed sensor if checks indicate sensor is bad.</p>   </td>
- <td>[1, 10] </td>
- <td>2</td>
+ <td>[0.0, ?] </td>
+ <td>1.</td>
  <td>s</td>
 </tr>
 <tr>
@@ -9457,34 +9457,6 @@ table {
  <td>[0.12, 0.5] (0.01)</td>
  <td>0.15</td>
  <td>norm</td>
-</tr>
-<tr>
- <td><strong id="BAT_N_CELLS">BAT_N_CELLS</strong> (INT32)</td>
- <td>This parameter is deprecated. Please use BAT1_N_CELLS instead    </td>
- <td></td>
- <td>3</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="BAT_V_CHARGED">BAT_V_CHARGED</strong> (FLOAT)</td>
- <td>This parameter is deprecated. Please use BAT1_V_CHARGED instead    </td>
- <td></td>
- <td>4.05</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="BAT_V_EMPTY">BAT_V_EMPTY</strong> (FLOAT)</td>
- <td>This parameter is deprecated. Please use BAT1_V_EMPTY instead    </td>
- <td></td>
- <td>3.6</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="BAT_V_LOAD_DROP">BAT_V_LOAD_DROP</strong> (FLOAT)</td>
- <td>This parameter is deprecated. Please use BAT1_V_LOAD_DROP instead    </td>
- <td></td>
- <td>0.3</td>
- <td></td>
 </tr>
 <tr>
  <td><strong id="BAT_V_OFFS_CURR">BAT_V_OFFS_CURR</strong> (FLOAT)</td>
