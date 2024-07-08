@@ -9174,10 +9174,10 @@ table {
 </tr>
 <tr>
  <td><strong id="BAT1_R_INTERNAL">BAT1_R_INTERNAL</strong> (FLOAT)</td>
- <td>Explicitly defines the per cell internal resistance for battery 1 <p><strong>Comment:</strong> If non-negative, then this will be used in place of BAT1_V_LOAD_DROP for all calculations.</p>   <p><b>Reboot required:</b> True</p>
+ <td>Explicitly defines the per cell internal resistance for battery 1 <p><strong>Comment:</strong> If non-negative, then this will be used instead of the online estimated internal resistance.</p>   <p><b>Reboot required:</b> True</p>
 </td>
  <td>[-1.0, 0.2] (0.0005)</td>
- <td>0.005</td>
+ <td>-1.0</td>
  <td>Ohm</td>
 </tr>
 <tr>
@@ -9223,14 +9223,6 @@ table {
 </td>
  <td>(0.01)</td>
  <td>3.6</td>
- <td>V</td>
-</tr>
-<tr>
- <td><strong id="BAT1_V_LOAD_DROP">BAT1_V_LOAD_DROP</strong> (FLOAT)</td>
- <td>Voltage drop per cell on full throttle <p><strong>Comment:</strong> This implicitly defines the internal resistance to maximum current ratio for the battery and assumes linearity. A good value to use is the difference between the 5C and 20-25C load. Not used if BAT1_R_INTERNAL is set.</p>   <p><b>Reboot required:</b> True</p>
-</td>
- <td>[0.07, 0.5] (0.01)</td>
- <td>0.1</td>
  <td>V</td>
 </tr>
 <tr>
@@ -9285,10 +9277,10 @@ table {
 </tr>
 <tr>
  <td><strong id="BAT2_R_INTERNAL">BAT2_R_INTERNAL</strong> (FLOAT)</td>
- <td>Explicitly defines the per cell internal resistance for battery 2 <p><strong>Comment:</strong> If non-negative, then this will be used in place of BAT2_V_LOAD_DROP for all calculations.</p>   <p><b>Reboot required:</b> True</p>
+ <td>Explicitly defines the per cell internal resistance for battery 2 <p><strong>Comment:</strong> If non-negative, then this will be used instead of the online estimated internal resistance.</p>   <p><b>Reboot required:</b> True</p>
 </td>
  <td>[-1.0, 0.2] (0.0005)</td>
- <td>0.005</td>
+ <td>-1.0</td>
  <td>Ohm</td>
 </tr>
 <tr>
@@ -9337,14 +9329,6 @@ table {
  <td>V</td>
 </tr>
 <tr>
- <td><strong id="BAT2_V_LOAD_DROP">BAT2_V_LOAD_DROP</strong> (FLOAT)</td>
- <td>Voltage drop per cell on full throttle <p><strong>Comment:</strong> This implicitly defines the internal resistance to maximum current ratio for the battery and assumes linearity. A good value to use is the difference between the 5C and 20-25C load. Not used if BAT2_R_INTERNAL is set.</p>   <p><b>Reboot required:</b> True</p>
-</td>
- <td>[0.07, 0.5] (0.01)</td>
- <td>0.1</td>
- <td>V</td>
-</tr>
-<tr>
  <td><strong id="BAT3_CAPACITY">BAT3_CAPACITY</strong> (FLOAT)</td>
  <td>Battery 3 capacity <p><strong>Comment:</strong> Defines the capacity of battery 3 in mAh.</p>   <p><b>Reboot required:</b> True</p>
 </td>
@@ -9380,10 +9364,10 @@ table {
 </tr>
 <tr>
  <td><strong id="BAT3_R_INTERNAL">BAT3_R_INTERNAL</strong> (FLOAT)</td>
- <td>Explicitly defines the per cell internal resistance for battery 3 <p><strong>Comment:</strong> If non-negative, then this will be used in place of BAT3_V_LOAD_DROP for all calculations.</p>   <p><b>Reboot required:</b> True</p>
+ <td>Explicitly defines the per cell internal resistance for battery 3 <p><strong>Comment:</strong> If non-negative, then this will be used instead of the online estimated internal resistance.</p>   <p><b>Reboot required:</b> True</p>
 </td>
  <td>[-1.0, 0.2] (0.0005)</td>
- <td>0.005</td>
+ <td>-1.0</td>
  <td>Ohm</td>
 </tr>
 <tr>
@@ -9413,14 +9397,6 @@ table {
 </td>
  <td>(0.01)</td>
  <td>3.6</td>
- <td>V</td>
-</tr>
-<tr>
- <td><strong id="BAT3_V_LOAD_DROP">BAT3_V_LOAD_DROP</strong> (FLOAT)</td>
- <td>Voltage drop per cell on full throttle <p><strong>Comment:</strong> This implicitly defines the internal resistance to maximum current ratio for the battery and assumes linearity. A good value to use is the difference between the 5C and 20-25C load. Not used if BAT3_R_INTERNAL is set.</p>   <p><b>Reboot required:</b> True</p>
-</td>
- <td>[0.07, 0.5] (0.01)</td>
- <td>0.1</td>
  <td>V</td>
 </tr>
 <tr>
@@ -10646,6 +10622,62 @@ table {
  <td></td>
 </tr>
 <tr>
+ <td><strong id="UCAN1_FB0_SUB">UCAN1_FB0_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 0 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB1_SUB">UCAN1_FB1_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 1 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB2_SUB">UCAN1_FB2_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 2 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB3_SUB">UCAN1_FB3_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 3 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB4_SUB">UCAN1_FB4_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 4 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB5_SUB">UCAN1_FB5_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 5 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB6_SUB">UCAN1_FB6_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 6 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_FB7_SUB">UCAN1_FB7_SUB</strong> (INT32)</td>
+ <td>Cyphal ESC 7 zubax feedback port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
  <td><strong id="UCAN1_GPS0_SUB">UCAN1_GPS0_SUB</strong> (INT32)</td>
  <td>GPS 0 subscription port ID    </td>
  <td>[-1, 6143] </td>
@@ -10669,6 +10701,13 @@ table {
 <tr>
  <td><strong id="UCAN1_LG_BMS_SUB">UCAN1_LG_BMS_SUB</strong> (INT32)</td>
  <td>Cyphal legacy battery port ID    </td>
+ <td>[-1, 6143] </td>
+ <td>-1</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="UCAN1_READ_PUB">UCAN1_READ_PUB</strong> (INT32)</td>
+ <td>Cyphal ESC readiness port ID    </td>
  <td>[-1, 6143] </td>
  <td>-1</td>
  <td></td>
@@ -23638,7 +23677,7 @@ table {
 </tr>
 <tr>
  <td><strong id="SEP_DUMP_COMM">SEP_DUMP_COMM</strong> (INT32)</td>
- <td>Log GPS communication data <p><strong>Comment:</strong> Dump raw communication data from and to the connected receiver to the log file.</p> <strong>Values:</strong><ul>
+ <td>Log GPS communication data <p><strong>Comment:</strong> Log raw communication between the driver and connected receivers. For example, &quot;To receiver&quot; will log all commands and corrections sent by the driver to the receiver.</p> <strong>Values:</strong><ul>
 <li><strong>0:</strong> Disabled</li>
 <li><strong>1:</strong> From receiver</li>
 <li><strong>2:</strong> To receiver</li>
@@ -23791,7 +23830,7 @@ table {
  <td><strong id="SEP_YAW_OFFS">SEP_YAW_OFFS</strong> (FLOAT)</td>
  <td>Heading/Yaw offset for dual antenna GPS <p><strong>Comment:</strong> Heading offset angle for dual antenna GPS setups that support heading estimation. Set this to 0 if the antennas are parallel to the forward-facing direction of the vehicle and the rover antenna is in front. The offset angle increases clockwise. Set this to 90 if the rover antenna is placed on the right side of the vehicle and the moving base antenna is on the left side.</p>   <p><b>Reboot required:</b> True</p>
 </td>
- <td>[0, 360] </td>
+ <td>[-360, 360] </td>
  <td>0</td>
  <td>deg</td>
 </tr>
