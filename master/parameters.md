@@ -9418,20 +9418,20 @@ table {
  <td><strong id="BAT_AVRG_CURRENT">BAT_AVRG_CURRENT</strong> (FLOAT)</td>
  <td>Expected battery current in flight <p><strong>Comment:</strong> This value is used to initialize the in-flight average current estimation, which in turn is used for estimating remaining flight time and RTL triggering.</p>   </td>
  <td>[0, 500] (0.1)</td>
- <td>15.0</td>
+ <td>15</td>
  <td>A</td>
 </tr>
 <tr>
  <td><strong id="BAT_CRIT_THR">BAT_CRIT_THR</strong> (FLOAT)</td>
  <td>Critical threshold <p><strong>Comment:</strong> Sets the threshold when the battery will be reported as critically low. This has to be lower than the low threshold. This threshold commonly will trigger RTL.</p>   </td>
- <td>[0.05, 0.25] (0.01)</td>
+ <td>[0.05, 0.5] (0.01)</td>
  <td>0.07</td>
  <td>norm</td>
 </tr>
 <tr>
  <td><strong id="BAT_EMERGEN_THR">BAT_EMERGEN_THR</strong> (FLOAT)</td>
  <td>Emergency threshold <p><strong>Comment:</strong> Sets the threshold when the battery will be reported as dangerously low. This has to be lower than the critical threshold. This threshold commonly will trigger landing.</p>   </td>
- <td>[0.03, 0.1] (0.01)</td>
+ <td>[0.03, 0.5] (0.01)</td>
  <td>0.05</td>
  <td>norm</td>
 </tr>
@@ -9777,34 +9777,6 @@ table {
  <td>Enable checks on ESCs that report telemetry <p><strong>Comment:</strong> If this parameter is set, the system will check ESC&#x27;s online status and failures. This param is specific for ESCs reporting status. It shall be used only if ESCs support telemetry.</p>   </td>
  <td></td>
  <td>Disabled (0)</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="COM_ARM_EKF_HGT">COM_ARM_EKF_HGT</strong> (FLOAT)</td>
- <td>Maximum EKF height innovation test ratio that will allow arming    </td>
- <td>[0.1, 1.0] (0.05)</td>
- <td>1.0</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="COM_ARM_EKF_POS">COM_ARM_EKF_POS</strong> (FLOAT)</td>
- <td>Maximum EKF position innovation test ratio that will allow arming    </td>
- <td>[0.1, 1.0] (0.05)</td>
- <td>0.5</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="COM_ARM_EKF_VEL">COM_ARM_EKF_VEL</strong> (FLOAT)</td>
- <td>Maximum EKF velocity innovation test ratio that will allow arming    </td>
- <td>[0.1, 1.0] (0.05)</td>
- <td>0.5</td>
- <td></td>
-</tr>
-<tr>
- <td><strong id="COM_ARM_EKF_YAW">COM_ARM_EKF_YAW</strong> (FLOAT)</td>
- <td>Maximum EKF yaw innovation test ratio that will allow arming    </td>
- <td>[0.1, 1.0] (0.05)</td>
- <td>0.5</td>
  <td></td>
 </tr>
 <tr>
@@ -11173,20 +11145,20 @@ table {
 </tr>
 <tr>
  <td><strong id="EKF2_GPS_CHECK">EKF2_GPS_CHECK</strong> (INT32)</td>
- <td>Integer bitmask controlling GPS checks <p><strong>Comment:</strong> Set bits to 1 to enable checks. Checks enabled by the following bit positions 0 : Minimum required sat count set by EKF2_REQ_NSATS 1 : Maximum allowed PDOP set by EKF2_REQ_PDOP 2 : Maximum allowed horizontal position error set by EKF2_REQ_EPH 3 : Maximum allowed vertical position error set by EKF2_REQ_EPV 4 : Maximum allowed speed error set by EKF2_REQ_SACC 5 : Maximum allowed horizontal position rate set by EKF2_REQ_HDRIFT. This check will only run when the vehicle is on ground and stationary. 6 : Maximum allowed vertical position rate set by EKF2_REQ_VDRIFT. This check will only run when the vehicle is on ground and stationary. 7 : Maximum allowed horizontal speed set by EKF2_REQ_HDRIFT. This check will only run when the vehicle is on ground and stationary. 8 : Maximum allowed vertical velocity discrepancy set by EKF2_REQ_VDRIFT. 9: Fails if GPS driver detects consistent spoofing</p>  <strong>Bitmask:</strong><ul>  <li><strong>0:</strong> Min sat count (EKF2_REQ_NSATS)</li>
-  <li><strong>1:</strong> Max PDOP (EKF2_REQ_PDOP)</li>
-  <li><strong>2:</strong> Max horizontal position error (EKF2_REQ_EPH)</li>
-  <li><strong>3:</strong> Max vertical position error (EKF2_REQ_EPV)</li>
-  <li><strong>4:</strong> Max speed error (EKF2_REQ_SACC)</li>
-  <li><strong>5:</strong> Max horizontal position rate (EKF2_REQ_HDRIFT)</li>
-  <li><strong>6:</strong> Max vertical position rate (EKF2_REQ_VDRIFT)</li>
-  <li><strong>7:</strong> Max horizontal speed (EKF2_REQ_HDRIFT)</li>
-  <li><strong>8:</strong> Max vertical velocity discrepancy (EKF2_REQ_VDRIFT)</li>
-  <li><strong>9:</strong> Spoofing check</li>
+ <td>Integer bitmask controlling GPS checks <p><strong>Comment:</strong> Each threshold value is defined by the parameter indicated next to the check. Drift and offset checks only run when the vehicle is on ground and stationary.</p>  <strong>Bitmask:</strong><ul>  <li><strong>0:</strong> Sat count (EKF2_REQ_NSATS)</li>
+  <li><strong>1:</strong> PDOP (EKF2_REQ_PDOP)</li>
+  <li><strong>2:</strong> EPH (EKF2_REQ_EPH)</li>
+  <li><strong>3:</strong> EPV (EKF2_REQ_EPV)</li>
+  <li><strong>4:</strong> Speed accuracy (EKF2_REQ_SACC)</li>
+  <li><strong>5:</strong> Horizontal position drift (EKF2_REQ_HDRIFT)</li>
+  <li><strong>6:</strong> Vertical position drift (EKF2_REQ_VDRIFT)</li>
+  <li><strong>7:</strong> Horizontal speed offset (EKF2_REQ_HDRIFT)</li>
+  <li><strong>8:</strong> Vertical speed offset (EKF2_REQ_VDRIFT)</li>
+  <li><strong>9:</strong> Spoofing</li>
 </ul>
  </td>
  <td>[0, 1023] </td>
- <td>245</td>
+ <td>1023</td>
  <td></td>
 </tr>
 <tr>
@@ -17908,6 +17880,13 @@ table {
  <td>Disabled (0)</td>
  <td></td>
 </tr>
+<tr>
+ <td><strong id="RC_GHST_TEL_EN">RC_GHST_TEL_EN</strong> (INT32)</td>
+ <td>Ghost RC telemetry enable <p><strong>Comment:</strong> Ghost telemetry enable</p>   </td>
+ <td></td>
+ <td>Disabled (0)</td>
+ <td></td>
+</tr>
 </tbody></table>
 
 ## RC Input
@@ -23882,8 +23861,71 @@ table {
  <td></td>
 </tr>
 <tr>
+ <td><strong id="RC_DSM_PRT_CFG">RC_DSM_PRT_CFG</strong> (INT32)</td>
+ <td>Serial Configuration for DSM RC Input Driver <p><strong>Comment:</strong> Configure on which serial port to run DSM RC Input Driver. DSM RC (Spektrum) driver.</p> <strong>Values:</strong><ul>
+<li><strong>0:</strong> Disabled</li>
+<li><strong>6:</strong> UART 6</li>
+<li><strong>101:</strong> TELEM 1</li>
+<li><strong>102:</strong> TELEM 2</li>
+<li><strong>103:</strong> TELEM 3</li>
+<li><strong>104:</strong> TELEM/SERIAL 4</li>
+<li><strong>201:</strong> GPS 1</li>
+<li><strong>202:</strong> GPS 2</li>
+<li><strong>203:</strong> GPS 3</li>
+<li><strong>300:</strong> Radio Controller</li>
+<li><strong>301:</strong> Wifi Port</li>
+<li><strong>401:</strong> EXT2</li>
+</ul>  <p><b>Reboot required:</b> true</p>
+</td>
+ <td></td>
+ <td>0</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="RC_GHST_PRT_CFG">RC_GHST_PRT_CFG</strong> (INT32)</td>
+ <td>Serial Configuration for GHST RC Input Driver <p><strong>Comment:</strong> Configure on which serial port to run GHST RC Input Driver. Ghost (GHST) RC driver.</p> <strong>Values:</strong><ul>
+<li><strong>0:</strong> Disabled</li>
+<li><strong>6:</strong> UART 6</li>
+<li><strong>101:</strong> TELEM 1</li>
+<li><strong>102:</strong> TELEM 2</li>
+<li><strong>103:</strong> TELEM 3</li>
+<li><strong>104:</strong> TELEM/SERIAL 4</li>
+<li><strong>201:</strong> GPS 1</li>
+<li><strong>202:</strong> GPS 2</li>
+<li><strong>203:</strong> GPS 3</li>
+<li><strong>300:</strong> Radio Controller</li>
+<li><strong>301:</strong> Wifi Port</li>
+<li><strong>401:</strong> EXT2</li>
+</ul>  <p><b>Reboot required:</b> true</p>
+</td>
+ <td></td>
+ <td>0</td>
+ <td></td>
+</tr>
+<tr>
  <td><strong id="RC_PORT_CONFIG">RC_PORT_CONFIG</strong> (INT32)</td>
  <td>Serial Configuration for RC Input Driver <p><strong>Comment:</strong> Configure on which serial port to run RC Input Driver. Setting this to &#x27;Disabled&#x27; will use a board-specific default port for RC input.</p> <strong>Values:</strong><ul>
+<li><strong>0:</strong> Disabled</li>
+<li><strong>6:</strong> UART 6</li>
+<li><strong>101:</strong> TELEM 1</li>
+<li><strong>102:</strong> TELEM 2</li>
+<li><strong>103:</strong> TELEM 3</li>
+<li><strong>104:</strong> TELEM/SERIAL 4</li>
+<li><strong>201:</strong> GPS 1</li>
+<li><strong>202:</strong> GPS 2</li>
+<li><strong>203:</strong> GPS 3</li>
+<li><strong>300:</strong> Radio Controller</li>
+<li><strong>301:</strong> Wifi Port</li>
+<li><strong>401:</strong> EXT2</li>
+</ul>  <p><b>Reboot required:</b> true</p>
+</td>
+ <td></td>
+ <td>300</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="RC_SBUS_PRT_CFG">RC_SBUS_PRT_CFG</strong> (INT32)</td>
+ <td>Serial Configuration for SBUS RC Input Driver <p><strong>Comment:</strong> Configure on which serial port to run SBUS RC Input Driver. SBUS RC driver.</p> <strong>Values:</strong><ul>
 <li><strong>0:</strong> Disabled</li>
 <li><strong>6:</strong> UART 6</li>
 <li><strong>101:</strong> TELEM 1</li>
