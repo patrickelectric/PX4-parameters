@@ -3688,6 +3688,14 @@
       <decimal>1</decimal>
       <increment>0.5</increment>
     </parameter>
+    <parameter name="NAV_MIN_GND_DIST" default="-1." type="FLOAT">
+      <short_desc>Minimum height above ground during Mission and RTL</short_desc>
+      <long_desc>Minimum height above ground the vehicle is allowed to descend to during Mission and RTL, excluding landing commands. Requires a distance sensor to be set up. Note: only prevents the vehicle from descending further, but does not force it to climb. Set to a negative value to disable.</long_desc>
+      <min>-1</min>
+      <unit>m</unit>
+      <decimal>1</decimal>
+      <increment>1</increment>
+    </parameter>
     <parameter name="NAV_MIN_LTR_ALT" default="-1." type="FLOAT">
       <short_desc>Minimum Loiter altitude</short_desc>
       <long_desc>This is the minimum altitude above Home the system will always obey in Loiter (Hold) mode if switched into this mode without specifying an altitude (e.g. through Loiter switch on RC). Doesn't affect Loiters that are part of Missions or that are entered through a reposition setpoint ("Go to"). Set to a negative value to disable.</long_desc>

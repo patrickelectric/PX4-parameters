@@ -11075,7 +11075,7 @@ Defines the number of cells the attached battery consists of.
 
 Reboot | minValue | maxValue | increment | default | unit
 --- | --- | --- | --- | --- | ---
-True |  |  |  | 0 |  
+ |  |  |  | 0 |  
 
 ### BAT1_R_INTERNAL (`FLOAT`) {#BAT1_R_INTERNAL}
 
@@ -11204,7 +11204,7 @@ Defines the number of cells the attached battery consists of.
 
 Reboot | minValue | maxValue | increment | default | unit
 --- | --- | --- | --- | --- | ---
-True |  |  |  | 0 |  
+ |  |  |  | 0 |  
 
 ### BAT2_R_INTERNAL (`FLOAT`) {#BAT2_R_INTERNAL}
 
@@ -11313,7 +11313,7 @@ Defines the number of cells the attached battery consists of.
 
 Reboot | minValue | maxValue | increment | default | unit
 --- | --- | --- | --- | --- | ---
-True |  |  |  | 0 |  
+ |  |  |  | 0 |  
 
 ### BAT3_R_INTERNAL (`FLOAT`) {#BAT3_R_INTERNAL}
 
@@ -20389,6 +20389,16 @@ Reboot | minValue | maxValue | increment | default | unit
 --- | --- | --- | --- | --- | ---
  | 0.05 | 200.0 | 0.5 | 0.8 | m 
 
+### NAV_MIN_GND_DIST (`FLOAT`) {#NAV_MIN_GND_DIST}
+
+Minimum height above ground during Mission and RTL.
+
+Minimum height above ground the vehicle is allowed to descend to during Mission and RTL, excluding landing commands. Requires a distance sensor to be set up. Note: only prevents the vehicle from descending further, but does not force it to climb. Set to a negative value to disable.
+
+Reboot | minValue | maxValue | increment | default | unit
+--- | --- | --- | --- | --- | ---
+ | -1 |  | 1 | -1. | m 
+
 ### NAV_MIN_LTR_ALT (`FLOAT`) {#NAV_MIN_LTR_ALT}
 
 Minimum Loiter altitude.
@@ -22137,6 +22147,34 @@ Time allowed to search for the landing target before falling back to normal land
 Reboot | minValue | maxValue | increment | default | unit
 --- | --- | --- | --- | --- | ---
  | 0.0 | 100 | 0.1 | 10.0 | s 
+
+## Pure Pursuit
+
+### PP_LOOKAHD_GAIN (`FLOAT`) {#PP_LOOKAHD_GAIN}
+
+Tuning parameter for the pure pursuit controller.
+
+Lower value -> More aggressive controller (beware overshoot/oscillations)
+
+Reboot | minValue | maxValue | increment | default | unit
+--- | --- | --- | --- | --- | ---
+ | 0.1 | 100 | 0.01 | 1 |  
+
+### PP_LOOKAHD_MAX (`FLOAT`) {#PP_LOOKAHD_MAX}
+
+Maximum lookahead distance for the pure pursuit controller.
+
+Reboot | minValue | maxValue | increment | default | unit
+--- | --- | --- | --- | --- | ---
+ | 0.1 | 100 | 0.01 | 10 | m 
+
+### PP_LOOKAHD_MIN (`FLOAT`) {#PP_LOOKAHD_MIN}
+
+Minimum lookahead distance for the pure pursuit controller.
+
+Reboot | minValue | maxValue | increment | default | unit
+--- | --- | --- | --- | --- | ---
+ | 0.1 | 100 | 0.01 | 1 | m 
 
 ## RC
 
@@ -24437,34 +24475,6 @@ The controller scales the acceptance radius based on the angle between the previ
 Reboot | minValue | maxValue | increment | default | unit
 --- | --- | --- | --- | --- | ---
  | -1 | 100 | 0.01 | 3 | m 
-
-### RA_LOOKAHD_GAIN (`FLOAT`) {#RA_LOOKAHD_GAIN}
-
-Tuning parameter for the pure pursuit controller.
-
-Lower value -> More aggressive controller (beware overshoot/oscillations)
-
-Reboot | minValue | maxValue | increment | default | unit
---- | --- | --- | --- | --- | ---
- | 0.1 | 100 | 0.01 | 1 |  
-
-### RA_LOOKAHD_MAX (`FLOAT`) {#RA_LOOKAHD_MAX}
-
-Maximum lookahead distance for the pure pursuit controller.
-
-This is the maximum crosstrack error before the controller starts targeting the current waypoint rather then the path between the previous and next waypoint.
-
-Reboot | minValue | maxValue | increment | default | unit
---- | --- | --- | --- | --- | ---
- | 0.1 | 100 | 0.01 | 10 | m 
-
-### RA_LOOKAHD_MIN (`FLOAT`) {#RA_LOOKAHD_MIN}
-
-Minimum lookahead distance for the pure pursuit controller.
-
-Reboot | minValue | maxValue | increment | default | unit
---- | --- | --- | --- | --- | ---
- | 0.1 | 100 | 0.01 | 1 | m 
 
 ### RA_MAX_ACCEL (`FLOAT`) {#RA_MAX_ACCEL}
 
