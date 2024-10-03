@@ -8,3 +8,5 @@ the same thing applies to airframes ([AirframeFactMetaData.xml](https://github.c
 This repository follows the same idea behind https://github.com/mavlink/qgroundcontrol/pull/10469
 
 Files should be **updated every monday**.
+
+Also check [Px4 Firmware Manifest](https://github.com/patrickelectric/Px4-firmware-manifest) repository.
