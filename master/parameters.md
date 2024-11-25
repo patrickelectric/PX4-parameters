@@ -19373,6 +19373,33 @@ table {
  <td></td>
 </tr>
 <tr>
+ <td><strong id="RC_MAP_PAY_SW">RC_MAP_PAY_SW</strong> (INT32)</td>
+ <td>Payload Power Switch RC channel  <strong>Values:</strong><ul>
+<li><strong>0:</strong> Unassigned</li>
+<li><strong>1:</strong> Channel 1</li>
+<li><strong>2:</strong> Channel 2</li>
+<li><strong>3:</strong> Channel 3</li>
+<li><strong>4:</strong> Channel 4</li>
+<li><strong>5:</strong> Channel 5</li>
+<li><strong>6:</strong> Channel 6</li>
+<li><strong>7:</strong> Channel 7</li>
+<li><strong>8:</strong> Channel 8</li>
+<li><strong>9:</strong> Channel 9</li>
+<li><strong>10:</strong> Channel 10</li>
+<li><strong>11:</strong> Channel 11</li>
+<li><strong>12:</strong> Channel 12</li>
+<li><strong>13:</strong> Channel 13</li>
+<li><strong>14:</strong> Channel 14</li>
+<li><strong>15:</strong> Channel 15</li>
+<li><strong>16:</strong> Channel 16</li>
+<li><strong>17:</strong> Channel 17</li>
+<li><strong>18:</strong> Channel 18</li>
+</ul>  </td>
+ <td>[0, 18] </td>
+ <td>0</td>
+ <td></td>
+</tr>
+<tr>
  <td><strong id="RC_MAP_POSCTL_SW">RC_MAP_POSCTL_SW</strong> (INT32)</td>
  <td>Position Control switch channel (deprecated)  <strong>Values:</strong><ul>
 <li><strong>0:</strong> Unassigned</li>
@@ -19510,6 +19537,13 @@ table {
 <tr>
  <td><strong id="RC_OFFB_TH">RC_OFFB_TH</strong> (FLOAT)</td>
  <td>Threshold for selecting offboard mode <p><strong>Comment:</strong> 0-1 indicate where in the full channel range the threshold sits 0 : min 1 : max sign indicates polarity of comparison positive : true when channel&gt;th negative : true when channel&lt;th</p>   </td>
+ <td>[-1, 1] </td>
+ <td>0.75</td>
+ <td></td>
+</tr>
+<tr>
+ <td><strong id="RC_PAYLOAD_TH">RC_PAYLOAD_TH</strong> (FLOAT)</td>
+ <td>Threshold for selecting payload power switch <p><strong>Comment:</strong> 0-1 indicate where in the full channel range the threshold sits 0 : min 1 : max sign indicates polarity of comparison positive : true when channel&gt;th negative : true when channel&lt;th</p>   </td>
  <td>[-1, 1] </td>
  <td>0.75</td>
  <td></td>
