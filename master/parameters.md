@@ -22735,6 +22735,14 @@ table {
  <td></td>
 </tr>
 <tr>
+ <td><strong id="SENS_EN_SPA06">SENS_EN_SPA06</strong> (INT32)</td>
+ <td>Goertek SPA06 Barometer (external I2C)    <p><b>Reboot required:</b> true</p>
+</td>
+ <td></td>
+ <td>Disabled (0)</td>
+ <td></td>
+</tr>
+<tr>
  <td><strong id="SENS_EN_SPL06">SENS_EN_SPL06</strong> (INT32)</td>
  <td>Goertek SPL06 Barometer (external I2C)    <p><b>Reboot required:</b> true</p>
 </td>

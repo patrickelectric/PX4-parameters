@@ -3143,7 +3143,7 @@
     </parameter>
     <parameter name="EKF2_HGT_REF" default="1" type="INT32">
       <short_desc>Determines the reference source of height data used by the EKF</short_desc>
-      <long_desc>When multiple height sources are enabled at the same time, the height estimate will always converge towards the reference height source selected by this parameter. The range sensor and vision options should only be used when for operation over a flat surface as the local NED origin will move up and down with ground level.</long_desc>
+      <long_desc>When multiple height sources are enabled at the same time, the height estimate will always converge towards the reference height source selected by this parameter. The range sensor and vision options should only be used when for operation over a flat surface as the local NED origin will move up and down with ground level. If GPS is set as reference but altitude fusion is disabled in EKF2_GPS_CTRL, the GPS altitude is still used to initiaize the bias of the other height sensors.</long_desc>
       <reboot_required>True</reboot_required>
       <values>
         <value code="0">Barometric pressure</value>
@@ -13309,6 +13309,16 @@
       <long_desc>This parameter defines a rotational offset in degrees around the Z (Yaw) axis. It allows the user to fine tune the board offset in the event of misalignment.</long_desc>
       <unit>deg</unit>
     </parameter>
+    <parameter name="SENS_EN_AGPSIM" default="0" type="INT32">
+      <short_desc>Simulate Aux Global Position (AGP)</short_desc>
+      <min>0</min>
+      <max>1</max>
+      <reboot_required>true</reboot_required>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Enabled</value>
+      </values>
+    </parameter>
     <parameter name="SENS_EN_ARSPDSIM" default="0" type="INT32">
       <short_desc>Enable simulated airspeed sensor instance</short_desc>
       <min>0</min>
@@ -13643,6 +13653,16 @@
     </parameter>
   </group>
   <group name="Simulator">
+    <parameter name="SIM_AGP_FAIL" default="0" type="INT32">
+      <short_desc>AGP failure mode</short_desc>
+      <long_desc>Stuck: freeze the measurement to the current location Drift: add a linearly growing bias to the sensor data</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">Stuck</bit>
+        <bit index="1">Drift</bit>
+      </bitmask>
+    </parameter>
     <parameter name="SIM_BARO_OFF_P" default="0.0" type="FLOAT">
       <short_desc>simulated barometer pressure offset</short_desc>
     </parameter>
