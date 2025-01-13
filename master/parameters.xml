@@ -7018,6 +7018,12 @@
       <unit>m/s</unit>
       <decimal>1</decimal>
     </parameter>
+    <parameter name="LNDFW_ROT_MAX" default="0.5" type="FLOAT">
+      <short_desc>Fixed-wing land detector: max rotational speed</short_desc>
+      <long_desc>Maximum allowed norm of the angular velocity in the landed state.</long_desc>
+      <unit>deg/s</unit>
+      <decimal>1</decimal>
+    </parameter>
     <parameter name="LNDFW_TRIG_TIME" default="2." type="FLOAT">
       <short_desc>Fixed-wing land detection trigger time</short_desc>
       <long_desc>Time the land conditions (speeds and acceleration) have to be satisfied to detect a landing.</long_desc>
@@ -7058,8 +7064,8 @@
       <decimal>2</decimal>
     </parameter>
     <parameter name="LNDMC_ROT_MAX" default="20.0" type="FLOAT">
-      <short_desc>Multicopter max rotation</short_desc>
-      <long_desc>Maximum allowed angular velocity around each axis allowed in the landed state.</long_desc>
+      <short_desc>Multicopter max rotational speed</short_desc>
+      <long_desc>Maximum allowed norm of the angular velocity (roll, pitch) in the landed state.</long_desc>
       <unit>deg/s</unit>
       <decimal>1</decimal>
     </parameter>
@@ -10826,7 +10832,7 @@
     </parameter>
     <parameter name="RTL_PLD_MD" default="0" type="INT32">
       <short_desc>RTL precision land mode</short_desc>
-      <long_desc>Use precision landing when doing an RTL landing phase.</long_desc>
+      <long_desc>Use precision landing when doing an RTL landing phase. This setting does not apply for RTL destinations planned as part of a mission.</long_desc>
       <values>
         <value code="0">No precision landing</value>
         <value code="1">Opportunistic precision landing</value>
@@ -13648,6 +13654,7 @@
         <value code="0">Multicopter</value>
         <value code="1">Fixed-Wing</value>
         <value code="2">Tailsitter</value>
+        <value code="3">Standard VTOL</value>
       </values>
     </parameter>
   </group>
@@ -13775,8 +13782,8 @@
       <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="SYS_HAS_MAG" default="1" type="INT32">
-      <short_desc>Control if the vehicle has a magnetometer</short_desc>
-      <long_desc>Set this to 0 if the board has no magnetometer. If set to 0, the preflight checks will not check for the presence of a magnetometer, otherwise N sensors are required.</long_desc>
+      <short_desc>Control if and how many magnetometers are expected</short_desc>
+      <long_desc>0: System has no magnetometer, preflight checks should pass without one. 1-N: Require the presence of N magnetometer sensors for check to pass.</long_desc>
       <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="SYS_HAS_NUM_ASPD" default="0" type="INT32">
