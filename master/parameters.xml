@@ -5099,6 +5099,30 @@
       <decimal>3</decimal>
       <increment>0.1</increment>
     </parameter>
+    <parameter name="CA_HELI_RPM_I" default="0.0" type="FLOAT">
+      <short_desc>Integral gain for rpm control</short_desc>
+      <long_desc>Same definition as the proportional gain but for integral.</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <decimal>3</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="CA_HELI_RPM_P" default="0.0" type="FLOAT">
+      <short_desc>Proportional gain for rpm control</short_desc>
+      <long_desc>Ratio between rpm error devided by 1000 to how much normalized output gets added to correct for it. motor_command = throttle_curve + CA_HELI_RPM_P * (rpm_setpoint - rpm_measurement) / 1000</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <decimal>3</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="CA_HELI_RPM_SP" default="1500" type="FLOAT">
+      <short_desc>Setpoint for main rotor rpm</short_desc>
+      <long_desc>Requires rpm feedback for the controller.</long_desc>
+      <min>100</min>
+      <max>10000</max>
+      <decimal>0</decimal>
+      <increment>1</increment>
+    </parameter>
     <parameter name="CA_HELI_THR_C0" default="1" type="FLOAT">
       <short_desc>Throttle curve at position 0</short_desc>
       <long_desc>Defines the output throttle at the interval position 0.</long_desc>
@@ -9090,6 +9114,14 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
+    <parameter name="MC_YAW_TQ_CUTOFF" default="2." type="FLOAT">
+      <short_desc>Low pass filter cutoff frequency for yaw torque setpoint</short_desc>
+      <long_desc>Reduces vibrations by lowering high frequency torque caused by rotor acceleration. 0 disables the filter</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>Hz</unit>
+      <decimal>3</decimal>
+    </parameter>
     <parameter name="MC_YR_INT_LIM" default="0.30" type="FLOAT">
       <short_desc>Yaw rate integrator limit</short_desc>
       <long_desc>Yaw rate integrator limit. Can be set to increase the amount of integrator available to counteract disturbances or reduced to improve settling time after large yaw moment trim changes.</long_desc>
@@ -9948,7 +9980,6 @@
     </parameter>
     <parameter name="RC_MAP_AUX1" default="0" type="INT32">
       <short_desc>AUX1 Passthrough RC channel</short_desc>
-      <long_desc>Default function: Camera pitch</long_desc>
       <min>0</min>
       <max>18</max>
       <values>
@@ -9975,7 +10006,6 @@
     </parameter>
     <parameter name="RC_MAP_AUX2" default="0" type="INT32">
       <short_desc>AUX2 Passthrough RC channel</short_desc>
-      <long_desc>Default function: Camera roll</long_desc>
       <min>0</min>
       <max>18</max>
       <values>
@@ -10002,7 +10032,6 @@
     </parameter>
     <parameter name="RC_MAP_AUX3" default="0" type="INT32">
       <short_desc>AUX3 Passthrough RC channel</short_desc>
-      <long_desc>Default function: Camera azimuth / yaw</long_desc>
       <min>0</min>
       <max>18</max>
       <values>
