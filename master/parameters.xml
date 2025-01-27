@@ -2973,7 +2973,7 @@
     </parameter>
     <parameter name="EKF2_FUSE_BETA" default="0" type="INT32" boolean="true">
       <short_desc>Enable synthetic sideslip fusion</short_desc>
-      <long_desc>For reliable wind estimation both sideslip and airspeed fusion (see EKF2_ARSP_THR) should be enabled. Only applies to fixed-wing vehicles (or VTOLs in fixed-wing mode). Note: side slip fusion is currently not supported for tailsitters.</long_desc>
+      <long_desc>For reliable wind estimation both sideslip and airspeed fusion (see EKF2_ARSP_THR) should be enabled. Only applies to vehicles in fixed-wing mode or with airspeed fusion active. Note: side slip fusion is currently not supported for tailsitters.</long_desc>
     </parameter>
     <parameter name="EKF2_GBIAS_INIT" default="0.1" type="FLOAT">
       <short_desc>1-sigma IMU gyro switch-on bias</short_desc>
@@ -3519,7 +3519,7 @@
       <decimal>1</decimal>
       <reboot_required>True</reboot_required>
     </parameter>
-    <parameter name="EKF2_RNG_FOG" default="1.0" type="FLOAT">
+    <parameter name="EKF2_RNG_FOG" default="3.0" type="FLOAT">
       <short_desc>Maximum distance at which the range finder could detect fog (m)</short_desc>
       <long_desc>Limit for fog detection. If the range finder measures a distance greater than this value, the measurement is considered to not be blocked by fog or rain. If there's a jump from larger than RNG_FOG to smaller than EKF2_RNG_FOG, the measurement may gets rejected. 0 - disabled</long_desc>
       <min>0.0</min>
@@ -5202,97 +5202,109 @@
     </parameter>
     <parameter name="CA_R0_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 0 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R10_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 10 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R11_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 11 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R1_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 1 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R2_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 2 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R3_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 3 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R4_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 4 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R5_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 5 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R6_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 6 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R7_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 7 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R8_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 8 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="CA_R9_SLEW" default="0.0" type="FLOAT">
       <short_desc>Motor 9 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the motor input signal to pass through the full output range. A value x means that the motor signal can only go from 0 to 1 in minimum x seconds (in case of reversible motors, the range is -1 to 1). Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the motor output signal to take at least the configured time (in seconds) to traverse its full range (normally [0, 1], or if reversible [-1, 1]). Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
@@ -6312,65 +6324,73 @@
     </parameter>
     <parameter name="CA_SV0_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 0 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV1_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 1 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV2_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 2 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV3_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 3 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV4_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 4 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV5_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 5 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV6_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 6 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
     <parameter name="CA_SV7_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 7 slew rate limit</short_desc>
-      <long_desc>Minimum time allowed for the servo input signal to pass through the full output range. A value x means that the servo signal can only go from -1 to 1 in minimum x seconds. Zero means that slew rate limiting is disabled.</long_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds) to traverse its full range [-100%, 100%]. Zero means that slew rate limiting is disabled.</long_desc>
       <min>0</min>
       <max>10</max>
+      <unit>s</unit>
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
@@ -14929,7 +14949,7 @@
     </parameter>
     <parameter name="VT_PITCH_MIN" default="-5.0" type="FLOAT">
       <short_desc>Minimum pitch angle during hover</short_desc>
-      <long_desc>Any pitch setpoint below this value is translated to a forward force by the fixed-wing forward actuation if VT_FW_TRHUST_EN is set to 1.</long_desc>
+      <long_desc>Any pitch setpoint below this value is translated to a forward force by the fixed-wing forward actuation if VT_FWD_TRHUST_EN is set.</long_desc>
       <min>-10.0</min>
       <max>45.0</max>
       <unit>deg</unit>
