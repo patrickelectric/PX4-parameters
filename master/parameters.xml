@@ -2401,6 +2401,10 @@
       <short_desc>External mode identifier 7</short_desc>
       <long_desc>This parameter is automatically set to identify external modes. It ensures that modes get assigned to the same index independent from their startup order, which is required when mapping an external mode to an RC switch.</long_desc>
     </parameter>
+    <parameter name="COM_MODE_ARM_CHK" default="0" type="INT32" boolean="true">
+      <short_desc>Allow external mode registration while armed</short_desc>
+      <long_desc>By default disabled for safety reasons</long_desc>
+    </parameter>
     <parameter name="COM_MOT_TEST_EN" default="1" type="INT32" boolean="true">
       <short_desc>Enable Actuator Testing</short_desc>
       <long_desc>If set, enables the actuator test interface via MAVLink (ACTUATOR_TEST), that allows spinning the motors and moving the servos for testing purposes.</long_desc>
