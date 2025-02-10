@@ -5053,6 +5053,8 @@
         <value code="11">Helicopter (tail Servo)</value>
         <value code="12">Helicopter (Coaxial)</value>
         <value code="13">Rover (Mecanum)</value>
+        <value code="14">Spacecraft 2D</value>
+        <value code="15">Spacecraft 3D</value>
       </values>
     </parameter>
     <parameter name="CA_FAILURE_MODE" default="0" type="INT32">
