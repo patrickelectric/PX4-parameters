@@ -10937,7 +10937,7 @@
     </parameter>
   </group>
   <group name="Rover Ackermann">
-    <parameter name="RA_ACC_RAD_GAIN" default="2" type="FLOAT">
+    <parameter name="RA_ACC_RAD_GAIN" default="1" type="FLOAT">
       <short_desc>Tuning parameter for corner cutting</short_desc>
       <long_desc>The geometric ideal acceptance radius is multiplied by this factor to account for kinematic and dynamic effects. Higher value -&gt; The rover starts to cut the corner earlier.</long_desc>
       <min>1</min>
@@ -10945,7 +10945,7 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RA_ACC_RAD_MAX" default="3" type="FLOAT">
+    <parameter name="RA_ACC_RAD_MAX" default="-1" type="FLOAT">
       <short_desc>Maximum acceptance radius for the waypoints</short_desc>
       <long_desc>The controller scales the acceptance radius based on the angle between the previous, current and next waypoint. Higher value -&gt; smoother trajectory at the cost of how close the rover gets to the waypoint (Set to -1 to disable corner cutting).</long_desc>
       <min>-1</min>
@@ -10954,113 +10954,104 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RA_LAT_ACCEL_I" default="0" type="FLOAT">
-      <short_desc>Integral gain for lateral acceleration controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.001</increment>
-    </parameter>
-    <parameter name="RA_LAT_ACCEL_P" default="0" type="FLOAT">
-      <short_desc>Proportional gain for lateral acceleration controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RA_MAX_ACCEL" default="-1" type="FLOAT">
-      <short_desc>Maximum acceleration for the rover</short_desc>
-      <long_desc>This is used for the acceleration slew rate.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RA_MAX_DECEL" default="-1" type="FLOAT">
-      <short_desc>Maximum deceleration for the rover</short_desc>
-      <long_desc>This is used for the deceleration slew rate, the feed-forward term for the speed controller during missions and the corner slow down effect. Note: For the corner slow down effect RA_MAX_JERK also has to be set.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RA_MAX_JERK" default="-1" type="FLOAT">
-      <short_desc>Maximum jerk</short_desc>
-      <long_desc>Limit for forwards acc/deceleration change. This is used for the corner slow down effect. Note: RA_MAX_DECEL also has to be set for this to be enabled.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^3</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RA_MAX_LAT_ACCEL" default="0.01" type="FLOAT">
-      <short_desc>Maximum allowed lateral acceleration</short_desc>
-      <long_desc>This parameter is used to cap the lateral acceleration and map controller inputs to desired lateral acceleration in Acro, Stabilized and Position mode.</long_desc>
-      <min>0.01</min>
-      <max>1000</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RA_MAX_SPEED" default="-1" type="FLOAT">
-      <short_desc>Maximum allowed speed</short_desc>
-      <long_desc>This is the maximum allowed speed setpoint when driving in a mode that uses closed loop speed control.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RA_MAX_STR_ANG" default="0.5236" type="FLOAT">
+    <parameter name="RA_MAX_STR_ANG" default="0" type="FLOAT">
       <short_desc>Maximum steering angle</short_desc>
-      <long_desc>The maximum angle that the rover can steer</long_desc>
-      <min>0.1</min>
+      <min>0</min>
       <max>1.5708</max>
       <unit>rad</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RA_MAX_STR_RATE" default="-1" type="FLOAT">
-      <short_desc>Maximum steering rate for the rover</short_desc>
+    <parameter name="RA_STR_RATE_LIM" default="-1" type="FLOAT">
+      <short_desc>Steering rate limit</short_desc>
+      <long_desc>Set to -1 to disable.</long_desc>
       <min>-1</min>
       <max>1000</max>
       <unit>deg/s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RA_MAX_THR_SPEED" default="-1" type="FLOAT">
-      <short_desc>Speed the rover drives at maximum throttle</short_desc>
-      <long_desc>This parameter is used to calculate the feedforward term of the closed loop speed control which linearly maps desired speeds to normalized motor commands [-1. 1]. A good starting point is the observed ground speed when the rover drives at maximum throttle in manual mode. Increase this parameter if the rover is faster than the setpoint, and decrease if the rover is slower.</long_desc>
+    <parameter name="RA_WHEEL_BASE" default="0" type="FLOAT">
+      <short_desc>Wheel base</short_desc>
+      <long_desc>Distance from the front to the rear axle.</long_desc>
+      <min>0</min>
+      <max>100</max>
+      <unit>m</unit>
+      <decimal>3</decimal>
+      <increment>0.001</increment>
+    </parameter>
+  </group>
+  <group name="Rover Attitude Control">
+    <parameter name="RO_YAW_P" default="0" type="FLOAT">
+      <short_desc>Proportional gain for closed loop yaw controller</short_desc>
+      <min>0</min>
+      <max>100</max>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
+  </group>
+  <group name="Rover Control">
+    <parameter name="RO_ACCEL_LIM" default="-1" type="FLOAT">
+      <short_desc>Acceleration limit</short_desc>
+      <long_desc>Set to -1 to disable. For mecanum rovers this limit is used for longitudinal and lateral acceleration.</long_desc>
       <min>-1</min>
+      <max>100</max>
+      <unit>m/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_DECEL_LIM" default="-1" type="FLOAT">
+      <short_desc>Deceleration limit</short_desc>
+      <long_desc>Set to -1 to disable. Note that if it is disabled the rover will not slow down when approaching waypoints in auto modes. For mecanum rovers this limit is used for longitudinal and lateral deceleration.</long_desc>
+      <min>-1</min>
+      <max>100</max>
+      <unit>m/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_JERK_LIM" default="-1" type="FLOAT">
+      <short_desc>Jerk limit</short_desc>
+      <long_desc>Set to -1 to disable. Note that if it is disabled the rover will not slow down when approaching waypoints in auto modes. For mecanum rovers this limit is used for longitudinal and lateral jerk.</long_desc>
+      <min>-1</min>
+      <max>100</max>
+      <unit>m/s^3</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_MAX_THR_SPEED" default="0" type="FLOAT">
+      <short_desc>Speed the rover drives at maximum throttle</short_desc>
+      <long_desc>Used to linearly map speeds [m/s] to throttle values [-1. 1].</long_desc>
+      <min>0</min>
       <max>100</max>
       <unit>m/s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RA_SPEED_I" default="1" type="FLOAT">
-      <short_desc>Integral gain for ground speed controller</short_desc>
+    <parameter name="RO_SPEED_TH" default="0.1" type="FLOAT">
+      <short_desc>Speed measurement threshold</short_desc>
+      <long_desc>The minimum threshold for the speed measurement not to be interpreted as zero.</long_desc>
       <min>0</min>
       <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.001</increment>
-    </parameter>
-    <parameter name="RA_SPEED_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for ground speed controller</short_desc>
-      <min>0</min>
-      <max>100</max>
+      <unit>m/s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RA_WHEEL_BASE" default="0.5" type="FLOAT">
-      <short_desc>Wheel base</short_desc>
-      <long_desc>Distance from the front to the rear axle</long_desc>
-      <min>0.001</min>
+    <parameter name="RO_YAW_RATE_TH" default="3" type="FLOAT">
+      <short_desc>Yaw rate measurement threshold</short_desc>
+      <long_desc>The minimum threshold for the yaw rate measurement not to be interpreted as zero.</long_desc>
+      <min>0</min>
       <max>100</max>
-      <unit>m</unit>
-      <decimal>3</decimal>
-      <increment>0.001</increment>
+      <unit>deg/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_STICK_DZ" default="0.1" type="FLOAT">
+      <short_desc>Yaw stick deadzone</short_desc>
+      <long_desc>Percentage of stick input range that will be interpreted as zero around the stick centered value.</long_desc>
+      <min>0</min>
+      <max>1</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
     </parameter>
   </group>
   <group name="Rover Differential">
@@ -11346,7 +11337,7 @@
       <increment>0.01</increment>
     </parameter>
   </group>
-  <group name="Rover Position Control">
+  <group name="Rover Position Control (Deprecated)">
     <parameter name="GND_L1_DAMPING" default="0.75" type="FLOAT">
       <short_desc>L1 damping</short_desc>
       <long_desc>Damping factor for L1 control.</long_desc>
@@ -11493,6 +11484,65 @@
       <min>0.0</min>
       <unit>m</unit>
       <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
+  </group>
+  <group name="Rover Rate Control">
+    <parameter name="RO_YAW_ACCEL_LIM" default="-1" type="FLOAT">
+      <short_desc>Yaw acceleration limit</short_desc>
+      <long_desc>Set to -1 to disable.</long_desc>
+      <min>-1</min>
+      <max>10000</max>
+      <unit>deg/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_RATE_I" default="0" type="FLOAT">
+      <short_desc>Integral gain for closed loop yaw rate controller</short_desc>
+      <min>0</min>
+      <max>100</max>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_RATE_LIM" default="0" type="FLOAT">
+      <short_desc>Yaw rate limit</short_desc>
+      <long_desc>Used to cap yaw rate setpoints and map controller inputs to yaw rate setpoints in Acro, Stabilized and Position mode.</long_desc>
+      <min>0</min>
+      <max>10000</max>
+      <unit>deg/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_RATE_P" default="0" type="FLOAT">
+      <short_desc>Proportional gain for closed loop yaw rate controller</short_desc>
+      <min>0</min>
+      <max>100</max>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
+  </group>
+  <group name="Rover Velocity Control">
+    <parameter name="RO_SPEED_I" default="0" type="FLOAT">
+      <short_desc>Integral gain for ground speed controller</short_desc>
+      <min>0</min>
+      <max>100</max>
+      <decimal>3</decimal>
+      <increment>0.001</increment>
+    </parameter>
+    <parameter name="RO_SPEED_LIM" default="-1" type="FLOAT">
+      <short_desc>Speed limit</short_desc>
+      <long_desc>Used to cap speed setpoints and map controller inputs to speed setpoints in Position mode.</long_desc>
+      <min>-1</min>
+      <max>100</max>
+      <unit>m/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_SPEED_P" default="0" type="FLOAT">
+      <short_desc>Proportional gain for ground speed controller</short_desc>
+      <min>0</min>
+      <max>100</max>
+      <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
   </group>
