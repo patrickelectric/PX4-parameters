@@ -407,6 +407,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC10" default="0" type="INT32">
@@ -460,6 +464,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC11" default="0" type="INT32">
@@ -513,6 +521,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC12" default="0" type="INT32">
@@ -566,6 +578,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC13" default="0" type="INT32">
@@ -619,6 +635,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC14" default="0" type="INT32">
@@ -672,6 +692,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC15" default="0" type="INT32">
@@ -725,6 +749,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC16" default="0" type="INT32">
@@ -778,6 +806,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC2" default="0" type="INT32">
@@ -831,6 +863,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC3" default="0" type="INT32">
@@ -884,6 +920,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC4" default="0" type="INT32">
@@ -937,6 +977,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC5" default="0" type="INT32">
@@ -990,6 +1034,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC6" default="0" type="INT32">
@@ -1043,6 +1091,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC7" default="0" type="INT32">
@@ -1096,6 +1148,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC8" default="0" type="INT32">
@@ -1149,6 +1205,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_FUNC9" default="0" type="INT32">
@@ -1202,6 +1262,10 @@
         <value code="422">Gimbal Yaw</value>
         <value code="430">Gripper</value>
         <value code="440">Landing Gear Wheel</value>
+        <value code="450">IC Engine Ignition</value>
+        <value code="451">IC Engine Throttle</value>
+        <value code="452">IC Engine Choke</value>
+        <value code="453">IC Engine Starter</value>
       </values>
     </parameter>
     <parameter name="PWM_MAIN_REV" default="0" type="INT32">
@@ -2429,9 +2493,6 @@
         <value code="6">Terminate</value>
         <value code="7">Disarm</value>
       </values>
-    </parameter>
-    <parameter name="COM_OBS_AVOID" default="0" type="INT32" boolean="true">
-      <short_desc>Flag to enable obstacle avoidance</short_desc>
     </parameter>
     <parameter name="COM_OF_LOSS_T" default="1.0" type="FLOAT">
       <short_desc>Time-out to wait when offboard connection is lost before triggering offboard lost action</short_desc>
@@ -8962,6 +9023,18 @@
         <value code="6">AUX6</value>
       </values>
     </parameter>
+    <parameter name="MC_SLOW_MAP_PTCH" default="0" type="INT32">
+      <short_desc>RC_MAP_AUX{N} to allow for gimbal pitch rate control in position slow mode</short_desc>
+      <values>
+        <value code="0">No pitch rate input</value>
+        <value code="1">AUX1</value>
+        <value code="2">AUX2</value>
+        <value code="3">AUX3</value>
+        <value code="4">AUX4</value>
+        <value code="5">AUX5</value>
+        <value code="6">AUX6</value>
+      </values>
+    </parameter>
     <parameter name="MC_SLOW_MAP_VVEL" default="0" type="INT32">
       <short_desc>Manual input mapped to scale vertical velocity in position slow mode</short_desc>
       <values>
@@ -11055,98 +11128,21 @@
     </parameter>
   </group>
   <group name="Rover Differential">
-    <parameter name="RD_MAX_ACCEL" default="0.5" type="FLOAT">
-      <short_desc>Maximum acceleration</short_desc>
-      <long_desc>Maximum acceleration is used to limit the acceleration of the rover</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MAX_DECEL" default="-1" type="FLOAT">
-      <short_desc>Maximum deceleration</short_desc>
-      <long_desc>Maximum decelaration is used to limit the deceleration of the rover. Set to -1 to disable, causing the rover to decelerate as fast as possible. Caution: This disables the slow down effect in auto modes.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MAX_JERK" default="0.5" type="FLOAT">
-      <short_desc>Maximum jerk</short_desc>
-      <long_desc>Limit for forwards acc/deceleration change.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s^3</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MAX_SPEED" default="1" type="FLOAT">
-      <short_desc>Maximum speed setpoint</short_desc>
-      <long_desc>This parameter is used to cap desired forward speed and map controller inputs to desired speeds in Position mode.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MAX_THR_SPD" default="1" type="FLOAT">
-      <short_desc>Speed the rover drives at maximum throttle</short_desc>
-      <long_desc>This parameter is used to calculate the feedforward term of the closed loop speed control which linearly maps desired speeds to normalized motor commands [-1. 1]. A good starting point is the observed ground speed when the rover drives at maximum throttle in manual mode. Increase this parameter if the rover is faster than the setpoint, and decrease if the rover is slower.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MAX_THR_YAW_R" default="2" type="FLOAT">
+    <parameter name="RD_MAX_THR_YAW_R" default="0" type="FLOAT">
       <short_desc>Yaw rate turning left/right wheels at max speed in opposite directions</short_desc>
-      <long_desc>This parameter is used to calculate the feedforward term of the closed loop yaw rate control. The controller first calculates the required speed difference between the left and right motor to achieve the desired yaw rate. This desired speed difference is then linearly mapped to normalized motor commands. A good starting point is twice the speed the rover drives at maximum throttle (RD_MAX_THR_SPD)). Increase this parameter if the rover turns faster than the setpoint, and decrease if the rover turns slower.</long_desc>
+      <long_desc>This parameter is used to calculate the feedforward term of the closed loop yaw rate control. The controller first calculates the required speed difference between the left and right motor to achieve the desired yaw rate. This desired speed difference is then linearly mapped to normalized motor commands. A good starting point is half the speed the rover drives at maximum throttle (RD_MAX_THR_SPD)). Increase this parameter if the rover turns faster than the setpoint, and decrease if the rover turns slower.</long_desc>
       <min>0</min>
       <max>100</max>
       <unit>m/s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RD_MAX_YAW_ACCEL" default="-1" type="FLOAT">
-      <short_desc>Maximum allowed yaw acceleration for the rover</short_desc>
-      <long_desc>This parameter is used to cap desired yaw acceleration. This is used to adjust incoming yaw rate setpoints to a feasible yaw rate setpoint based on the physical limitation on how fast the yaw rate can change. This leads to a smooth setpoint trajectory for the closed loop yaw rate controller to track. Set to -1 to disable.</long_desc>
-      <min>-1</min>
-      <max>1000</max>
-      <unit>deg/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MAX_YAW_RATE" default="90" type="FLOAT">
-      <short_desc>Maximum allowed yaw rate for the rover</short_desc>
-      <long_desc>This parameter is used to cap desired yaw rates and map controller inputs to desired yaw rates in Acro,Stabilized and Position mode.</long_desc>
-      <min>0.01</min>
-      <max>1000</max>
-      <unit>deg/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_MISS_SPD_GAIN" default="1" type="FLOAT">
+    <parameter name="RD_MISS_SPD_GAIN" default="-1" type="FLOAT">
       <short_desc>Tuning parameter for the speed reduction during waypoint transition</short_desc>
-      <long_desc>The waypoint transition speed is calculated as: Transition_speed = Maximum_speed * (1 - normalized_transition_angle * RM_MISS_VEL_GAIN) The normalized transition angle is the angle between the line segment from prev-curr WP and curr-next WP interpolated from [0, 180] -&gt; [0, 1]. Higher value -&gt; More speed reduction during waypoint transitions.</long_desc>
-      <min>0.05</min>
+      <long_desc>The waypoint transition speed is calculated as: Transition_speed = Maximum_speed * (1 - normalized_transition_angle * RM_MISS_VEL_GAIN) The normalized transition angle is the angle between the line segment from prev-curr WP and curr-next WP interpolated from [0, 180] -&gt; [0, 1]. Higher value -&gt; More speed reduction during waypoint transitions. Set to -1 to disable any speed reduction during waypoint transition.</long_desc>
+      <min>-1</min>
       <max>100</max>
       <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_SPEED_I" default="0" type="FLOAT">
-      <short_desc>Integral gain for closed loop forward speed controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_SPEED_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for closed loop forward speed controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
       <increment>0.01</increment>
     </parameter>
     <parameter name="RD_TRANS_DRV_TRN" default="0.174533" type="FLOAT">
@@ -11160,48 +11156,21 @@
     </parameter>
     <parameter name="RD_TRANS_TRN_DRV" default="0.0872665" type="FLOAT">
       <short_desc>Yaw error threshhold to switch from spot turning to driving</short_desc>
+      <long_desc>This threshold is used for the state machine to switch from turning to driving based on the error between the desired and actual yaw.</long_desc>
       <min>0.001</min>
       <max>3.14159</max>
       <unit>rad</unit>
       <decimal>3</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RD_WHEEL_TRACK" default="0.5" type="FLOAT">
+    <parameter name="RD_WHEEL_TRACK" default="0" type="FLOAT">
       <short_desc>Wheel track</short_desc>
-      <long_desc>Distance from the center of the right wheel to the center of the left wheel</long_desc>
-      <min>0.001</min>
+      <long_desc>Distance from the center of the right wheel to the center of the left wheel.</long_desc>
+      <min>0</min>
       <max>100</max>
       <unit>m</unit>
       <decimal>3</decimal>
       <increment>0.001</increment>
-    </parameter>
-    <parameter name="RD_YAW_I" default="0" type="FLOAT">
-      <short_desc>Integral gain for closed loop yaw controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_YAW_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for closed loop yaw controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_YAW_RATE_I" default="0" type="FLOAT">
-      <short_desc>Integral gain for closed loop yaw rate controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RD_YAW_RATE_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for closed loop yaw rate controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
     </parameter>
   </group>
   <group name="Rover Mecanum">
@@ -11490,7 +11459,16 @@
   <group name="Rover Rate Control">
     <parameter name="RO_YAW_ACCEL_LIM" default="-1" type="FLOAT">
       <short_desc>Yaw acceleration limit</short_desc>
-      <long_desc>Set to -1 to disable.</long_desc>
+      <long_desc>Used to cap how quickly the magnitude of yaw rate setpoints can increase. Set to -1 to disable.</long_desc>
+      <min>-1</min>
+      <max>10000</max>
+      <unit>deg/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_DECEL_LIM" default="-1" type="FLOAT">
+      <short_desc>Yaw deceleration limit</short_desc>
+      <long_desc>Used to cap how quickly the magnitude of yaw rate setpoints can decrease. Set to -1 to disable.</long_desc>
       <min>-1</min>
       <max>10000</max>
       <unit>deg/s^2</unit>
@@ -11671,7 +11649,7 @@
     </parameter>
     <parameter name="SDLOG_PROFILE" default="1" type="INT32">
       <short_desc>Logging topic profile (integer bitmask)</short_desc>
-      <long_desc>This integer bitmask controls the set and rates of logged topics. The default allows for general log analysis while keeping the log file size reasonably small. Enabling multiple sets leads to higher bandwidth requirements and larger log files. Set bits true to enable: 0 : Default set (used for general log analysis) 1 : Full rate estimator (EKF2) replay topics 2 : Topics for thermal calibration (high rate raw IMU and Baro sensor data) 3 : Topics for system identification (high rate actuator control and IMU data) 4 : Full rates for analysis of fast maneuvers (RC, attitude, rates and actuators) 5 : Debugging topics (debug_*.msg topics, for custom code) 6 : Topics for sensor comparison (low rate raw IMU, Baro and magnetometer data) 7 : Topics for computer vision and collision avoidance 8 : Raw FIFO high-rate IMU (Gyro) 9 : Raw FIFO high-rate IMU (Accel) 10: Logging of mavlink tunnel message (useful for payload communication debugging)</long_desc>
+      <long_desc>This integer bitmask controls the set and rates of logged topics. The default allows for general log analysis while keeping the log file size reasonably small. Enabling multiple sets leads to higher bandwidth requirements and larger log files. Set bits true to enable: 0 : Default set (used for general log analysis) 1 : Full rate estimator (EKF2) replay topics 2 : Topics for thermal calibration (high rate raw IMU and Baro sensor data) 3 : Topics for system identification (high rate actuator control and IMU data) 4 : Full rates for analysis of fast maneuvers (RC, attitude, rates and actuators) 5 : Debugging topics (debug_*.msg topics, for custom code) 6 : Topics for sensor comparison (low rate raw IMU, Baro and magnetometer data) 7 : Topics for computer vision and collision prevention 8 : Raw FIFO high-rate IMU (Gyro) 9 : Raw FIFO high-rate IMU (Accel) 10: Logging of mavlink tunnel message (useful for payload communication debugging)</long_desc>
       <min>0</min>
       <max>2047</max>
       <reboot_required>true</reboot_required>
@@ -14805,6 +14783,12 @@
         <value code="2">Custom participant</value>
       </values>
     </parameter>
+    <parameter name="UXRCE_DDS_RX_TO" default="-1" type="INT32" category="System">
+      <short_desc>RX rate timeout configuration</short_desc>
+      <long_desc>Specifies after how many seconds without receiving data the DDS connection is reestablished. A value less than one disables the RX rate timeout.</long_desc>
+      <unit>s</unit>
+      <reboot_required>True</reboot_required>
+    </parameter>
     <parameter name="UXRCE_DDS_SYNCC" default="0" type="INT32" boolean="true" category="System">
       <short_desc>Enable uXRCE-DDS system clock synchronization</short_desc>
       <long_desc>When enabled along with UXRCE_DDS_SYNCT, uxrce_dds_client will set the system clock using the agents UTC timestamp.</long_desc>
@@ -14813,6 +14797,12 @@
     <parameter name="UXRCE_DDS_SYNCT" default="1" type="INT32" boolean="true" category="System">
       <short_desc>Enable uXRCE-DDS timestamp synchronization</short_desc>
       <long_desc>When enabled, uxrce_dds_client will synchronize the timestamps of the incoming and outgoing messages measuring the offset between the Agent OS time and the PX4 time.</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="UXRCE_DDS_TX_TO" default="3" type="INT32" category="System">
+      <short_desc>TX rate timeout configuration</short_desc>
+      <long_desc>Specifies after how many seconds without sending data the DDS connection is reestablished. A value less than one disables the TX rate timeout.</long_desc>
+      <unit>s</unit>
       <reboot_required>True</reboot_required>
     </parameter>
   </group>
