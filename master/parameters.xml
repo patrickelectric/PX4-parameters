@@ -5258,6 +5258,15 @@
       <decimal>3</decimal>
       <increment>0.1</increment>
     </parameter>
+    <parameter name="CA_MAX_SVO_THROW" default="0.0" type="FLOAT">
+      <short_desc>Throw angle of swashplate servo at maximum commands for linearization</short_desc>
+      <long_desc>Used to linearize mechanical output of swashplate servos to avoid axis coupling and binding with 4 servo redundancy. This requires a symmetric setup where the servo horn is exactly centered with a 0 command. Setting to zero disables feature.</long_desc>
+      <min>0</min>
+      <max>75</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
+    </parameter>
     <parameter name="CA_METHOD" default="2" type="INT32">
       <short_desc>Control allocation method</short_desc>
       <long_desc>Selects the algorithm and desaturation method. If set to Automtic, the selection is based on the airframe (CA_AIRFRAME).</long_desc>
@@ -11174,136 +11183,40 @@
     </parameter>
   </group>
   <group name="Rover Mecanum">
-    <parameter name="RM_MAX_ACCEL" default="0.5" type="FLOAT">
-      <short_desc>Maximum acceleration</short_desc>
-      <long_desc>Maximum acceleration is used to limit the acceleration of the rover</long_desc>
+    <parameter name="RM_COURSE_CTL_TH" default="0.17" type="FLOAT">
+      <short_desc>Threshold to update course control in manual position mode</short_desc>
+      <long_desc>Threshold for the angle between the active cruise direction and the cruise direction given by the stick inputs. This can be understood as a deadzone for the combined stick inputs for forward/backwards and lateral speed which defines a course direction.</long_desc>
       <min>0</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
+      <max>3.14</max>
+      <unit>rad</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RM_MAX_DECEL" default="-1" type="FLOAT">
-      <short_desc>Maximum deceleration</short_desc>
-      <long_desc>Maximum decelaration is used to limit the deceleration of the rover. Set to -1 to disable, causing the rover to decelerate as fast as possible. Caution: Disabling the deceleration limit also disables the slow down effect in auto modes.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_MAX_JERK" default="0.5" type="FLOAT">
-      <short_desc>Maximum jerk</short_desc>
-      <long_desc>Limit for forwards acc/deceleration change.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s^3</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_MAX_SPEED" default="7" type="FLOAT">
-      <short_desc>Maximum speed the rover is allowed to drive</short_desc>
-      <long_desc>This parameter is used cap the maximum speed the rover is allowed to drive and to map stick inputs to desired speeds in position mode.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_MAX_THR_SPD" default="1" type="FLOAT">
-      <short_desc>Speed the rover drives at maximum throttle</short_desc>
-      <long_desc>This parameter is used to calculate the feedforward term of the closed loop speed control which linearly maps desired speeds to normalized motor commands [-1. 1]. A good starting point is the observed ground speed when the rover drives at maximum throttle in manual mode. Increase this parameter if the rover is faster than the setpoint, and decrease if the rover is slower.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_MAX_THR_YAW_R" default="2" type="FLOAT">
+    <parameter name="RM_MAX_THR_YAW_R" default="0" type="FLOAT">
       <short_desc>Yaw rate turning left/right wheels at max speed in opposite directions</short_desc>
-      <long_desc>This parameter is used to calculate the feedforward term of the closed loop yaw rate control. The controller first calculates the required speed difference between the left and right motor to achieve the desired yaw rate. This desired speed difference is then linearly mapped to normalized motor commands. A good starting point is twice the speed the rover drives at maximum throttle (RM_MAX_THRTL_SPD)). Increase this parameter if the rover turns faster than the setpoint, and decrease if the rover turns slower.</long_desc>
+      <long_desc>This parameter is used to calculate the feedforward term of the closed loop yaw rate control. The controller first calculates the required speed difference between the left and right motor to achieve the desired yaw rate. This desired speed difference is then linearly mapped to normalized motor commands. A good starting point is half the speed the rover drives at maximum throttle (RD_MAX_THR_SPD)). Increase this parameter if the rover turns faster than the setpoint, and decrease if the rover turns slower.</long_desc>
       <min>0</min>
       <max>100</max>
       <unit>m/s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RM_MAX_YAW_ACCEL" default="-1" type="FLOAT">
-      <short_desc>Maximum allowed yaw acceleration for the rover</short_desc>
-      <long_desc>This parameter is used to cap desired yaw acceleration. This is used to adjust incoming yaw rate setpoints to a feasible yaw rate setpoint based on the physical limitation on how fast the yaw rate can change. This leads to a smooth setpoint trajectory for the closed loop yaw rate controller to track. Set to -1 to disable.</long_desc>
+    <parameter name="RM_MISS_SPD_GAIN" default="-1" type="FLOAT">
+      <short_desc>Tuning parameter for the speed reduction during waypoint transition</short_desc>
+      <long_desc>The waypoint transition speed is calculated as: Transition_speed = Maximum_speed * (1 - normalized_transition_angle * RM_MISS_VEL_GAIN) The normalized transition angle is the angle between the line segment from prev-curr waypoint and curr-next waypoint interpolated from [0, 180] -&gt; [0, 1]. Higher value -&gt; More speed reduction during waypoint transitions. Set to -1 to disable any speed reduction during waypoint transition.</long_desc>
       <min>-1</min>
-      <max>1000</max>
-      <unit>deg/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_MAX_YAW_RATE" default="90" type="FLOAT">
-      <short_desc>Maximum allowed yaw rate for the rover</short_desc>
-      <long_desc>This parameter is used to cap desired yaw rates and map controller inputs to desired yaw rates in acro mode.</long_desc>
-      <min>0.01</min>
-      <max>1000</max>
-      <unit>deg/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_MISS_VEL_GAIN" default="1" type="FLOAT">
-      <short_desc>Tuning parameter for the velocity reduction during waypoint transition</short_desc>
-      <long_desc>The waypoint transition speed is calculated as: Transition_speed = Maximum_speed * (1 - normalized_transition_angle * RM_MISS_VEL_GAIN) The normalized transition angle is the angle between the line segment from prev-curr WP and curr-next WP interpolated from [0, 180] -&gt; [0, 1]. Higher value -&gt; More velocity reduction during cornering.</long_desc>
-      <min>0.05</min>
       <max>100</max>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RM_SPEED_I" default="0" type="FLOAT">
-      <short_desc>Integral gain for ground speed controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_SPEED_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for speed controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_WHEEL_TRACK" default="0.5" type="FLOAT">
+    <parameter name="RM_WHEEL_TRACK" default="0" type="FLOAT">
       <short_desc>Wheel track</short_desc>
-      <long_desc>Distance from the center of the right wheels to the center of the left wheels.</long_desc>
-      <min>0.001</min>
+      <long_desc>Distance from the center of the right wheel to the center of the left wheel.</long_desc>
+      <min>0</min>
       <max>100</max>
       <unit>m</unit>
       <decimal>3</decimal>
       <increment>0.001</increment>
-    </parameter>
-    <parameter name="RM_YAW_I" default="0.1" type="FLOAT">
-      <short_desc>Integral gain for closed loop yaw controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_YAW_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for closed loop yaw controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_YAW_RATE_I" default="0" type="FLOAT">
-      <short_desc>Integral gain for the closed-loop yaw rate controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RM_YAW_RATE_P" default="1" type="FLOAT">
-      <short_desc>Proportional gain for the closed-loop yaw rate controller</short_desc>
-      <min>0</min>
-      <max>100</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
     </parameter>
   </group>
   <group name="Rover Position Control (Deprecated)">
@@ -13880,6 +13793,12 @@
       <long_desc>The preflight check will fail if fewer than this number of distance sensors with valid data is present. Disable the check with 0.</long_desc>
       <min>0</min>
       <max>4</max>
+    </parameter>
+    <parameter name="SYS_HAS_NUM_OF" default="0" type="INT32">
+      <short_desc>Number of optical flow sensors required to be available</short_desc>
+      <long_desc>The preflight check will fail if fewer than this number of optical flow sensors with valid data are present.</long_desc>
+      <min>0</min>
+      <max>1</max>
     </parameter>
     <parameter name="SYS_HITL" default="0" type="INT32">
       <short_desc>Enable HITL/SIH mode on next boot</short_desc>
