@@ -9377,7 +9377,7 @@
     </parameter>
   </group>
   <group name="Pure Pursuit">
-    <parameter name="PP_LOOKAHD_GAIN" default="1" type="FLOAT">
+    <parameter name="PP_LOOKAHD_GAIN" default="1.0" type="FLOAT">
       <short_desc>Tuning parameter for the pure pursuit controller</short_desc>
       <long_desc>Lower value -&gt; More aggressive controller (beware overshoot/oscillations)</long_desc>
       <min>0.1</min>
@@ -9385,7 +9385,7 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="PP_LOOKAHD_MAX" default="10" type="FLOAT">
+    <parameter name="PP_LOOKAHD_MAX" default="10.0" type="FLOAT">
       <short_desc>Maximum lookahead distance for the pure pursuit controller</short_desc>
       <min>0.1</min>
       <max>100</max>
@@ -9393,7 +9393,7 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="PP_LOOKAHD_MIN" default="1" type="FLOAT">
+    <parameter name="PP_LOOKAHD_MIN" default="1.0" type="FLOAT">
       <short_desc>Minimum lookahead distance for the pure pursuit controller</short_desc>
       <min>0.1</min>
       <max>100</max>
@@ -11064,75 +11064,11 @@
     </parameter>
   </group>
   <group name="Rover Attitude Control">
-    <parameter name="RO_YAW_P" default="0" type="FLOAT">
+    <parameter name="RO_YAW_P" default="0." type="FLOAT">
       <short_desc>Proportional gain for closed loop yaw controller</short_desc>
       <min>0</min>
       <max>100</max>
       <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-  </group>
-  <group name="Rover Control">
-    <parameter name="RO_ACCEL_LIM" default="-1" type="FLOAT">
-      <short_desc>Acceleration limit</short_desc>
-      <long_desc>Set to -1 to disable. For mecanum rovers this limit is used for longitudinal and lateral acceleration.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RO_DECEL_LIM" default="-1" type="FLOAT">
-      <short_desc>Deceleration limit</short_desc>
-      <long_desc>Set to -1 to disable. Note that if it is disabled the rover will not slow down when approaching waypoints in auto modes. For mecanum rovers this limit is used for longitudinal and lateral deceleration.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RO_JERK_LIM" default="-1" type="FLOAT">
-      <short_desc>Jerk limit</short_desc>
-      <long_desc>Set to -1 to disable. Note that if it is disabled the rover will not slow down when approaching waypoints in auto modes. For mecanum rovers this limit is used for longitudinal and lateral jerk.</long_desc>
-      <min>-1</min>
-      <max>100</max>
-      <unit>m/s^3</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RO_MAX_THR_SPEED" default="0" type="FLOAT">
-      <short_desc>Speed the rover drives at maximum throttle</short_desc>
-      <long_desc>Used to linearly map speeds [m/s] to throttle values [-1. 1].</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RO_SPEED_TH" default="0.1" type="FLOAT">
-      <short_desc>Speed measurement threshold</short_desc>
-      <long_desc>The minimum threshold for the speed measurement not to be interpreted as zero.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RO_YAW_RATE_TH" default="3" type="FLOAT">
-      <short_desc>Yaw rate measurement threshold</short_desc>
-      <long_desc>The minimum threshold for the yaw rate measurement not to be interpreted as zero.</long_desc>
-      <min>0</min>
-      <max>100</max>
-      <unit>deg/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="RO_YAW_STICK_DZ" default="0.1" type="FLOAT">
-      <short_desc>Yaw stick deadzone</short_desc>
-      <long_desc>Percentage of stick input range that will be interpreted as zero around the stick centered value.</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
   </group>
@@ -11370,7 +11306,7 @@
     </parameter>
   </group>
   <group name="Rover Rate Control">
-    <parameter name="RO_YAW_ACCEL_LIM" default="-1" type="FLOAT">
+    <parameter name="RO_YAW_ACCEL_LIM" default="-1." type="FLOAT">
       <short_desc>Yaw acceleration limit</short_desc>
       <long_desc>Used to cap how quickly the magnitude of yaw rate setpoints can increase. Set to -1 to disable.</long_desc>
       <min>-1</min>
@@ -11379,7 +11315,7 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RO_YAW_DECEL_LIM" default="-1" type="FLOAT">
+    <parameter name="RO_YAW_DECEL_LIM" default="-1." type="FLOAT">
       <short_desc>Yaw deceleration limit</short_desc>
       <long_desc>Used to cap how quickly the magnitude of yaw rate setpoints can decrease. Set to -1 to disable.</long_desc>
       <min>-1</min>
@@ -11388,14 +11324,14 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RO_YAW_RATE_I" default="0" type="FLOAT">
+    <parameter name="RO_YAW_RATE_I" default="0." type="FLOAT">
       <short_desc>Integral gain for closed loop yaw rate controller</short_desc>
       <min>0</min>
       <max>100</max>
       <decimal>3</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RO_YAW_RATE_LIM" default="0" type="FLOAT">
+    <parameter name="RO_YAW_RATE_LIM" default="0." type="FLOAT">
       <short_desc>Yaw rate limit</short_desc>
       <long_desc>Used to cap yaw rate setpoints and map controller inputs to yaw rate setpoints in Acro, Stabilized and Position mode.</long_desc>
       <min>0</min>
@@ -11404,23 +11340,76 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RO_YAW_RATE_P" default="0" type="FLOAT">
+    <parameter name="RO_YAW_RATE_P" default="0." type="FLOAT">
       <short_desc>Proportional gain for closed loop yaw rate controller</short_desc>
       <min>0</min>
       <max>100</max>
       <decimal>3</decimal>
       <increment>0.01</increment>
     </parameter>
+    <parameter name="RO_YAW_RATE_TH" default="3." type="FLOAT">
+      <short_desc>Yaw rate measurement threshold</short_desc>
+      <long_desc>The minimum threshold for the yaw rate measurement not to be interpreted as zero.</long_desc>
+      <min>0</min>
+      <max>100</max>
+      <unit>deg/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_STICK_DZ" default="0.1" type="FLOAT">
+      <short_desc>Yaw stick deadzone</short_desc>
+      <long_desc>Percentage of stick input range that will be interpreted as zero around the stick centered value.</long_desc>
+      <min>0</min>
+      <max>1</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
   </group>
   <group name="Rover Velocity Control">
-    <parameter name="RO_SPEED_I" default="0" type="FLOAT">
+    <parameter name="RO_ACCEL_LIM" default="-1." type="FLOAT">
+      <short_desc>Acceleration limit</short_desc>
+      <long_desc>Set to -1 to disable. For mecanum rovers this limit is used for longitudinal and lateral acceleration.</long_desc>
+      <min>-1</min>
+      <max>100</max>
+      <unit>m/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_DECEL_LIM" default="-1." type="FLOAT">
+      <short_desc>Deceleration limit</short_desc>
+      <long_desc>Set to -1 to disable. Note that if it is disabled the rover will not slow down when approaching waypoints in auto modes. For mecanum rovers this limit is used for longitudinal and lateral deceleration.</long_desc>
+      <min>-1</min>
+      <max>100</max>
+      <unit>m/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_JERK_LIM" default="-1." type="FLOAT">
+      <short_desc>Jerk limit</short_desc>
+      <long_desc>Set to -1 to disable. Note that if it is disabled the rover will not slow down when approaching waypoints in auto modes. For mecanum rovers this limit is used for longitudinal and lateral jerk.</long_desc>
+      <min>-1</min>
+      <max>100</max>
+      <unit>m/s^3</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_MAX_THR_SPEED" default="0." type="FLOAT">
+      <short_desc>Speed the rover drives at maximum throttle</short_desc>
+      <long_desc>Used to linearly map speeds [m/s] to throttle values [-1. 1].</long_desc>
+      <min>0</min>
+      <max>100</max>
+      <unit>m/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_SPEED_I" default="0." type="FLOAT">
       <short_desc>Integral gain for ground speed controller</short_desc>
       <min>0</min>
       <max>100</max>
       <decimal>3</decimal>
       <increment>0.001</increment>
     </parameter>
-    <parameter name="RO_SPEED_LIM" default="-1" type="FLOAT">
+    <parameter name="RO_SPEED_LIM" default="-1." type="FLOAT">
       <short_desc>Speed limit</short_desc>
       <long_desc>Used to cap speed setpoints and map controller inputs to speed setpoints in Position mode.</long_desc>
       <min>-1</min>
@@ -11429,10 +11418,19 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="RO_SPEED_P" default="0" type="FLOAT">
+    <parameter name="RO_SPEED_P" default="0." type="FLOAT">
       <short_desc>Proportional gain for ground speed controller</short_desc>
       <min>0</min>
       <max>100</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_SPEED_TH" default="0.1" type="FLOAT">
+      <short_desc>Speed measurement threshold</short_desc>
+      <long_desc>Set to -1 to disable. The minimum threshold for the speed measurement not to be interpreted as zero.</long_desc>
+      <min>0</min>
+      <max>100</max>
+      <unit>m/s</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
@@ -13094,7 +13092,7 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
-      <reboot_required>true</reboot_required>
+      <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_CAL_EN" default="1" type="INT32" boolean="true">
       <short_desc>IMU gyro auto calibration enable</short_desc>
@@ -13106,7 +13104,7 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
-      <reboot_required>true</reboot_required>
+      <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_DNF_BW" default="15." type="FLOAT">
       <short_desc>IMU gyro ESC notch filter bandwidth</short_desc>
@@ -13176,7 +13174,7 @@
       <min>0</min>
       <max>100</max>
       <unit>Hz</unit>
-      <reboot_required>true</reboot_required>
+      <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_NF0_FRQ" default="0.0" type="FLOAT">
       <short_desc>Notch filter frequency for gyro</short_desc>
@@ -13184,7 +13182,7 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
-      <reboot_required>true</reboot_required>
+      <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_NF1_BW" default="20.0" type="FLOAT">
       <short_desc>Notch filter 1 bandwidth for gyro</short_desc>
@@ -13192,7 +13190,7 @@
       <min>0</min>
       <max>100</max>
       <unit>Hz</unit>
-      <reboot_required>true</reboot_required>
+      <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_NF1_FRQ" default="0.0" type="FLOAT">
       <short_desc>Notch filter 2 frequency for gyro</short_desc>
@@ -13200,7 +13198,7 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
-      <reboot_required>true</reboot_required>
+      <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_RATEMAX" default="400" type="INT32">
       <short_desc>Gyro control data maximum publication rate (inner loop rate)</short_desc>
