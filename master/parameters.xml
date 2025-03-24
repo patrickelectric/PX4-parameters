@@ -2557,7 +2557,7 @@
       </values>
     </parameter>
     <parameter name="COM_QC_ACT" default="0" type="INT32">
-      <short_desc>Set command after a quadchute</short_desc>
+      <short_desc>Set action after a quadchute</short_desc>
       <values>
         <value code="-1">Warning only</value>
         <value code="0">Return mode</value>
@@ -13025,6 +13025,10 @@
       <short_desc>Differential pressure sensor offset</short_desc>
       <long_desc>The offset (zero-reading) in Pascal</long_desc>
     </parameter>
+    <parameter name="SENS_DPRES_REV" default="0" type="INT32" boolean="true" category="System">
+      <short_desc>Reverse differential pressure sensor readings</short_desc>
+      <long_desc>Reverse the raw measurements of all differential pressure sensors. This can be enabled if the sensors have static and dynamic ports swapped.</long_desc>
+    </parameter>
     <parameter name="SENS_FLOW_MAXHGT" default="100." type="FLOAT">
       <short_desc>Maximum height above ground when reliant on optical flow</short_desc>
       <long_desc>This parameter defines the maximum distance from ground at which the optical flow sensor operates reliably. The height setpoint will be limited to be no greater than this value when the navigation system is completely reliant on optical flow data and the height above ground estimate is valid. The sensor may be usable above this height, but accuracy will progressively degrade.</long_desc>
@@ -14894,7 +14898,7 @@
     </parameter>
     <parameter name="VT_F_TR_OL_TM" default="6.0" type="FLOAT">
       <short_desc>Airspeed-less front transition time (open loop)</short_desc>
-      <long_desc>The duration of the front transition when there is no airspeed feedback available.</long_desc>
+      <long_desc>The duration of the front transition when there is no airspeed feedback available. When airspeed is used, transition timeout is declared if airspeed does not reach VT_ARSP_BLEND after this time.</long_desc>
       <min>1.0</min>
       <max>30.0</max>
       <unit>s</unit>
@@ -14994,7 +14998,7 @@
     </parameter>
     <parameter name="VT_TRANS_TIMEOUT" default="15.0" type="FLOAT">
       <short_desc>Front transition timeout</short_desc>
-      <long_desc>Time in seconds after which transition will be cancelled. Disabled if set to 0.</long_desc>
+      <long_desc>Time in seconds after which transition will be cancelled.</long_desc>
       <min>0.1</min>
       <max>30.00</max>
       <unit>s</unit>
