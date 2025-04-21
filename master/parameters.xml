@@ -7151,7 +7151,7 @@
     </parameter>
     <parameter name="LNDFW_ROT_MAX" default="0.5" type="FLOAT">
       <short_desc>Fixed-wing land detector: max rotational speed</short_desc>
-      <long_desc>Maximum allowed norm of the angular velocity in the landed state.</long_desc>
+      <long_desc>Maximum allowed norm of the angular velocity in the landed state. Only used if neither airspeed nor groundspeed can be used for landing detection.</long_desc>
       <unit>deg/s</unit>
       <decimal>1</decimal>
     </parameter>
