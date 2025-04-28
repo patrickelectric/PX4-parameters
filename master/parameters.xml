@@ -7145,7 +7145,7 @@
       <short_desc>Fixed-wing land detector: Max airspeed</short_desc>
       <long_desc>Maximum airspeed allowed in the landed state</long_desc>
       <min>2</min>
-      <max>20</max>
+      <max>30</max>
       <unit>m/s</unit>
       <decimal>1</decimal>
     </parameter>
@@ -7167,7 +7167,7 @@
       <short_desc>Fixed-wing land detector: Max horizontal velocity threshold</short_desc>
       <long_desc>Maximum horizontal velocity allowed in the landed state. A factor of 0.7 is applied in case of airspeed-less flying (either because no sensor is present or sensor data got invalid in flight).</long_desc>
       <min>0.5</min>
-      <max>10</max>
+      <max>20</max>
       <unit>m/s</unit>
       <decimal>1</decimal>
     </parameter>
@@ -7183,7 +7183,7 @@
       <short_desc>Fixed-wing land detector: Max horizontal acceleration</short_desc>
       <long_desc>Maximum horizontal (x,y body axes) acceleration allowed in the landed state</long_desc>
       <min>2</min>
-      <max>15</max>
+      <max>30</max>
       <unit>m/s^2</unit>
       <decimal>1</decimal>
     </parameter>
@@ -8590,7 +8590,7 @@
     </parameter>
     <parameter name="MPC_LAND_ALT3" default="1." type="FLOAT">
       <short_desc>Altitude for 3. step of slow landing</short_desc>
-      <long_desc>Below this altitude descending velocity gets limited to "MPC_LAND_CRWL", if LIDAR available. No effect if LIDAR not available</long_desc>
+      <long_desc>If a valid distance sensor measurement to the ground is available, limit descending velocity to "MPC_LAND_CRWL" below this altitude.</long_desc>
       <min>0</min>
       <max>122</max>
       <unit>m</unit>
@@ -8671,10 +8671,11 @@
     </parameter>
     <parameter name="MPC_THR_CURVE" default="0" type="INT32">
       <short_desc>Thrust curve mapping in Stabilized Mode</short_desc>
-      <long_desc>Defines how the throttle stick is mapped to collective thrust in Stabilized mode. Rescale to hover thrust: Stick input is linearly rescaled, such that a centered stick corresponds to the hover throttle (see MPC_THR_HOVER). No Rescale: Directly map the stick 1:1 to the output. Can be useful with very low hover thrust which leads to much distortion and the upper half getting sensitive. With MPC_THR_HOVER 0.5 both modes are the same.</long_desc>
+      <long_desc>Defines how the throttle stick is mapped to collective thrust in Stabilized mode. Rescale to hover thrust estimate: Stick input is linearly rescaled, such that a centered throttle stick corresponds to the hover thrust estimator's output. No rescale: Directly map the stick 1:1 to the output. Can be useful with very low hover thrust which leads to much distortion and the upper half getting sensitive. Rescale to hover thrust parameter: Similar to rescaling to the hover thrust estimate, but it uses the hover thrust parameter value (see MPC_THR_HOVER) instead of estimated value. With MPC_THR_HOVER 0.5 it's equivalent to No rescale.</long_desc>
       <values>
-        <value code="0">Rescale to hover thrust</value>
-        <value code="1">No Rescale</value>
+        <value code="0">Rescale to estimate</value>
+        <value code="1">No rescale</value>
+        <value code="2">Rescale to parameter</value>
       </values>
     </parameter>
     <parameter name="MPC_THR_HOVER" default="0.5" type="FLOAT">
@@ -8746,8 +8747,8 @@
       <decimal>2</decimal>
     </parameter>
     <parameter name="MPC_USE_HTE" default="1" type="INT32" boolean="true">
-      <short_desc>Hover thrust estimator</short_desc>
-      <long_desc>Disable to use the fixed parameter MPC_THR_HOVER Enable to use the hover thrust estimator</long_desc>
+      <short_desc>Use hover thrust estimate for altitude control</short_desc>
+      <long_desc>Disable to use the fixed parameter MPC_THR_HOVER instead of the hover thrust estimate in the position controller. This parameter does not influence Stabilized mode throttle curve (see MPC_THR_CURVE).</long_desc>
     </parameter>
     <parameter name="MPC_VELD_LP" default="5.0" type="FLOAT">
       <short_desc>Velocity derivative low pass cutoff frequency</short_desc>
@@ -13111,6 +13112,8 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
       <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_CAL_EN" default="1" type="INT32" boolean="true">
@@ -13123,6 +13126,8 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
       <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_DNF_BW" default="15." type="FLOAT">
@@ -13131,6 +13136,8 @@
       <min>5</min>
       <max>30</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
     </parameter>
     <parameter name="IMU_GYRO_DNF_EN" default="0" type="INT32">
       <short_desc>IMU gyro dynamic notch filtering</short_desc>
@@ -13152,6 +13159,8 @@
       <short_desc>IMU gyro dynamic notch filter minimum frequency</short_desc>
       <long_desc>Minimum notch filter frequency in Hz.</long_desc>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
     </parameter>
     <parameter name="IMU_GYRO_FFT_EN" default="0" type="INT32" boolean="true">
       <short_desc>IMU gyro FFT enable</short_desc>
@@ -13193,6 +13202,8 @@
       <min>0</min>
       <max>100</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
       <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_NF0_FRQ" default="0.0" type="FLOAT">
@@ -13201,6 +13212,8 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
       <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_NF1_BW" default="20.0" type="FLOAT">
@@ -13209,6 +13222,8 @@
       <min>0</min>
       <max>100</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
       <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_NF1_FRQ" default="0.0" type="FLOAT">
@@ -13217,6 +13232,8 @@
       <min>0</min>
       <max>1000</max>
       <unit>Hz</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
       <reboot_required>false</reboot_required>
     </parameter>
     <parameter name="IMU_GYRO_RATEMAX" default="400" type="INT32">
@@ -14812,22 +14829,22 @@
     </parameter>
     <parameter name="VT_FWD_THRUST_EN" default="0" type="INT32">
       <short_desc>Use fixed-wing actuation in hover to accelerate forward</short_desc>
-      <long_desc>This feature can be used to avoid the plane having to pitch nose down in order to move forward. Prevents large, negative lift from pitching nose down into wind. Fixed-wing forward actuators refers to puller/pusher (standard VTOL), or forward-tilt (tiltrotor VTOL). Only active if demanded down pitch is below VT_PITCH_MIN. Use VT_FWD_THRUST_SC to tune it. Descend mode is treated as Landing too. Only active (if enabled) in Altitude, Position and Auto modes, not in Stabilized.</long_desc>
+      <long_desc>Prevents downforce from pitching the body down when facing wind. Uses puller/pusher (standard VTOL), or forward-tilt (tiltrotor VTOL) to accelerate forward instead. Only active if demanded pitch  is below VT_PITCH_MIN. Use VT_FWD_THRUST_SC to tune it. Descend mode is treated as Landing too. Only active (if enabled) in height-rate controlled modes.</long_desc>
       <values>
         <value code="0">Disabled</value>
         <value code="1">Enabled (except LANDING)</value>
-        <value code="2">Enabled if distance to ground above MPC_LAND_ALT1</value>
-        <value code="3">Enabled if distance to ground above MPC_LAND_ALT2</value>
+        <value code="2">Enabled if above MPC_LAND_ALT1</value>
+        <value code="3">Enabled if above MPC_LAND_ALT2</value>
         <value code="4">Enabled constantly</value>
-        <value code="5">Enabled if distance to ground above MPC_LAND_ALT1 (except LANDING)</value>
-        <value code="6">Enabled if distance to ground above MPC_LAND_ALT2 (except LANDING)</value>
+        <value code="5">Enabled if above MPC_LAND_ALT1 (except LANDING)</value>
+        <value code="6">Enabled if above MPC_LAND_ALT2 (except LANDING)</value>
       </values>
     </parameter>
     <parameter name="VT_FWD_THRUST_SC" default="0.7" type="FLOAT">
-      <short_desc>Fixed-wing actuation thrust scale for hover forward flight</short_desc>
-      <long_desc>Scale applied to the demanded down-pitch to get the fixed-wing forward actuation in hover mode. Enabled via VT_FWD_THRUST_EN.</long_desc>
+      <short_desc>Fixed-wing actuation thrust scale in hover</short_desc>
+      <long_desc>Scale applied to the demanded pitch (below VT_PITCH_MIN) to get the fixed-wing forward actuation in hover mode. Enabled via VT_FWD_THRUST_EN.</long_desc>
       <min>0.0</min>
-      <max>2.0</max>
+      <max>5.0</max>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
