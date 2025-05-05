@@ -1322,12 +1322,12 @@
         <bit index="4">First principle check (airspeed change vs. throttle and pitch)</bit>
       </bitmask>
     </parameter>
-    <parameter name="ASPD_FALLBACK_GW" default="0" type="INT32" boolean="true">
-      <short_desc>Enable fallback to sensor-less airspeed estimation</short_desc>
-      <long_desc>If set to true and airspeed checks are enabled, it will use a sensor-less airspeed estimation based on groundspeed minus windspeed if no other airspeed sensor available to fall back to.</long_desc>
+    <parameter name="ASPD_FALLBACK" default="0" type="INT32">
+      <short_desc>Fallback options</short_desc>
       <values>
-        <value code="0">Disable fallback to sensor-less estimation</value>
-        <value code="1">Enable fallback to sensor-less estimation</value>
+        <value code="0">Fallback only to other airspeed sensors</value>
+        <value code="1">Fallback to groundspeed-minus-windspeed airspeed estimation</value>
+        <value code="2">Fallback to thrust based airspeed estimation</value>
       </values>
     </parameter>
     <parameter name="ASPD_FP_T_WINDOW" default="2.0" type="FLOAT">
@@ -1375,6 +1375,7 @@
         <value code="1">First airspeed sensor</value>
         <value code="2">Second airspeed sensor</value>
         <value code="3">Third airspeed sensor</value>
+        <value code="4">Thrust based airspeed</value>
       </values>
     </parameter>
     <parameter name="ASPD_SCALE_1" default="1.0" type="FLOAT" volatile="true">
