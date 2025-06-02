@@ -2403,7 +2403,7 @@
     </parameter>
     <parameter name="COM_HOME_EN" default="1" type="INT32" boolean="true">
       <short_desc>Home position enabled</short_desc>
-      <long_desc>Set home position automatically if possible.</long_desc>
+      <long_desc>Set home position automatically if possible. During missions, the home position is locked and will not reset during intermediate landings. It will only update once the mission is complete or landed outside of a mission.</long_desc>
       <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="COM_HOME_IN_AIR" default="0" type="INT32" boolean="true">
@@ -2526,8 +2526,8 @@
       </values>
     </parameter>
     <parameter name="COM_POS_FS_EPH" default="5." type="FLOAT">
-      <short_desc>Horizontal position error threshold</short_desc>
-      <long_desc>This is the horizontal position error (EPH) threshold that will trigger a failsafe. The default is appropriate for a multicopter. Can be increased for a fixed-wing. If the previous position error was below this threshold, there is an additional factor of 2.5 applied (threshold for invalidation 2.5 times the one for validation). Set to -1 to disable.</long_desc>
+      <short_desc>Horizontal position error threshold for hovering systems</short_desc>
+      <long_desc>This is the horizontal position error (EPH) threshold that will trigger a failsafe. If the previous position error was below this threshold, there is an additional factor of 2.5 applied (threshold for invalidation 2.5 times the one for validation). Only used for multicopters and VTOLs in hover mode. Independent from estimator positioning data timeout threshold (see EKF2_NOAID_TOUT). Set to -1 to disable.</long_desc>
       <min>-1</min>
       <max>400</max>
       <unit>m</unit>
@@ -3829,14 +3829,6 @@
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
-    <parameter name="FW_SPOILERS_LND" default="0." type="FLOAT">
-      <short_desc>Spoiler landing setting</short_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
     <parameter name="FW_WR_FF" default="0.2" type="FLOAT">
       <short_desc>Wheel steering rate feed forward</short_desc>
       <min>0.0</min>
@@ -3893,6 +3885,15 @@
     </parameter>
   </group>
   <group name="FW Auto Landing">
+    <parameter name="FW_FLAPS_LND_SCL" default="1.0" type="FLOAT">
+      <short_desc>Flaps setting during landing</short_desc>
+      <long_desc>Sets a fraction of full flaps during landing. Also applies to flaperons if enabled in the mixer/allocation.</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <unit>norm</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
     <parameter name="FW_LND_ABORT" default="3" type="INT32">
       <short_desc>Bit mask to set the automatic landing abort conditions</short_desc>
       <long_desc>Terrain estimation: bit 0: Abort if terrain is not found bit 1: Abort if terrain times out (after a first successful measurement) The last estimate is always used as ground, whether the last valid measurement or the land waypoint, depending on the selected abort criteria, until an abort condition is entered. If FW_LND_USETER == 0, these bits are ignored. TODO: Extend automatic abort conditions e.g. glide slope tracking error (horizontal and vertical)</long_desc>
@@ -4016,26 +4017,25 @@
         <value code="2">Calculate landing glide slope relative to the terrain estimate</value>
       </values>
     </parameter>
-  </group>
-  <group name="FW Geometry">
-    <parameter name="FW_WING_HEIGHT" default="0.5" type="FLOAT">
-      <short_desc>Height (AGL) of the wings when the aircraft is on the ground</short_desc>
-      <long_desc>This is used to constrain a minimum altitude below which we keep wings level to avoid wing tip strike. It's safer to give a slight margin here (&gt; 0m)</long_desc>
+    <parameter name="FW_SPOILERS_LND" default="0." type="FLOAT">
+      <short_desc>Spoiler landing setting</short_desc>
       <min>0.0</min>
-      <unit>m</unit>
-      <decimal>1</decimal>
-      <increment>1</increment>
-    </parameter>
-    <parameter name="FW_WING_SPAN" default="3.0" type="FLOAT">
-      <short_desc>The aircraft's wing span (length from tip to tip)</short_desc>
-      <long_desc>This is used for limiting the roll setpoint near the ground. (if multiple wings, take the longest span)</long_desc>
-      <min>0.1</min>
-      <unit>m</unit>
-      <decimal>1</decimal>
-      <increment>0.1</increment>
+      <max>1.0</max>
+      <unit>norm</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
     </parameter>
   </group>
-  <group name="FW Launch detection">
+  <group name="FW Auto Takeoff">
+    <parameter name="FW_FLAPS_TO_SCL" default="0.0" type="FLOAT">
+      <short_desc>Flaps setting during take-off</short_desc>
+      <long_desc>Sets a fraction of full flaps during take-off. Also applies to flaperons if enabled in the mixer/allocation.</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <unit>norm</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
     <parameter name="FW_LAUN_AC_T" default="0.05" type="FLOAT">
       <short_desc>Trigger time</short_desc>
       <long_desc>Launch is detected when acceleration in body forward direction is above FW_LAUN_AC_THLD for FW_LAUN_AC_T seconds.</long_desc>
@@ -4066,6 +4066,313 @@
       <decimal>1</decimal>
       <increment>0.5</increment>
     </parameter>
+    <parameter name="FW_TKO_AIRSPD" default="-1.0" type="FLOAT">
+      <short_desc>Takeoff Airspeed</short_desc>
+      <long_desc>The calibrated airspeed setpoint during the takeoff climbout. If set &lt;= 0, FW_AIRSPD_MIN will be set by default.</long_desc>
+      <min>-1.0</min>
+      <unit>m/s</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="FW_TKO_PITCH_MIN" default="10.0" type="FLOAT">
+      <short_desc>Minimum pitch during takeoff</short_desc>
+      <min>-5.0</min>
+      <max>30.0</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+  </group>
+  <group name="FW General">
+    <parameter name="FW_GPSF_LT" default="30" type="INT32">
+      <short_desc>GPS failure loiter time</short_desc>
+      <long_desc>The time the system should do open loop loiter and wait for GPS recovery before it starts descending. Set to 0 to disable. Roll angle is set to FW_GPSF_R. Does only apply for fixed-wing vehicles or VTOLs with NAV_FORCE_VT set to 0.</long_desc>
+      <min>0</min>
+      <max>3600</max>
+      <unit>s</unit>
+    </parameter>
+    <parameter name="FW_GPSF_R" default="15.0" type="FLOAT">
+      <short_desc>GPS failure fixed roll angle</short_desc>
+      <long_desc>Roll angle in GPS failure loiter mode.</long_desc>
+      <min>0.0</min>
+      <max>30.0</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_POS_STK_CONF" default="2" type="INT32">
+      <short_desc>Custom stick configuration</short_desc>
+      <long_desc>Applies in manual Position and Altitude flight modes.</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">Alternative stick configuration (height rate on throttle stick, airspeed on pitch stick)</bit>
+        <bit index="1">Enable airspeed setpoint via sticks in altitude and position flight mode</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="FW_P_LIM_MAX" default="30.0" type="FLOAT">
+      <short_desc>Maximum pitch angle setpoint</short_desc>
+      <long_desc>Applies in any altitude controlled flight mode.</long_desc>
+      <min>0.0</min>
+      <max>60.0</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_P_LIM_MIN" default="-30.0" type="FLOAT">
+      <short_desc>Minimum pitch angle setpoint</short_desc>
+      <long_desc>Applies in any altitude controlled flight mode.</long_desc>
+      <min>-60.0</min>
+      <max>0.0</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_R_LIM" default="50.0" type="FLOAT">
+      <short_desc>Maximum roll angle setpoint</short_desc>
+      <long_desc>Applies in any altitude controlled flight mode.</long_desc>
+      <min>35.0</min>
+      <max>65.0</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_THR_IDLE" default="0.0" type="FLOAT">
+      <short_desc>Idle throttle</short_desc>
+      <long_desc>This is the minimum throttle while on the ground ("landed") in auto modes.</long_desc>
+      <min>0.0</min>
+      <max>0.4</max>
+      <unit>norm</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_THR_MAX" default="1.0" type="FLOAT">
+      <short_desc>Throttle limit max</short_desc>
+      <long_desc>Applies in any altitude controlled flight mode. Should be set accordingly to achieve FW_T_CLMB_MAX.</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <unit>norm</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_THR_MIN" default="0.0" type="FLOAT">
+      <short_desc>Throttle limit min</short_desc>
+      <long_desc>Applies in any altitude controlled flight mode. Usually set to 0 but can be increased to prevent the motor from stopping when descending, which can increase achievable descent rates.</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <unit>norm</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_CLMB_R_SP" default="3.0" type="FLOAT">
+      <short_desc>Default target climbrate</short_desc>
+      <long_desc>In auto modes: default climb rate output by controller to achieve altitude setpoints. In manual modes: maximum climb rate setpoint.</long_desc>
+      <min>0.5</min>
+      <max>15</max>
+      <unit>m/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_SINK_R_SP" default="2.0" type="FLOAT">
+      <short_desc>Default target sinkrate</short_desc>
+      <long_desc>In auto modes: default sink rate output by controller to achieve altitude setpoints. In manual modes: maximum sink rate setpoint.</long_desc>
+      <min>0.5</min>
+      <max>15</max>
+      <unit>m/s</unit>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_SPDWEIGHT" default="1.0" type="FLOAT">
+      <short_desc>Speed &lt;--&gt; Altitude weight</short_desc>
+      <long_desc>Adjusts the amount of weighting that the pitch control applies to speed vs height errors. 0 -&gt; control height only 2 -&gt; control speed only (gliders)</long_desc>
+      <min>0.0</min>
+      <max>2.0</max>
+      <decimal>1</decimal>
+      <increment>1.0</increment>
+    </parameter>
+    <parameter name="FW_WING_HEIGHT" default="0.5" type="FLOAT">
+      <short_desc>Height (AGL) of the wings when the aircraft is on the ground</short_desc>
+      <long_desc>This is used to constrain a minimum altitude below which we keep wings level to avoid wing tip strike. It's safer to give a slight margin here (&gt; 0m)</long_desc>
+      <min>0.0</min>
+      <unit>m</unit>
+      <decimal>1</decimal>
+      <increment>1</increment>
+    </parameter>
+    <parameter name="FW_WING_SPAN" default="3.0" type="FLOAT">
+      <short_desc>The aircraft's wing span (length from tip to tip)</short_desc>
+      <long_desc>This is used for limiting the roll setpoint near the ground. (if multiple wings, take the longest span)</long_desc>
+      <min>0.1</min>
+      <unit>m</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
+    </parameter>
+  </group>
+  <group name="FW Lateral Control">
+    <parameter name="FW_PN_R_SLEW_MAX" default="90.0" type="FLOAT">
+      <short_desc>Path navigation roll slew rate limit</short_desc>
+      <long_desc>Maximum change in roll angle setpoint per second. Applied in all Auto modes, plus manual Position &amp; Altitude modes.</long_desc>
+      <min>0</min>
+      <unit>deg/s</unit>
+      <decimal>0</decimal>
+      <increment>1</increment>
+    </parameter>
+  </group>
+  <group name="FW Longitudinal Control">
+    <parameter name="FW_GND_SPD_MIN" default="5.0" type="FLOAT">
+      <short_desc>Minimum groundspeed</short_desc>
+      <long_desc>The controller will increase the commanded airspeed to maintain this minimum groundspeed to the next waypoint.</long_desc>
+      <min>0.0</min>
+      <max>40</max>
+      <unit>m/s</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_THR_SLEW_MAX" default="0.0" type="FLOAT">
+      <short_desc>Throttle max slew rate</short_desc>
+      <long_desc>Maximum slew rate for the commanded throttle</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_ALT_TC" default="5.0" type="FLOAT">
+      <short_desc>Altitude error time constant</short_desc>
+      <min>2.0</min>
+      <decimal>2</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_T_F_ALT_ERR" default="-1.0" type="FLOAT">
+      <short_desc>Fast descend: minimum altitude error</short_desc>
+      <long_desc>Minimum altitude error needed to descend with max airspeed and minimal throttle. A negative value disables fast descend.</long_desc>
+      <min>-1.0</min>
+      <decimal>0</decimal>
+    </parameter>
+    <parameter name="FW_T_HRATE_FF" default="0.3" type="FLOAT">
+      <short_desc>Height rate feed forward</short_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="FW_T_I_GAIN_PIT" default="0.1" type="FLOAT">
+      <short_desc>Integrator gain pitch</short_desc>
+      <long_desc>Increase it to trim out speed and height offsets faster, with the downside of possible overshoots and oscillations.</long_desc>
+      <min>0.0</min>
+      <max>2.0</max>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="FW_T_PTCH_DAMP" default="0.1" type="FLOAT">
+      <short_desc>Pitch damping gain</short_desc>
+      <min>0.0</min>
+      <max>2.0</max>
+      <decimal>2</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="FW_T_RLL2THR" default="15.0" type="FLOAT">
+      <short_desc>Roll -&gt; Throttle feedforward</short_desc>
+      <long_desc>Is used to compensate for the additional drag created by turning. Increase this gain if the aircraft initially loses energy in turns and reduce if the aircraft initially gains energy in turns.</long_desc>
+      <min>0.0</min>
+      <max>20.0</max>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_T_SEB_R_FF" default="1.0" type="FLOAT">
+      <short_desc>Specific total energy balance rate feedforward gain</short_desc>
+      <min>0.5</min>
+      <max>3</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_SINK_MAX" default="5.0" type="FLOAT">
+      <short_desc>Maximum descent rate</short_desc>
+      <min>1.0</min>
+      <max>15.0</max>
+      <unit>m/s</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_T_SPD_DEV_STD" default="0.2" type="FLOAT">
+      <short_desc>Airspeed rate measurement standard deviation</short_desc>
+      <long_desc>For the airspeed filter in TECS.</long_desc>
+      <min>0.01</min>
+      <max>10.0</max>
+      <unit>m/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="FW_T_SPD_PRC_STD" default="0.2" type="FLOAT">
+      <short_desc>Process noise standard deviation for the airspeed rate</short_desc>
+      <long_desc>This is defining the noise in the airspeed rate for the constant airspeed rate model of the TECS airspeed filter.</long_desc>
+      <min>0.01</min>
+      <max>10.0</max>
+      <unit>m/s^2</unit>
+      <decimal>2</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="FW_T_SPD_STD" default="0.07" type="FLOAT">
+      <short_desc>Airspeed measurement standard deviation</short_desc>
+      <long_desc>For the airspeed filter in TECS.</long_desc>
+      <min>0.01</min>
+      <max>10.0</max>
+      <unit>m/s</unit>
+      <decimal>2</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="FW_T_STE_R_TC" default="0.4" type="FLOAT">
+      <short_desc>Specific total energy rate first order filter time constant</short_desc>
+      <long_desc>This filter is applied to the specific total energy rate used for throttle damping.</long_desc>
+      <min>0.0</min>
+      <max>2</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_TAS_TC" default="5.0" type="FLOAT">
+      <short_desc>True airspeed error time constant</short_desc>
+      <min>2.0</min>
+      <decimal>2</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_T_THR_DAMPING" default="0.05" type="FLOAT">
+      <short_desc>Throttle damping factor</short_desc>
+      <long_desc>This is the damping gain for the throttle demand loop.</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_T_THR_INTEG" default="0.02" type="FLOAT">
+      <short_desc>Integrator gain throttle</short_desc>
+      <long_desc>Increase it to trim out speed and height offsets faster, with the downside of possible overshoots and oscillations.</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <decimal>3</decimal>
+      <increment>0.005</increment>
+    </parameter>
+    <parameter name="FW_T_THR_LOW_HGT" default="-1." type="FLOAT">
+      <short_desc>Low-height threshold for tighter altitude tracking</short_desc>
+      <long_desc>Height above ground threshold below which tighter altitude tracking gets enabled (see FW_LND_THRTC_SC). Below this height, TECS smoothly (1 sec / sec) transitions the altitude tracking time constant from FW_T_ALT_TC to FW_LND_THRTC_SC*FW_T_ALT_TC. -1 to disable.</long_desc>
+      <min>-1</min>
+      <unit>m</unit>
+      <decimal>0</decimal>
+      <increment>1</increment>
+    </parameter>
+    <parameter name="FW_T_VERT_ACC" default="7.0" type="FLOAT">
+      <short_desc>Maximum vertical acceleration</short_desc>
+      <long_desc>This is the maximum vertical acceleration either up or down that the controller will use to correct speed or height errors.</long_desc>
+      <min>1.0</min>
+      <max>10.0</max>
+      <unit>m/s^2</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_WIND_ARSP_SC" default="0." type="FLOAT">
+      <short_desc>Wind-based airspeed scaling factor</short_desc>
+      <long_desc>Multiplying this factor with the current absolute wind estimate gives the airspeed offset added to the minimum airspeed setpoint limit. This helps to make the system more robust against disturbances (turbulence) in high wind.</long_desc>
+      <min>0</min>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
   </group>
   <group name="FW NPFG Control">
     <parameter name="NPFG_DAMPING" default="0.7" type="FLOAT">
@@ -4075,18 +4382,6 @@
       <max>1.00</max>
       <decimal>2</decimal>
       <increment>0.01</increment>
-    </parameter>
-    <parameter name="NPFG_EN_MIN_GSP" default="1" type="INT32" boolean="true">
-      <short_desc>Enable minimum forward ground speed maintaining excess wind handling logic</short_desc>
-    </parameter>
-    <parameter name="NPFG_GSP_MAX_TK" default="5.0" type="FLOAT">
-      <short_desc>Maximum, minimum forward ground speed for track keeping in excess wind</short_desc>
-      <long_desc>The maximum value of the minimum forward ground speed that may be commanded by the track keeping excess wind handling logic. Commanded in full at the normalized track error fraction of the track error boundary and reduced to zero on track.</long_desc>
-      <min>0.0</min>
-      <max>10.0</max>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
     </parameter>
     <parameter name="NPFG_LB_PERIOD" default="1" type="INT32" boolean="true">
       <short_desc>Enable automatic lower bound on the NPFG period</short_desc>
@@ -4126,56 +4421,20 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="NPFG_TRACK_KEEP" default="1" type="INT32" boolean="true">
-      <short_desc>Enable track keeping excess wind handling logic</short_desc>
-    </parameter>
     <parameter name="NPFG_UB_PERIOD" default="1" type="INT32" boolean="true">
       <short_desc>Enable automatic upper bound on the NPFG period</short_desc>
       <long_desc>Adapts period to maintain track keeping in variable winds and path curvature.</long_desc>
     </parameter>
-    <parameter name="NPFG_WIND_REG" default="1" type="INT32" boolean="true">
-      <short_desc>Enable wind excess regulation</short_desc>
-      <long_desc>Disabling this parameter further disables all other airspeed incrementation options.</long_desc>
-    </parameter>
-  </group>
-  <group name="FW Path Control">
-    <parameter name="FW_PN_R_SLEW_MAX" default="90.0" type="FLOAT">
-      <short_desc>Path navigation roll slew rate limit</short_desc>
-      <long_desc>Maximum change in roll angle setpoint per second. Applied in all Auto modes, plus manual Position &amp; Altitude modes.</long_desc>
-      <min>0</min>
-      <unit>deg/s</unit>
-      <decimal>0</decimal>
-      <increment>1</increment>
-    </parameter>
-    <parameter name="FW_POS_STK_CONF" default="2" type="INT32">
-      <short_desc>Custom stick configuration</short_desc>
-      <long_desc>Applies in manual Position and Altitude flight modes.</long_desc>
-      <min>0</min>
-      <max>3</max>
-      <bitmask>
-        <bit index="0">Alternative stick configuration (height rate on throttle stick, airspeed on pitch stick)</bit>
-        <bit index="1">Enable airspeed setpoint via sticks in altitude and position flight mode</bit>
-      </bitmask>
-    </parameter>
-    <parameter name="FW_R_LIM" default="50.0" type="FLOAT">
-      <short_desc>Maximum roll angle setpoint</short_desc>
-      <long_desc>Applies in any altitude controlled flight mode.</long_desc>
-      <min>35.0</min>
-      <max>65.0</max>
-      <unit>deg</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_TKO_PITCH_MIN" default="10.0" type="FLOAT">
-      <short_desc>Minimum pitch during takeoff</short_desc>
-      <min>-5.0</min>
-      <max>30.0</max>
-      <unit>deg</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
   </group>
   <group name="FW Performance">
+    <parameter name="FW_AIRSPD_FLP_SC" default="1." type="FLOAT">
+      <short_desc>Airspeed scale with full flaps</short_desc>
+      <long_desc>Factor applied to the minimum and stall airspeed when flaps are fully deployed.</long_desc>
+      <min>0.5</min>
+      <max>1</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
     <parameter name="FW_AIRSPD_MAX" default="20.0" type="FLOAT">
       <short_desc>Maximum Airspeed (CAS)</short_desc>
       <long_desc>The maximal airspeed (calibrated airspeed) the user is able to command.</long_desc>
@@ -4353,24 +4612,6 @@
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="FW_FLAPS_LND_SCL" default="1.0" type="FLOAT">
-      <short_desc>Flaps setting during landing</short_desc>
-      <long_desc>Sets a fraction of full flaps during landing. Also applies to flaperons if enabled in the mixer/allocation.</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_FLAPS_TO_SCL" default="0.0" type="FLOAT">
-      <short_desc>Flaps setting during take-off</short_desc>
-      <long_desc>Sets a fraction of full flaps during take-off. Also applies to flaperons if enabled in the mixer/allocation.</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
     <parameter name="FW_MAN_P_SC" default="1.0" type="FLOAT">
       <short_desc>Manual pitch scale</short_desc>
       <long_desc>Scale factor applied to the desired pitch actuator command in full manual mode. This parameter allows to adjust the throws of the control surfaces.</long_desc>
@@ -4536,242 +4777,6 @@
       <unit>%/rad/s</unit>
       <decimal>3</decimal>
       <increment>0.005</increment>
-    </parameter>
-  </group>
-  <group name="FW TECS">
-    <parameter name="FW_GND_SPD_MIN" default="5.0" type="FLOAT">
-      <short_desc>Minimum groundspeed</short_desc>
-      <long_desc>The controller will increase the commanded airspeed to maintain this minimum groundspeed to the next waypoint.</long_desc>
-      <min>0.0</min>
-      <max>40</max>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_P_LIM_MAX" default="30.0" type="FLOAT">
-      <short_desc>Maximum pitch angle setpoint</short_desc>
-      <long_desc>Applies in any altitude controlled flight mode.</long_desc>
-      <min>0.0</min>
-      <max>60.0</max>
-      <unit>deg</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_P_LIM_MIN" default="-30.0" type="FLOAT">
-      <short_desc>Minimum pitch angle setpoint</short_desc>
-      <long_desc>Applies in any altitude controlled flight mode.</long_desc>
-      <min>-60.0</min>
-      <max>0.0</max>
-      <unit>deg</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_THR_IDLE" default="0.0" type="FLOAT">
-      <short_desc>Idle throttle</short_desc>
-      <long_desc>This is the minimum throttle while on the ground ("landed") in auto modes.</long_desc>
-      <min>0.0</min>
-      <max>0.4</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_THR_MAX" default="1.0" type="FLOAT">
-      <short_desc>Throttle limit max</short_desc>
-      <long_desc>Applies in any altitude controlled flight mode. Should be set accordingly to achieve FW_T_CLMB_MAX.</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_THR_MIN" default="0.0" type="FLOAT">
-      <short_desc>Throttle limit min</short_desc>
-      <long_desc>Applies in any altitude controlled flight mode. Usually set to 0 but can be increased to prevent the motor from stopping when descending, which can increase achievable descent rates.</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_THR_SLEW_MAX" default="0.0" type="FLOAT">
-      <short_desc>Throttle max slew rate</short_desc>
-      <long_desc>Maximum slew rate for the commanded throttle</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_TKO_AIRSPD" default="-1.0" type="FLOAT">
-      <short_desc>Takeoff Airspeed</short_desc>
-      <long_desc>The calibrated airspeed setpoint during the takeoff climbout. If set &lt;= 0, FW_AIRSPD_MIN will be set by default.</long_desc>
-      <min>-1.0</min>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_ALT_TC" default="5.0" type="FLOAT">
-      <short_desc>Altitude error time constant</short_desc>
-      <min>2.0</min>
-      <decimal>2</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_T_CLMB_R_SP" default="3.0" type="FLOAT">
-      <short_desc>Default target climbrate</short_desc>
-      <long_desc>In auto modes: default climb rate output by controller to achieve altitude setpoints. In manual modes: maximum climb rate setpoint.</long_desc>
-      <min>0.5</min>
-      <max>15</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_T_F_ALT_ERR" default="-1.0" type="FLOAT">
-      <short_desc>Fast descend: minimum altitude error</short_desc>
-      <long_desc>Minimum altitude error needed to descend with max airspeed and minimal throttle. A negative value disables fast descend.</long_desc>
-      <min>-1.0</min>
-      <decimal>0</decimal>
-    </parameter>
-    <parameter name="FW_T_HRATE_FF" default="0.3" type="FLOAT">
-      <short_desc>Height rate feed forward</short_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <decimal>2</decimal>
-      <increment>0.05</increment>
-    </parameter>
-    <parameter name="FW_T_I_GAIN_PIT" default="0.1" type="FLOAT">
-      <short_desc>Integrator gain pitch</short_desc>
-      <long_desc>Increase it to trim out speed and height offsets faster, with the downside of possible overshoots and oscillations.</long_desc>
-      <min>0.0</min>
-      <max>2.0</max>
-      <decimal>2</decimal>
-      <increment>0.05</increment>
-    </parameter>
-    <parameter name="FW_T_PTCH_DAMP" default="0.1" type="FLOAT">
-      <short_desc>Pitch damping gain</short_desc>
-      <min>0.0</min>
-      <max>2.0</max>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_RLL2THR" default="15.0" type="FLOAT">
-      <short_desc>Roll -&gt; Throttle feedforward</short_desc>
-      <long_desc>Is used to compensate for the additional drag created by turning. Increase this gain if the aircraft initially loses energy in turns and reduce if the aircraft initially gains energy in turns.</long_desc>
-      <min>0.0</min>
-      <max>20.0</max>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_T_SEB_R_FF" default="1.0" type="FLOAT">
-      <short_desc>Specific total energy balance rate feedforward gain</short_desc>
-      <min>0.5</min>
-      <max>3</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_T_SINK_MAX" default="5.0" type="FLOAT">
-      <short_desc>Maximum descent rate</short_desc>
-      <min>1.0</min>
-      <max>15.0</max>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_T_SINK_R_SP" default="2.0" type="FLOAT">
-      <short_desc>Default target sinkrate</short_desc>
-      <long_desc>In auto modes: default sink rate output by controller to achieve altitude setpoints. In manual modes: maximum sink rate setpoint.</long_desc>
-      <min>0.5</min>
-      <max>15</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_T_SPDWEIGHT" default="1.0" type="FLOAT">
-      <short_desc>Speed &lt;--&gt; Altitude weight</short_desc>
-      <long_desc>Adjusts the amount of weighting that the pitch control applies to speed vs height errors. 0 -&gt; control height only 2 -&gt; control speed only (gliders)</long_desc>
-      <min>0.0</min>
-      <max>2.0</max>
-      <decimal>1</decimal>
-      <increment>1.0</increment>
-    </parameter>
-    <parameter name="FW_T_SPD_DEV_STD" default="0.2" type="FLOAT">
-      <short_desc>Airspeed rate measurement standard deviation</short_desc>
-      <long_desc>For the airspeed filter in TECS.</long_desc>
-      <min>0.01</min>
-      <max>10.0</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_SPD_PRC_STD" default="0.2" type="FLOAT">
-      <short_desc>Process noise standard deviation for the airspeed rate</short_desc>
-      <long_desc>This is defining the noise in the airspeed rate for the constant airspeed rate model of the TECS airspeed filter.</long_desc>
-      <min>0.01</min>
-      <max>10.0</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_SPD_STD" default="0.07" type="FLOAT">
-      <short_desc>Airspeed measurement standard deviation</short_desc>
-      <long_desc>For the airspeed filter in TECS.</long_desc>
-      <min>0.01</min>
-      <max>10.0</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_STE_R_TC" default="0.4" type="FLOAT">
-      <short_desc>Specific total energy rate first order filter time constant</short_desc>
-      <long_desc>This filter is applied to the specific total energy rate used for throttle damping.</long_desc>
-      <min>0.0</min>
-      <max>2</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_T_TAS_TC" default="5.0" type="FLOAT">
-      <short_desc>True airspeed error time constant</short_desc>
-      <min>2.0</min>
-      <decimal>2</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_T_THR_DAMPING" default="0.05" type="FLOAT">
-      <short_desc>Throttle damping factor</short_desc>
-      <long_desc>This is the damping gain for the throttle demand loop.</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="FW_T_THR_INTEG" default="0.02" type="FLOAT">
-      <short_desc>Integrator gain throttle</short_desc>
-      <long_desc>Increase it to trim out speed and height offsets faster, with the downside of possible overshoots and oscillations.</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <decimal>3</decimal>
-      <increment>0.005</increment>
-    </parameter>
-    <parameter name="FW_T_THR_LOW_HGT" default="-1." type="FLOAT">
-      <short_desc>Low-height threshold for tighter altitude tracking</short_desc>
-      <long_desc>Height above ground threshold below which tighter altitude tracking gets enabled (see FW_LND_THRTC_SC). Below this height, TECS smoothly (1 sec / sec) transitions the altitude tracking time constant from FW_T_ALT_TC to FW_LND_THRTC_SC*FW_T_ALT_TC. -1 to disable.</long_desc>
-      <min>-1</min>
-      <unit>m</unit>
-      <decimal>0</decimal>
-      <increment>1</increment>
-    </parameter>
-    <parameter name="FW_T_VERT_ACC" default="7.0" type="FLOAT">
-      <short_desc>Maximum vertical acceleration</short_desc>
-      <long_desc>This is the maximum vertical acceleration either up or down that the controller will use to correct speed or height errors.</long_desc>
-      <min>1.0</min>
-      <max>10.0</max>
-      <unit>m/s^2</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_WIND_ARSP_SC" default="0." type="FLOAT">
-      <short_desc>Wind-based airspeed scaling factor</short_desc>
-      <long_desc>Multiplying this factor with the current absolute wind estimate gives the airspeed offset added to the minimum airspeed setpoint limit. This helps to make the system more robust against disturbances (turbulence) in high wind.</long_desc>
-      <min>0</min>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
     </parameter>
   </group>
   <group name="Failure Detector">
@@ -7941,22 +7946,6 @@
     </parameter>
   </group>
   <group name="Mission">
-    <parameter name="FW_GPSF_LT" default="30" type="INT32">
-      <short_desc>GPS failure loiter time</short_desc>
-      <long_desc>The time the system should do open loop loiter and wait for GPS recovery before it starts descending. Set to 0 to disable. Roll angle is set to FW_GPSF_R. Does only apply for fixed-wing vehicles or VTOLs with NAV_FORCE_VT set to 0.</long_desc>
-      <min>0</min>
-      <max>3600</max>
-      <unit>s</unit>
-    </parameter>
-    <parameter name="FW_GPSF_R" default="15.0" type="FLOAT">
-      <short_desc>GPS failure fixed roll angle</short_desc>
-      <long_desc>Roll angle in GPS failure loiter mode.</long_desc>
-      <min>0.0</min>
-      <max>30.0</max>
-      <unit>deg</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
     <parameter name="MIS_COMMAND_TOUT" default="0." type="FLOAT">
       <short_desc>Timeout to allow the payload to execute the mission command</short_desc>
       <long_desc>Ensure: gripper: NAV_CMD_DO_GRIPPER has released before continuing mission. winch: CMD_DO_WINCH has delivered before continuing mission. gimbal: CMD_DO_GIMBAL_MANAGER_PITCHYAW has reached the commanded orientation before beginning to take pictures.</long_desc>
@@ -11453,31 +11442,13 @@
     </parameter>
   </group>
   <group name="Runway Takeoff">
-    <parameter name="RWTO_HDG" default="0" type="INT32">
-      <short_desc>Specifies which heading should be held during the runway takeoff ground roll</short_desc>
-      <long_desc>0: airframe heading when takeoff is initiated 1: position control along runway direction (bearing defined from vehicle position on takeoff initiation to MAV_CMD_TAKEOFF position defined by operator)</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <values>
-        <value code="0">Airframe</value>
-        <value code="1">Runway</value>
-      </values>
-    </parameter>
     <parameter name="RWTO_MAX_THR" default="1.0" type="FLOAT">
-      <short_desc>Max throttle during runway takeoff</short_desc>
+      <short_desc>Throttle during runway takeoff</short_desc>
       <min>0.0</min>
       <max>1.0</max>
       <unit>norm</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
-    </parameter>
-    <parameter name="RWTO_NPFG_PERIOD" default="5.0" type="FLOAT">
-      <short_desc>NPFG period while steering on runway</short_desc>
-      <min>1.0</min>
-      <max>100.0</max>
-      <unit>s</unit>
-      <decimal>1</decimal>
-      <increment>0.1</increment>
     </parameter>
     <parameter name="RWTO_NUDGE" default="1" type="INT32" boolean="true">
       <short_desc>Enable use of yaw stick for nudging the wheel during runway ground roll</short_desc>
@@ -11579,7 +11550,7 @@
       <short_desc>Logging topic profile (integer bitmask)</short_desc>
       <long_desc>This integer bitmask controls the set and rates of logged topics. The default allows for general log analysis while keeping the log file size reasonably small. Enabling multiple sets leads to higher bandwidth requirements and larger log files. Set bits true to enable: 0 : Default set (used for general log analysis) 1 : Full rate estimator (EKF2) replay topics 2 : Topics for thermal calibration (high rate raw IMU and Baro sensor data) 3 : Topics for system identification (high rate actuator control and IMU data) 4 : Full rates for analysis of fast maneuvers (RC, attitude, rates and actuators) 5 : Debugging topics (debug_*.msg topics, for custom code) 6 : Topics for sensor comparison (low rate raw IMU, Baro and magnetometer data) 7 : Topics for computer vision and collision prevention 8 : Raw FIFO high-rate IMU (Gyro) 9 : Raw FIFO high-rate IMU (Accel) 10: Logging of mavlink tunnel message (useful for payload communication debugging)</long_desc>
       <min>0</min>
-      <max>2047</max>
+      <max>4095</max>
       <reboot_required>true</reboot_required>
       <bitmask>
         <bit index="0">Default set (general log analysis)</bit>
@@ -11593,6 +11564,7 @@
         <bit index="8">Raw FIFO high-rate IMU (Gyro)</bit>
         <bit index="9">Raw FIFO high-rate IMU (Accel)</bit>
         <bit index="10">Mavlink tunnel message logging</bit>
+        <bit index="11">High rate sensors</bit>
       </bitmask>
     </parameter>
     <parameter name="SDLOG_UTC_OFFSET" default="0" type="INT32">
@@ -13279,6 +13251,10 @@
       <min>1</min>
       <max>200</max>
       <unit>Hz</unit>
+    </parameter>
+    <parameter name="SENS_BAR_AUTOCAL" default="0" type="INT32" boolean="true" category="System">
+      <short_desc>Barometer auto calibration</short_desc>
+      <long_desc>Automatically calibrate barometer based on the GNSS height</long_desc>
     </parameter>
     <parameter name="SENS_BOARD_ROT" default="0" type="INT32">
       <short_desc>Board rotation</short_desc>
