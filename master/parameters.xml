@@ -8369,7 +8369,7 @@
       <decimal>1</decimal>
       <increment>5</increment>
     </parameter>
-    <parameter name="MC_PITCH_P" default="6.5" type="FLOAT">
+    <parameter name="MC_PITCH_P" default="4.0" type="FLOAT">
       <short_desc>Pitch P gain</short_desc>
       <long_desc>Pitch proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
@@ -8386,7 +8386,7 @@
       <decimal>1</decimal>
       <increment>5</increment>
     </parameter>
-    <parameter name="MC_ROLL_P" default="6.5" type="FLOAT">
+    <parameter name="MC_ROLL_P" default="4.0" type="FLOAT">
       <short_desc>Roll P gain</short_desc>
       <long_desc>Roll proportional gain, i.e. desired angular speed in rad/s for error 1 rad.</long_desc>
       <min>0.0</min>
