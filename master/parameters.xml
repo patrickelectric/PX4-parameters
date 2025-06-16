@@ -9260,6 +9260,12 @@
       <short_desc>OSD Warning Level</short_desc>
       <long_desc>Minimum security of log level to display on the OSD.</long_desc>
     </parameter>
+    <parameter name="OSD_RC_STICK" default="1" type="INT32">
+      <short_desc>OSD RC Stick commands</short_desc>
+      <long_desc>Forward RC stick input to VTX when disarmed</long_desc>
+      <min>0</min>
+      <max>1</max>
+    </parameter>
     <parameter name="OSD_SCROLL_RATE" default="125" type="INT32">
       <short_desc>OSD Scroll Rate (ms)</short_desc>
       <long_desc>Scroll rate in milliseconds for OSD messages longer than available character width. This is lower-bounded by the nominal loop rate of this module.</long_desc>
@@ -13079,7 +13085,7 @@
       <unit>Hz</unit>
       <reboot_required>true</reboot_required>
     </parameter>
-    <parameter name="IMU_DGYRO_CUTOFF" default="30.0" type="FLOAT">
+    <parameter name="IMU_DGYRO_CUTOFF" default="20.0" type="FLOAT">
       <short_desc>Cutoff frequency for angular acceleration (D-Term filter)</short_desc>
       <long_desc>The cutoff frequency for the 2nd order butterworth filter used on the time derivative of the measured angular velocity, also known as the D-term filter in the rate controller. The D-term uses the derivative of the rate and thus is the most susceptible to noise. Therefore, using a D-term filter allows to increase IMU_GYRO_CUTOFF, which leads to reduced control latency and permits to increase the P gains. A value of 0 disables the filter.</long_desc>
       <min>0</min>
