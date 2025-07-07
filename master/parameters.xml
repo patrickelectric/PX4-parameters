@@ -11505,6 +11505,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_ENG_MOT_TH" default="0.75" type="FLOAT">
       <short_desc>Threshold for selecting main motor engage</short_desc>
@@ -11516,6 +11517,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_GEAR_TH" default="0.75" type="FLOAT">
       <short_desc>Threshold for the landing gear switch</short_desc>
@@ -11527,6 +11529,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_KILLSWITCH_TH" default="0.75" type="FLOAT">
       <short_desc>Threshold for the kill switch</short_desc>
@@ -11538,6 +11541,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_LOITER_TH" default="0.75" type="FLOAT">
       <short_desc>Threshold for selecting loiter mode</short_desc>
@@ -11549,6 +11553,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_MAP_ARM_SW" default="0" type="INT32">
       <short_desc>Arm switch channel</short_desc>
@@ -11884,9 +11889,10 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
-    <parameter name="RC_PAYLOAD_TH" default="0.75" type="FLOAT">
-      <short_desc>Threshold for selecting payload power switch</short_desc>
+    <parameter name="RC_PAYLOAD_MIDTH" default="0.25" type="FLOAT">
+      <short_desc>Threshold for mid position of payload power switch</short_desc>
       <long_desc>0-1 indicate where in the full channel range the threshold sits
 0 : min
 1 : max
@@ -11895,6 +11901,19 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="RC_PAYLOAD_TH" default="0.75" type="FLOAT">
+      <short_desc>Threshold for on position of payload power switch</short_desc>
+      <long_desc>0-1 indicate where in the full channel range the threshold sits
+0 : min
+1 : max
+sign indicates polarity of comparison
+positive : true when channel&gt;th
+negative : true when channel&lt;th</long_desc>
+      <min>-1</min>
+      <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_RETURN_TH" default="0.75" type="FLOAT">
       <short_desc>Threshold for selecting return to launch mode</short_desc>
@@ -11906,6 +11925,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RC_TRANS_TH" default="0.75" type="FLOAT">
       <short_desc>Threshold for the VTOL transition switch</short_desc>
@@ -11917,6 +11937,7 @@ positive : true when channel&gt;th
 negative : true when channel&lt;th</long_desc>
       <min>-1</min>
       <max>1</max>
+      <decimal>2</decimal>
     </parameter>
   </group>
   <group name="Return Mode">
