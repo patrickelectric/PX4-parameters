@@ -3873,13 +3873,6 @@ by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
       <max>10.0</max>
       <unit>m</unit>
     </parameter>
-    <parameter name="EKF2_RNG_A_IGATE" default="1.0" type="FLOAT">
-      <short_desc>Gate size used for innovation consistency checks for range aid fusion</short_desc>
-      <long_desc>A lower value means HAGL needs to be more stable in order to use range finder for height estimation in range aid mode</long_desc>
-      <min>0.1</min>
-      <max>5.0</max>
-      <unit>SD</unit>
-    </parameter>
     <parameter name="EKF2_RNG_A_VMAX" default="1.0" type="FLOAT">
       <short_desc>Maximum horizontal velocity allowed for conditional range aid mode</short_desc>
       <long_desc>If the vehicle horizontal speed exceeds this value then the estimator will not fuse range measurements to estimate its height. This only applies when conditional range aid mode is activated (EKF2_RNG_CTRL = 1).</long_desc>
@@ -12165,164 +12158,6 @@ and lateral speed which defines a course direction.</long_desc>
       <increment>0.001</increment>
     </parameter>
   </group>
-  <group name="Rover Position Control (Deprecated)">
-    <parameter name="GND_L1_DAMPING" default="0.75" type="FLOAT">
-      <short_desc>L1 damping</short_desc>
-      <long_desc>Damping factor for L1 control.</long_desc>
-      <min>0.6</min>
-      <max>0.9</max>
-      <decimal>2</decimal>
-      <increment>0.05</increment>
-    </parameter>
-    <parameter name="GND_L1_DIST" default="1.0" type="FLOAT">
-      <short_desc>L1 distance</short_desc>
-      <long_desc>This is the distance at which the next waypoint is activated. This should be set
-to about 2-4x of GND_WHEEL_BASE and not smaller than one meter (due to GPS accuracy).</long_desc>
-      <min>1.0</min>
-      <max>50.0</max>
-      <unit>m</unit>
-      <decimal>1</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="GND_L1_PERIOD" default="5.0" type="FLOAT">
-      <short_desc>L1 period</short_desc>
-      <long_desc>This is the L1 distance and defines the tracking
-point ahead of the rover it's following.
-Use values around 2-5m for a 0.3m wheel base. Tuning instructions: Shorten
-slowly during tuning until response is sharp without oscillation.</long_desc>
-      <min>0.5</min>
-      <max>50.0</max>
-      <unit>m</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="GND_MAN_Y_MAX" default="150.0" type="FLOAT">
-      <short_desc>Max manual yaw rate</short_desc>
-      <min>0.0</min>
-      <max>400</max>
-      <unit>deg/s</unit>
-      <decimal>1</decimal>
-    </parameter>
-    <parameter name="GND_MAX_ANG" default="0.7854" type="FLOAT">
-      <short_desc>Maximum turn angle for Ackerman steering</short_desc>
-      <long_desc>At a control output of 0, the steering wheels are at 0 radians.
-At a control output of 1, the steering wheels are at GND_MAX_ANG radians.</long_desc>
-      <min>0.0</min>
-      <max>3.14159</max>
-      <unit>rad</unit>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="GND_SPEED_D" default="0.001" type="FLOAT">
-      <short_desc>Speed proportional gain</short_desc>
-      <long_desc>This is the derivative gain for the speed closed loop controller</long_desc>
-      <min>0.00</min>
-      <max>50.0</max>
-      <unit>%m/s</unit>
-      <decimal>3</decimal>
-      <increment>0.005</increment>
-    </parameter>
-    <parameter name="GND_SPEED_I" default="3.0" type="FLOAT">
-      <short_desc>Speed Integral gain</short_desc>
-      <long_desc>This is the integral gain for the speed closed loop controller</long_desc>
-      <min>0.00</min>
-      <max>50.0</max>
-      <unit>%m/s</unit>
-      <decimal>3</decimal>
-      <increment>0.005</increment>
-    </parameter>
-    <parameter name="GND_SPEED_IMAX" default="1.0" type="FLOAT">
-      <short_desc>Speed integral maximum value</short_desc>
-      <long_desc>This is the maxim value the integral can reach to prevent wind-up.</long_desc>
-      <min>0.005</min>
-      <max>50.0</max>
-      <unit>%m/s</unit>
-      <decimal>3</decimal>
-      <increment>0.005</increment>
-    </parameter>
-    <parameter name="GND_SPEED_MAX" default="10.0" type="FLOAT">
-      <short_desc>Maximum ground speed</short_desc>
-      <min>0.0</min>
-      <max>40</max>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="GND_SPEED_P" default="2.0" type="FLOAT">
-      <short_desc>Speed proportional gain</short_desc>
-      <long_desc>This is the proportional gain for the speed closed loop controller</long_desc>
-      <min>0.005</min>
-      <max>50.0</max>
-      <unit>%m/s</unit>
-      <decimal>3</decimal>
-      <increment>0.005</increment>
-    </parameter>
-    <parameter name="GND_SPEED_THR_SC" default="1.0" type="FLOAT">
-      <short_desc>Speed to throttle scaler</short_desc>
-      <long_desc>This is a gain to map the speed control output to the throttle linearly.</long_desc>
-      <min>0.005</min>
-      <max>50.0</max>
-      <unit>%m/s</unit>
-      <decimal>3</decimal>
-      <increment>0.005</increment>
-    </parameter>
-    <parameter name="GND_SPEED_TRIM" default="3.0" type="FLOAT">
-      <short_desc>Trim ground speed</short_desc>
-      <min>0.0</min>
-      <max>40</max>
-      <unit>m/s</unit>
-      <decimal>1</decimal>
-      <increment>0.5</increment>
-    </parameter>
-    <parameter name="GND_SP_CTRL_MODE" default="1" type="INT32">
-      <short_desc>Control mode for speed</short_desc>
-      <long_desc>This allows the user to choose between closed loop gps speed or open loop cruise throttle speed</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <values>
-        <value code="0">open loop control</value>
-        <value code="1">close the loop with gps speed</value>
-      </values>
-    </parameter>
-    <parameter name="GND_THR_CRUISE" default="0.1" type="FLOAT">
-      <short_desc>Cruise throttle</short_desc>
-      <long_desc>This is the throttle setting required to achieve the desired cruise speed.
-10% is ok for a traxxas stampede vxl with ESC set to training mode</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="GND_THR_MAX" default="0.3" type="FLOAT">
-      <short_desc>Throttle limit max</short_desc>
-      <long_desc>This is the maximum throttle % that can be used by the controller.
-For a Traxxas stampede vxl with the ESC set to training, 30 % is enough</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="GND_THR_MIN" default="0.0" type="FLOAT">
-      <short_desc>Throttle limit min</short_desc>
-      <long_desc>This is the minimum throttle % that can be used by the controller.
-Set to 0 for rover</long_desc>
-      <min>0.0</min>
-      <max>1.0</max>
-      <unit>norm</unit>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="GND_WHEEL_BASE" default="0.31" type="FLOAT">
-      <short_desc>Distance from front axle to rear axle</short_desc>
-      <long_desc>A value of 0.31 is typical for 1/10 RC cars.</long_desc>
-      <min>0.0</min>
-      <unit>m</unit>
-      <decimal>3</decimal>
-      <increment>0.01</increment>
-    </parameter>
-  </group>
   <group name="Rover Rate Control">
     <parameter name="RO_YAW_ACCEL_LIM" default="-1." type="FLOAT">
       <short_desc>Yaw acceleration limit</short_desc>
@@ -14734,6 +14569,155 @@ ORIENTATION_RIGHTSIDE_UP = 32</long_desc>
         <value code="0">Disabled</value>
         <value code="1">Enabled</value>
       </values>
+    </parameter>
+  </group>
+  <group name="Septentrio">
+    <parameter name="SEP_AUTO_CONFIG" default="1" type="INT32" boolean="true">
+      <short_desc>Toggle automatic receiver configuration</short_desc>
+      <long_desc>By default, the receiver is automatically configured. Sometimes it may be used for multiple purposes.
+If the offered parameters aren't sufficient, this parameter can be disabled to have full control of the receiver configuration.
+A good way to use this is to enable automatic configuration, let the receiver be configured, and then disable it to make manual adjustments.</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="SEP_CONST_USAGE" default="0" type="INT32">
+      <short_desc>Usage of different constellations</short_desc>
+      <long_desc>Choice of which constellations the receiver should use for PVT computation.
+When this is 0, the constellation usage isn't changed.</long_desc>
+      <min>0</min>
+      <max>63</max>
+      <reboot_required>True</reboot_required>
+      <bitmask>
+        <bit index="0">GPS</bit>
+        <bit index="1">GLONASS</bit>
+        <bit index="2">Galileo</bit>
+        <bit index="3">SBAS</bit>
+        <bit index="4">BeiDou</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="SEP_DUMP_COMM" default="0" type="INT32">
+      <short_desc>Log GPS communication data</short_desc>
+      <long_desc>Log raw communication between the driver and connected receivers.
+For example, "To receiver" will log all commands and corrections sent by the driver to the receiver.</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">From receiver</value>
+        <value code="2">To receiver</value>
+        <value code="3">Both</value>
+      </values>
+    </parameter>
+    <parameter name="SEP_HARDW_SETUP" default="0" type="INT32">
+      <short_desc>Setup and expected use of the hardware</short_desc>
+      <long_desc>Setup and expected use of the hardware.
+- Default: Use two receivers as completely separate instances.
+- Moving base: Use two receivers in a rover &amp; moving base setup for heading.</long_desc>
+      <min>0</min>
+      <max>1</max>
+      <reboot_required>True</reboot_required>
+      <values>
+        <value code="0">Default</value>
+        <value code="1">Moving base</value>
+      </values>
+    </parameter>
+    <parameter name="SEP_LOG_FORCE" default="0" type="INT32" boolean="true">
+      <short_desc>Whether to overwrite or add to existing logging</short_desc>
+      <long_desc>When the receiver is already set up to log data, this decides whether extra logged data should be added or overwrite existing data.</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="SEP_LOG_HZ" default="0" type="INT32">
+      <short_desc>Logging frequency for the receiver</short_desc>
+      <long_desc>Select the frequency at which the connected receiver should log data to its internal storage.</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <reboot_required>True</reboot_required>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">0.1 Hz</value>
+        <value code="2">0.2 Hz</value>
+        <value code="3">0.5 Hz</value>
+        <value code="4">1 Hz</value>
+        <value code="5">2 Hz</value>
+        <value code="6">5 Hz</value>
+        <value code="7">10 Hz</value>
+        <value code="8">20 Hz</value>
+        <value code="9">25 Hz</value>
+        <value code="10">50 Hz</value>
+      </values>
+    </parameter>
+    <parameter name="SEP_LOG_LEVEL" default="2" type="INT32">
+      <short_desc>Logging level for the receiver</short_desc>
+      <long_desc>Select the level of detail that needs to be logged by the receiver.</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <reboot_required>True</reboot_required>
+      <values>
+        <value code="0">Lite</value>
+        <value code="1">Basic</value>
+        <value code="2">Default</value>
+        <value code="3">Full</value>
+      </values>
+    </parameter>
+    <parameter name="SEP_OUTP_HZ" default="1" type="INT32">
+      <short_desc>Output frequency of main SBF blocks</short_desc>
+      <long_desc>The output frequency of the main SBF blocks needed for PVT information.</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <reboot_required>True</reboot_required>
+      <values>
+        <value code="0">5 Hz</value>
+        <value code="1">10 Hz</value>
+        <value code="2">20 Hz</value>
+        <value code="3">25 Hz</value>
+      </values>
+    </parameter>
+    <parameter name="SEP_PITCH_OFFS" default="0" type="FLOAT">
+      <short_desc>Pitch offset for dual antenna GPS</short_desc>
+      <long_desc>Vertical offsets can be compensated for by adjusting the Pitch offset.
+Note that this can be interpreted as the "roll" angle in case the antennas are aligned along the perpendicular axis.
+This occurs in situations where the two antenna ARPs may not be exactly at the same height in the vehicle reference frame.
+Since pitch is defined as the right-handed rotation about the vehicle Y axis,
+a situation where the main antenna is mounted lower than the aux antenna (assuming the default antenna setup) will result in a positive pitch.</long_desc>
+      <min>-90</min>
+      <max>90</max>
+      <unit>deg</unit>
+      <decimal>3</decimal>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="SEP_SAT_INFO" default="0" type="INT32" boolean="true">
+      <short_desc>Enable sat info</short_desc>
+      <long_desc>Enable publication of satellite info (ORB_ID(satellite_info)) if possible.</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="SEP_STREAM_LOG" default="2" type="INT32">
+      <short_desc>Logging stream used during automatic configuration</short_desc>
+      <long_desc>The stream the autopilot sets up on the receiver to output the logging data.
+Set this to another value if the default stream is already used for another purpose.</long_desc>
+      <min>1</min>
+      <max>10</max>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="SEP_STREAM_MAIN" default="1" type="INT32">
+      <short_desc>Main stream used during automatic configuration</short_desc>
+      <long_desc>The stream the autopilot sets up on the receiver to output the main data.
+Set this to another value if the default stream is already used for another purpose.</long_desc>
+      <min>1</min>
+      <max>10</max>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="SEP_YAW_OFFS" default="0" type="FLOAT">
+      <short_desc>Heading/Yaw offset for dual antenna GPS</short_desc>
+      <long_desc>Heading offset angle for dual antenna GPS setups that support heading estimation.
+Set this to 0 if the antennas are parallel to the forward-facing direction
+of the vehicle and the rover antenna is in front.
+The offset angle increases clockwise.
+Set this to 90 if the rover antenna is placed on the
+right side of the vehicle and the moving base antenna is on the left side.</long_desc>
+      <min>-360</min>
+      <max>360</max>
+      <unit>deg</unit>
+      <decimal>3</decimal>
+      <reboot_required>True</reboot_required>
     </parameter>
   </group>
   <group name="Simulation In Hardware">
