@@ -2387,9 +2387,9 @@ A negative value disables autmoatic disarming triggered by a pre-takeoff timeout
       <short_desc>Delay between failsafe condition triggered and failsafe reaction</short_desc>
       <long_desc>Before entering failsafe (RTL, Land, Hold), wait COM_FAIL_ACT_T seconds in Hold mode
 for the user to realize.
-During that time the user cannot take over control via the stick override feature (see COM_RC_OVERRIDE).
+During that time the user can switch modes, but cannot take over control via the stick override feature (see COM_RC_OVERRIDE).
 Afterwards the configured failsafe action is triggered and the user may use stick override.
-A zero value disables the delay and the user cannot take over via stick movements (switching modes is still allowed).</long_desc>
+A zero value disables the delay.</long_desc>
       <min>0.0</min>
       <max>25.0</max>
       <unit>s</unit>
@@ -2864,13 +2864,15 @@ A negative value disables the check.</long_desc>
     </parameter>
     <parameter name="COM_RCL_EXCEPT" default="0" type="INT32">
       <short_desc>RC loss exceptions</short_desc>
-      <long_desc>Specify modes in which RC loss is ignored and the failsafe action not triggered.</long_desc>
+      <long_desc>Specify modes where manual control loss is ignored and no failsafe is triggered.
+External modes requiring stick input will still failsafe.</long_desc>
       <min>0</min>
-      <max>7</max>
+      <max>15</max>
       <bitmask>
         <bit index="0">Mission</bit>
         <bit index="1">Hold</bit>
         <bit index="2">Offboard</bit>
+        <bit index="3">External Mode</bit>
       </bitmask>
     </parameter>
     <parameter name="COM_RC_ARM_HYST" default="1000" type="INT32">
@@ -14285,7 +14287,7 @@ actual barometric data rate is still dependent on the sensor.</long_desc>
       <max>200</max>
       <unit>Hz</unit>
     </parameter>
-    <parameter name="SENS_BAR_AUTOCAL" default="0" type="INT32" boolean="true" category="System">
+    <parameter name="SENS_BAR_AUTOCAL" default="1" type="INT32" boolean="true" category="System">
       <short_desc>Barometer auto calibration</short_desc>
       <long_desc>Automatically calibrate barometer based on the GNSS height</long_desc>
     </parameter>
@@ -14908,6 +14910,7 @@ This value is usually about 5 times the mass of the quadrotor.</long_desc>
         <value code="2">Tailsitter</value>
         <value code="3">Standard VTOL</value>
         <value code="4">Hexacopter</value>
+        <value code="5">Rover Ackermann</value>
       </values>
     </parameter>
   </group>
