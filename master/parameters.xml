@@ -2889,7 +2889,9 @@ External modes requiring stick input will still failsafe.</long_desc>
 A value of 1 allows joystick control only. RC input handling and the associated checks are disabled.
 A value of 2 allows either RC Transmitter or Joystick input. The first valid input is used, will fallback to other sources if the input stream becomes invalid.
 A value of 3 allows either input from RC or joystick. The first available source is selected and used until reboot.
-A value of 4 ignores any stick input.</long_desc>
+A value of 4 ignores any stick input.
+A value of 5 allows either RC Transmitter or Joystick input. But RC has priority and whenever avaiable is immedietely used.
+A value of 6 allows either RC Transmitter or Joystick input. But Joystick has priority and whenever avaiable is immedietely used.</long_desc>
       <min>0</min>
       <max>4</max>
       <values>
@@ -2898,6 +2900,8 @@ A value of 4 ignores any stick input.</long_desc>
         <value code="2">RC and Joystick with fallback</value>
         <value code="3">RC or Joystick keep first</value>
         <value code="4">Stick input disabled</value>
+        <value code="5">RC priority, Joystick fallback</value>
+        <value code="6">Joystick priority, RC fallback</value>
       </values>
     </parameter>
     <parameter name="COM_RC_LOSS_T" default="0.5" type="FLOAT">
@@ -3127,6 +3131,14 @@ by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
       <min>1.0</min>
       <unit>SD</unit>
       <decimal>1</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP_MODE" default="0" type="INT32">
+      <short_desc>Fusion reset mode</short_desc>
+      <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
+      <values>
+        <value code="0">Automatic</value>
+        <value code="1">Dead-reckoning</value>
+      </values>
     </parameter>
     <parameter name="EKF2_AGP_NOISE" default="0.9" type="FLOAT">
       <short_desc>Measurement noise for aux global position measurements</short_desc>
@@ -3424,6 +3436,14 @@ by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
       <unit>ms</unit>
       <decimal>1</decimal>
       <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="EKF2_GPS_MODE" default="0" type="INT32">
+      <short_desc>Fusion reset mode</short_desc>
+      <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
+      <values>
+        <value code="0">Automatic</value>
+        <value code="1">Dead-reckoning</value>
+      </values>
     </parameter>
     <parameter name="EKF2_GPS_POS_X" default="0.0" type="FLOAT">
       <short_desc>X position of GPS antenna in body frame</short_desc>
@@ -10227,11 +10247,7 @@ rel_signal is the relative motor control signal between 0 and 1.</long_desc>
     </parameter>
   </group>
   <group name="Payload Deliverer">
-    <parameter name="PD_GRIPPER_EN" default="0" type="INT32" boolean="true">
-      <short_desc>Enable Gripper actuation in Payload Deliverer</short_desc>
-      <reboot_required>True</reboot_required>
-    </parameter>
-    <parameter name="PD_GRIPPER_TO" default="3" type="FLOAT">
+    <parameter name="PD_GRIPPER_TO" default="1" type="FLOAT">
       <short_desc>Timeout for successful gripper actuation acknowledgement</short_desc>
       <long_desc>Maximum time Gripper will wait while the successful griper actuation isn't recognised.
 If the gripper has no feedback sensor, it will simply wait for
