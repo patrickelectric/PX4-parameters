@@ -1410,7 +1410,8 @@ Note: this is only useful for servos.</long_desc>
     </parameter>
     <parameter name="ASPD_DO_CHECKS" default="7" type="INT32">
       <short_desc>Enable checks on airspeed sensors</short_desc>
-      <long_desc>Controls which checks are run to check airspeed data for validity. Only applied if ASPD_PRIMARY &gt; 0.</long_desc>
+      <long_desc>Controls which checks are run to check airspeed data for validity. Only applied if ASPD_PRIMARY &gt; 0.
+Note: The missing data check (bit 0) is implicitly always enabled when ASPD_DO_CHECKS &gt; 0, even if bit 0 is not explicitly set.</long_desc>
       <min>0</min>
       <max>31</max>
       <bitmask>
@@ -1542,14 +1543,14 @@ When unaided, the scale uncertainty (1-sigma, unitless) increases by this amount
       <unit>m/s</unit>
       <decimal>1</decimal>
     </parameter>
-    <parameter name="ASPD_WERR_THR" default="0.55" type="FLOAT">
-      <short_desc>Horizontal wind uncertainty threshold for synthetic airspeed</short_desc>
-      <long_desc>The synthetic airspeed estimate (from groundspeed and heading) will be declared valid
+    <parameter name="ASPD_WERR_THR" default="2." type="FLOAT">
+      <short_desc>Horizontal wind uncertainty threshold for valid ground-minus-wind</short_desc>
+      <long_desc>The airspeed alternative derived from groundspeed and heading will be declared valid
 as soon and as long the horizontal wind uncertainty is below this value.</long_desc>
-      <min>0.001</min>
+      <min>0.01</min>
       <max>5</max>
       <unit>m/s</unit>
-      <decimal>3</decimal>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="ASPD_WIND_NSD" default="1.e-1" type="FLOAT">
       <short_desc>Wind estimator wind process noise spectral density</short_desc>
@@ -3399,11 +3400,11 @@ by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
       <unit>m</unit>
       <decimal>1</decimal>
     </parameter>
-    <parameter name="EKF2_GPS_CHECK" default="1023" type="INT32">
+    <parameter name="EKF2_GPS_CHECK" default="2047" type="INT32">
       <short_desc>Integer bitmask controlling GPS checks</short_desc>
       <long_desc>Each threshold value is defined by the parameter indicated next to the check. Drift and offset checks only run when the vehicle is on ground and stationary.</long_desc>
       <min>0</min>
-      <max>1023</max>
+      <max>2047</max>
       <bitmask>
         <bit index="0">Sat count (EKF2_REQ_NSATS)</bit>
         <bit index="1">PDOP (EKF2_REQ_PDOP)</bit>
@@ -3415,6 +3416,7 @@ by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
         <bit index="7">Horizontal speed offset (EKF2_REQ_HDRIFT)</bit>
         <bit index="8">Vertical speed offset (EKF2_REQ_VDRIFT)</bit>
         <bit index="9">Spoofing</bit>
+        <bit index="10">GPS fix type (EKF2_REQ_FIX)</bit>
       </bitmask>
     </parameter>
     <parameter name="EKF2_GPS_CTRL" default="7" type="INT32">
@@ -3848,6 +3850,19 @@ by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
       <max>100</max>
       <unit>m</unit>
       <decimal>1</decimal>
+    </parameter>
+    <parameter name="EKF2_REQ_FIX" default="3" type="INT32">
+      <short_desc>Required GPS fix</short_desc>
+      <long_desc>Minimum GPS fix type required for GPS usage.</long_desc>
+      <values>
+        <value code="0">No fix required</value>
+        <value code="2">2D fix</value>
+        <value code="3">3D fix</value>
+        <value code="4">RTCM code differential</value>
+        <value code="5">RTK float</value>
+        <value code="6">RTK fixed</value>
+        <value code="8">Extrapolated</value>
+      </values>
     </parameter>
     <parameter name="EKF2_REQ_GPS_H" default="10.0" type="FLOAT">
       <short_desc>Required GPS health time on startup</short_desc>
