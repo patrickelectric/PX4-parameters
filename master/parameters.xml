@@ -12212,6 +12212,14 @@ error between the desired and actual yaw.</long_desc>
       <decimal>3</decimal>
       <increment>0.001</increment>
     </parameter>
+    <parameter name="RD_YAW_STK_GAIN" default="1" type="FLOAT">
+      <short_desc>Yaw stick gain for Manual mode</short_desc>
+      <long_desc>Assign value &lt;1.0 to decrease stick response for yaw control.</long_desc>
+      <min>0.1</min>
+      <max>1</max>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
   </group>
   <group name="Rover Mecanum">
     <parameter name="RM_COURSE_CTL_TH" default="0.17" type="FLOAT">
@@ -12235,6 +12243,14 @@ and lateral speed which defines a course direction.</long_desc>
       <decimal>3</decimal>
       <increment>0.001</increment>
     </parameter>
+    <parameter name="RM_YAW_STK_GAIN" default="1" type="FLOAT">
+      <short_desc>Yaw stick gain for Manual mode</short_desc>
+      <long_desc>Assign value &lt;1.0 to decrease stick response for yaw control.</long_desc>
+      <min>0.1</min>
+      <max>1</max>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
   </group>
   <group name="Rover Rate Control">
     <parameter name="RO_YAW_ACCEL_LIM" default="-1." type="FLOAT">
@@ -12256,6 +12272,15 @@ Set to -1 to disable.</long_desc>
       <unit>deg/s^2</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_EXPO" default="0." type="FLOAT">
+      <short_desc>Yaw rate expo factor</short_desc>
+      <long_desc>Exponential factor for tuning the input curve shape.
+0 Purely linear input curve
+1 Purely cubic input curve</long_desc>
+      <min>0</min>
+      <max>1</max>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="RO_YAW_RATE_CORR" default="1." type="FLOAT">
       <short_desc>Yaw rate correction factor</short_desc>
@@ -12308,6 +12333,16 @@ in Acro, Stabilized and Position mode.</long_desc>
       <max>1</max>
       <decimal>2</decimal>
       <increment>0.01</increment>
+    </parameter>
+    <parameter name="RO_YAW_SUPEXPO" default="0." type="FLOAT">
+      <short_desc>Yaw rate super expo factor</short_desc>
+      <long_desc>"Superexponential" factor for refining the input curve shape tuned using RO_YAW_EXPO.
+0 Pure Expo function
+0.7 reasonable shape enhancement for intuitive stick feel
+0.95 very strong bent input curve only near maxima have effect</long_desc>
+      <min>0</min>
+      <max>0.95</max>
+      <decimal>2</decimal>
     </parameter>
   </group>
   <group name="Rover Velocity Control">
