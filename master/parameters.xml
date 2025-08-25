@@ -1653,8 +1653,8 @@ Set bits in the following positions to enable:
       </bitmask>
     </parameter>
     <parameter name="FW_AT_MAN_AUX" default="0" type="INT32">
-      <short_desc>Enable/disable auto tuning using an RC AUX input</short_desc>
-      <long_desc>Defines which RC_MAP_AUXn parameter maps the RC channel used to enable/disable auto tuning.</long_desc>
+      <short_desc>Enable/disable auto tuning using a manual control AUX input</short_desc>
+      <long_desc>Defines which RC_MAP_AUXn parameter maps the manual control channel used to enable/disable auto tuning.</long_desc>
       <min>0</min>
       <max>6</max>
       <values>
@@ -2865,7 +2865,7 @@ A negative value disables the check.</long_desc>
       <increment>1</increment>
     </parameter>
     <parameter name="COM_RCL_EXCEPT" default="0" type="INT32">
-      <short_desc>RC loss exceptions</short_desc>
+      <short_desc>Manual control loss exceptions</short_desc>
       <long_desc>Specify modes where manual control loss is ignored and no failsafe is triggered.
 External modes requiring stick input will still failsafe.</long_desc>
       <min>0</min>
@@ -2878,7 +2878,7 @@ External modes requiring stick input will still failsafe.</long_desc>
       </bitmask>
     </parameter>
     <parameter name="COM_RC_ARM_HYST" default="1000" type="INT32">
-      <short_desc>RC input arm/disarm command duration</short_desc>
+      <short_desc>Manual control input arm/disarm command duration</short_desc>
       <long_desc>The default value of 1000 requires the stick to be held in the arm or disarm position for 1 second.</long_desc>
       <min>100</min>
       <max>1500</max>
@@ -2917,8 +2917,8 @@ Ensure the value is not set lower than the update interval of the RC or Joystick
       <increment>0.1</increment>
     </parameter>
     <parameter name="COM_RC_OVERRIDE" default="1" type="INT32">
-      <short_desc>Enable RC stick override of auto and/or offboard modes</short_desc>
-      <long_desc>When RC stick override is enabled, moving the RC sticks more than COM_RC_STICK_OV
+      <short_desc>Enable manual control stick override</short_desc>
+      <long_desc>When enabled, moving the sticks more than COM_RC_STICK_OV
 immediately gives control back to the pilot by switching to Position mode and
 if position is unavailable Altitude mode.
 Note: Only has an effect on multicopters, and VTOLs in multicopter mode.</long_desc>
@@ -2930,7 +2930,7 @@ Note: Only has an effect on multicopters, and VTOLs in multicopter mode.</long_d
       </bitmask>
     </parameter>
     <parameter name="COM_RC_STICK_OV" default="30.0" type="FLOAT">
-      <short_desc>RC stick override threshold</short_desc>
+      <short_desc>Stick override threshold</short_desc>
       <long_desc>If COM_RC_OVERRIDE is enabled and the joystick input is moved more than this threshold
 the autopilot the pilot takes over control.</long_desc>
       <min>5</min>
@@ -3038,10 +3038,9 @@ action will be executed.</long_desc>
       </values>
     </parameter>
     <parameter name="NAV_RCL_ACT" default="2" type="INT32">
-      <short_desc>Set RC loss failsafe mode</short_desc>
-      <long_desc>The RC loss failsafe will only be entered after a timeout,
-set by COM_RC_LOSS_T in seconds. If RC input checks have been disabled
-by setting the COM_RC_IN_MODE param it will not be triggered.</long_desc>
+      <short_desc>Set manual control loss failsafe mode</short_desc>
+      <long_desc>The manual control loss failsafe will only be entered after a timeout,
+set by COM_RC_LOSS_T in seconds.</long_desc>
       <min>1</min>
       <max>6</max>
       <values>
@@ -5345,7 +5344,7 @@ Setting this value to 0 disables the feature.</long_desc>
         <value code="1">Hold Initial Heading</value>
         <value code="2">Uncontrolled</value>
         <value code="3">Hold Front Tangent to Circle</value>
-        <value code="4">RC Controlled</value>
+        <value code="4">Manually (yaw stick) Controlled</value>
       </values>
     </parameter>
   </group>
@@ -5562,7 +5561,8 @@ heading information, whereas the secondary will act as moving base.
 Modes 1 and 2 require each F9P UART1 to be connected to the Autopilot. In addition, UART2 on the
 F9P units are connected to each other.
 Modes 3 and 4 only require UART1 on each F9P connected to the Autopilot or Can Node. UART RX DMA is required.
-RTK is still possible with this setup.</long_desc>
+RTK is still possible with this setup.
+Mode 6 is intended for use with a ground control station (not necessarily an RTK correction base).</long_desc>
       <min>0</min>
       <max>1</max>
       <reboot_required>true</reboot_required>
@@ -5573,6 +5573,7 @@ RTK is still possible with this setup.</long_desc>
         <value code="3">Heading (Rover With Moving Base UART1 Connected to Autopilot Or Can Node At 921600)</value>
         <value code="4">Moving Base (Moving Base UART1 Connected to Autopilot Or Can Node At 921600)</value>
         <value code="5">Rover with Static Base on UART2 (similar to Default, except coming in on UART2)</value>
+        <value code="6">Ground Control Station (UART2 outputs NMEA)</value>
       </values>
     </parameter>
     <parameter name="GPS_YAW_OFFSET" default="0." type="FLOAT">
