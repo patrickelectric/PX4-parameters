@@ -12499,6 +12499,20 @@ If set &lt;= 0.0, defaults to 0.9 * takeoff airspeed (see FW_TKO_AIRSPD)</long_d
         <value code="2">XChaCha20</value>
       </values>
     </parameter>
+    <parameter name="SDLOG_BACKEND" default="3" type="INT32">
+      <short_desc>Logging Backend (integer bitmask)</short_desc>
+      <long_desc>If no logging is set the logger will not be started.
+Set bits true to enable:
+0: SD card logging
+1: Mavlink logging</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <reboot_required>true</reboot_required>
+      <bitmask>
+        <bit index="0">SD card logging</bit>
+        <bit index="1">Mavlink logging</bit>
+      </bitmask>
+    </parameter>
     <parameter name="SDLOG_BOOT_BAT" default="0" type="INT32" boolean="true">
       <short_desc>Battery-only Logging</short_desc>
       <long_desc>When enabled, logging will not start from boot if battery power is not detected
@@ -12559,10 +12573,12 @@ the data in the mission log (and more).</long_desc>
     <parameter name="SDLOG_MODE" default="0" type="INT32">
       <short_desc>Logging Mode</short_desc>
       <long_desc>Determines when to start and stop logging. By default, logging is started
-when arming the system, and stopped when disarming.</long_desc>
+when arming the system, and stopped when disarming.
+Note: The logging start/end points that can be configured here only apply to
+SD logging. The mavlink backend is started/stopped independently
+of these points.</long_desc>
       <reboot_required>true</reboot_required>
       <values>
-        <value code="-1">disabled</value>
         <value code="0">when armed until disarm (default)</value>
         <value code="1">from boot until disarm</value>
         <value code="2">from boot until shutdown</value>
