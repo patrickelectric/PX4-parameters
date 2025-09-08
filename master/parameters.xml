@@ -2782,14 +2782,6 @@ set by COM_OF_LOSS_T in seconds.</long_desc>
     <parameter name="COM_PARACHUTE" default="0" type="INT32" boolean="true">
       <short_desc>Expect and require a healthy MAVLink parachute system</short_desc>
     </parameter>
-    <parameter name="COM_POSCTL_NAVL" default="0" type="INT32">
-      <short_desc>Position mode navigation loss response</short_desc>
-      <long_desc>This sets the flight mode that will be used if navigation accuracy is no longer adequate for position control in manual Position mode.</long_desc>
-      <values>
-        <value code="0">Altitude mode</value>
-        <value code="1">Land mode (descend)</value>
-      </values>
-    </parameter>
     <parameter name="COM_POS_FS_EPH" default="5." type="FLOAT">
       <short_desc>Horizontal position error threshold for hovering systems</short_desc>
       <long_desc>This is the horizontal position error (EPH) threshold that will trigger a failsafe.
