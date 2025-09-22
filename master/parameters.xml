@@ -2229,6 +2229,7 @@ selected flight mode will be applied.</long_desc>
         <value code="11">Land</value>
         <value code="12">Follow Me</value>
         <value code="13">Precision Land</value>
+        <value code="16">Altitude Cruise</value>
         <value code="100">External Mode 1</value>
         <value code="101">External Mode 2</value>
         <value code="102">External Mode 3</value>
@@ -2259,6 +2260,7 @@ selected flight mode will be applied.</long_desc>
         <value code="11">Land</value>
         <value code="12">Follow Me</value>
         <value code="13">Precision Land</value>
+        <value code="16">Altitude Cruise</value>
         <value code="100">External Mode 1</value>
         <value code="101">External Mode 2</value>
         <value code="102">External Mode 3</value>
@@ -2289,6 +2291,7 @@ selected flight mode will be applied.</long_desc>
         <value code="11">Land</value>
         <value code="12">Follow Me</value>
         <value code="13">Precision Land</value>
+        <value code="16">Altitude Cruise</value>
         <value code="100">External Mode 1</value>
         <value code="101">External Mode 2</value>
         <value code="102">External Mode 3</value>
@@ -2319,6 +2322,7 @@ selected flight mode will be applied.</long_desc>
         <value code="11">Land</value>
         <value code="12">Follow Me</value>
         <value code="13">Precision Land</value>
+        <value code="16">Altitude Cruise</value>
         <value code="100">External Mode 1</value>
         <value code="101">External Mode 2</value>
         <value code="102">External Mode 3</value>
@@ -2349,6 +2353,7 @@ selected flight mode will be applied.</long_desc>
         <value code="11">Land</value>
         <value code="12">Follow Me</value>
         <value code="13">Precision Land</value>
+        <value code="16">Altitude Cruise</value>
         <value code="100">External Mode 1</value>
         <value code="101">External Mode 2</value>
         <value code="102">External Mode 3</value>
@@ -2379,6 +2384,7 @@ selected flight mode will be applied.</long_desc>
         <value code="11">Land</value>
         <value code="12">Follow Me</value>
         <value code="13">Precision Land</value>
+        <value code="16">Altitude Cruise</value>
         <value code="100">External Mode 1</value>
         <value code="101">External Mode 2</value>
         <value code="102">External Mode 3</value>
@@ -2667,12 +2673,13 @@ A negative value disables the check.</long_desc>
       <long_desc>Specify modes where manual control loss is ignored and no failsafe is triggered.
 External modes requiring stick input will still failsafe.</long_desc>
       <min>0</min>
-      <max>15</max>
+      <max>31</max>
       <bitmask>
         <bit index="0">Mission</bit>
         <bit index="1">Hold</bit>
         <bit index="2">Offboard</bit>
         <bit index="3">External Mode</bit>
+        <bit index="4">Altitude Cruise</bit>
       </bitmask>
     </parameter>
     <parameter name="COM_RC_ARM_HYST" default="1000" type="INT32">
@@ -8498,6 +8505,17 @@ Decrease to make the estimator more robust to noise</long_desc>
       <long_desc>This determines if moving the left stick to the lower right
 arms and to the lower left disarms the vehicle.</long_desc>
     </parameter>
+    <parameter name="MAN_DEADZONE" default="0.1" type="FLOAT">
+      <short_desc>Deadzone for sticks (only specific use cases)</short_desc>
+      <long_desc>Range around stick center ignored to prevent
+vehicle drift from stick hardware inaccuracy.
+Does not apply to any precise constant input like
+throttle and attitude or rate piloting.</long_desc>
+      <min>0</min>
+      <max>1</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
     <parameter name="MAN_KILL_GEST_T" default="-1." type="FLOAT">
       <short_desc>Trigger time for kill stick gesture</short_desc>
       <long_desc>The timeout for holding the left stick to the lower left
@@ -9157,14 +9175,6 @@ The speed threshold is MPC_HOLD_MAX_XY</long_desc>
         <value code="2">Terrain hold</value>
       </values>
     </parameter>
-    <parameter name="MPC_HOLD_DZ" default="0.1" type="FLOAT">
-      <short_desc>Deadzone for sticks in manual piloted modes</short_desc>
-      <long_desc>Does not apply to manual throttle and direct attitude piloting by stick.</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
     <parameter name="MPC_HOLD_MAX_XY" default="0.8" type="FLOAT">
       <short_desc>Maximum horizontal velocity for which position hold is enabled (use 0 to disable check)</short_desc>
       <long_desc>Only used with MPC_POS_MODE Direct velocity or MPC_ALT_MODE 2</long_desc>
@@ -9281,7 +9291,7 @@ Airmode is used to keep torque authority with zero thrust (see MC_AIRMODE).</lon
       <increment>0.01</increment>
     </parameter>
     <parameter name="MPC_MAN_TILT_MAX" default="35." type="FLOAT">
-      <short_desc>Maximal tilt angle in Stabilized or Altitude mode</short_desc>
+      <short_desc>Maximal tilt angle in Stabilized, Altitude and Altitude Cruise mode</short_desc>
       <min>1</min>
       <max>70</max>
       <unit>deg</unit>
@@ -9509,17 +9519,6 @@ capabilities of the vehicle.</long_desc>
       <decimal>1</decimal>
       <increment>1</increment>
     </parameter>
-    <parameter name="MPC_XY_MAN_EXPO" default="0.6" type="FLOAT">
-      <short_desc>Manual position control stick exponential curve sensitivity</short_desc>
-      <long_desc>The higher the value the less sensitivity the stick has around zero
-while still reaching the maximum value with full stick deflection.
-0 Purely linear input curve
-1 Purely cubic input curve</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
     <parameter name="MPC_XY_P" default="0.95" type="FLOAT">
       <short_desc>Proportional gain for horizontal position error</short_desc>
       <long_desc>Defined as corrective velocity in m/s per m position error</long_desc>
@@ -9579,28 +9578,6 @@ Any higher value is truncated.</long_desc>
       <max>5</max>
       <decimal>2</decimal>
       <increment>0.1</increment>
-    </parameter>
-    <parameter name="MPC_YAW_EXPO" default="0.6" type="FLOAT">
-      <short_desc>Manual control stick yaw rotation exponential curve</short_desc>
-      <long_desc>The higher the value the less sensitivity the stick has around zero
-while still reaching the maximum value with full stick deflection.
-0 Purely linear input curve
-1 Purely cubic input curve</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
-    </parameter>
-    <parameter name="MPC_Z_MAN_EXPO" default="0.6" type="FLOAT">
-      <short_desc>Manual control stick vertical exponential curve</short_desc>
-      <long_desc>The higher the value the less sensitivity the stick has around zero
-while still reaching the maximum value with full stick deflection.
-0 Purely linear input curve
-1 Purely cubic input curve</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <decimal>2</decimal>
-      <increment>0.01</increment>
     </parameter>
     <parameter name="MPC_Z_P" default="1." type="FLOAT">
       <short_desc>Proportional gain for vertical position error</short_desc>
@@ -15987,6 +15964,14 @@ in int32 format. For example, 192.168.1.2 is mapped to -1062731518;
       <long_desc>uXRCE-DDS key, must be different from zero.
 In a single agent - multi client configuration, each client
 must have a unique session key.</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="UXRCE_DDS_NS_IDX" default="-1" type="INT32" category="System">
+      <short_desc>Define an index-based message namespace</short_desc>
+      <long_desc>Defines an index-based namespace for DDS messages, e.g, uav_0, uav_1, up to uav_9999
+A value less than zero leaves the namespace empty</long_desc>
+      <min>-1</min>
+      <max>9999</max>
       <reboot_required>True</reboot_required>
     </parameter>
     <parameter name="UXRCE_DDS_PRT" default="8888" type="INT32">
