@@ -3492,7 +3492,7 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
       <unit>1/s</unit>
       <decimal>2</decimal>
     </parameter>
-    <parameter name="EKF2_MIN_RNG" default="0.1" type="FLOAT">
+    <parameter name="EKF2_MIN_RNG" default="0.01" type="FLOAT">
       <short_desc>Expected range finder reading when on ground</short_desc>
       <long_desc>If the vehicle is on ground, is not moving as determined by the motion test and the range finder is returning invalid or no data, then an assumed range value of EKF2_MIN_RNG will be used by the terrain estimator so that a terrain height estimate is available at the start of flight in situations where the range finder may be inside its minimum measurements distance when on ground.</long_desc>
       <min>0.01</min>
@@ -12266,23 +12266,12 @@ If set &lt;= 0.0, defaults to 0.9 * takeoff airspeed (see FW_TKO_AIRSPD)</long_d
     </parameter>
   </group>
   <group name="SD Logging">
-    <parameter name="SDLOG_ALGORITHM" default="2" type="INT32">
-      <short_desc>Logfile Encryption algorithm</short_desc>
-      <long_desc>Selects the algorithm used for logfile encryption</long_desc>
-      <values>
-        <value code="0">Disabled</value>
-        <value code="2">XChaCha20</value>
-      </values>
-    </parameter>
     <parameter name="SDLOG_BACKEND" default="3" type="INT32">
       <short_desc>Logging Backend (integer bitmask)</short_desc>
-      <long_desc>If no logging is set the logger will not be started.
-Set bits true to enable:
-0: SD card logging
-1: Mavlink logging</long_desc>
+      <long_desc>If no logging is set the logger will not be started. Set bits true to enable: 0: SD card logging 1: Mavlink logging</long_desc>
       <min>0</min>
       <max>3</max>
-      <reboot_required>true</reboot_required>
+      <reboot_required>True</reboot_required>
       <bitmask>
         <bit index="0">SD card logging</bit>
         <bit index="1">Mavlink logging</bit>
@@ -12290,55 +12279,19 @@ Set bits true to enable:
     </parameter>
     <parameter name="SDLOG_BOOT_BAT" default="0" type="INT32" boolean="true">
       <short_desc>Battery-only Logging</short_desc>
-      <long_desc>When enabled, logging will not start from boot if battery power is not detected
-(e.g. powered via USB on a test bench). This prevents extraneous flight logs from
-being created during bench testing.
-Note that this only applies to log-from-boot modes. This has no effect on arm-based
-modes.</long_desc>
+      <long_desc>When enabled, logging will not start from boot if battery power is not detected (e.g. powered via USB on a test bench). This prevents extraneous flight logs from being created during bench testing. Note that this only applies to log-from-boot modes. This has no effect on arm-based modes.</long_desc>
     </parameter>
     <parameter name="SDLOG_DIRS_MAX" default="0" type="INT32">
       <short_desc>Maximum number of log directories to keep</short_desc>
-      <long_desc>If there are more log directories than this value,
-the system will delete the oldest directories during startup.
-In addition, the system will delete old logs if there is not enough free space left.
-The minimum amount is 300 MB.
-If this is set to 0, old directories will only be removed if the free space falls below
-the minimum.
-Note: this does not apply to mission log files.</long_desc>
+      <long_desc>If there are more log directories than this value, the system will delete the oldest directories during startup. In addition, the system will delete old logs if there is not enough free space left. The minimum amount is 300 MB. If this is set to 0, old directories will only be removed if the free space falls below the minimum. Note: this does not apply to mission log files.</long_desc>
       <min>0</min>
       <max>1000</max>
-      <reboot_required>true</reboot_required>
-    </parameter>
-    <parameter name="SDLOG_EXCH_KEY" default="1" type="INT32">
-      <short_desc>Logfile Encryption key exchange key</short_desc>
-      <long_desc>If the logfile is encrypted using a symmetric key algorithm,
-the used encryption key is generated at logging start and stored
-on the sdcard RSA2048 encrypted using this key.</long_desc>
-      <min>0</min>
-      <max>255</max>
-    </parameter>
-    <parameter name="SDLOG_KEY" default="2" type="INT32">
-      <short_desc>Logfile Encryption key index</short_desc>
-      <long_desc>Selects the key in keystore, used for encrypting the log. When using
-a symmetric encryption algorithm, the key is generated at logging start
-and kept stored in this index. For symmetric algorithms, the key is
-volatile and valid only for the duration of logging. The key is stored
-in encrypted format on the sdcard alongside the logfile, using an RSA2048
-key defined by the SDLOG_EXCHANGE_KEY</long_desc>
-      <min>0</min>
-      <max>255</max>
+      <reboot_required>True</reboot_required>
     </parameter>
     <parameter name="SDLOG_MISSION" default="0" type="INT32">
       <short_desc>Mission Log</short_desc>
-      <long_desc>If enabled, a small additional "mission" log file will be written to the SD card.
-The log contains just those messages that are useful for tasks like
-generating flight statistics and geotagging.
-The different modes can be used to further reduce the logged data
-(and thus the log file size). For example, choose geotagging mode to
-only log data required for geotagging.
-Note that the normal/full log is still created, and contains all
-the data in the mission log (and more).</long_desc>
-      <reboot_required>true</reboot_required>
+      <long_desc>If enabled, a small additional "mission" log file will be written to the SD card. The log contains just those messages that are useful for tasks like generating flight statistics and geotagging. The different modes can be used to further reduce the logged data (and thus the log file size). For example, choose geotagging mode to only log data required for geotagging. Note that the normal/full log is still created, and contains all the data in the mission log (and more).</long_desc>
+      <reboot_required>True</reboot_required>
       <values>
         <value code="0">Disabled</value>
         <value code="1">All mission messages</value>
@@ -12347,12 +12300,8 @@ the data in the mission log (and more).</long_desc>
     </parameter>
     <parameter name="SDLOG_MODE" default="0" type="INT32">
       <short_desc>Logging Mode</short_desc>
-      <long_desc>Determines when to start and stop logging. By default, logging is started
-when arming the system, and stopped when disarming.
-Note: The logging start/end points that can be configured here only apply to
-SD logging. The mavlink backend is started/stopped independently
-of these points.</long_desc>
-      <reboot_required>true</reboot_required>
+      <long_desc>Determines when to start and stop logging. By default, logging is started when arming the system, and stopped when disarming. Note: The logging start/end points that can be configured here only apply to SD logging. The mavlink backend is started/stopped independently of these points.</long_desc>
+      <reboot_required>True</reboot_required>
       <values>
         <value code="0">when armed until disarm (default)</value>
         <value code="1">from boot until disarm</value>
@@ -12363,26 +12312,10 @@ of these points.</long_desc>
     </parameter>
     <parameter name="SDLOG_PROFILE" default="1" type="INT32">
       <short_desc>Logging topic profile (integer bitmask)</short_desc>
-      <long_desc>This integer bitmask controls the set and rates of logged topics.
-The default allows for general log analysis while keeping the
-log file size reasonably small.
-Enabling multiple sets leads to higher bandwidth requirements and larger log
-files.
-Set bits true to enable:
-0 : Default set (used for general log analysis)
-1 : Full rate estimator (EKF2) replay topics
-2 : Topics for thermal calibration (high rate raw IMU and Baro sensor data)
-3 : Topics for system identification (high rate actuator control and IMU data)
-4 : Full rates for analysis of fast maneuvers (RC, attitude, rates and actuators)
-5 : Debugging topics (debug_*.msg topics, for custom code)
-6 : Topics for sensor comparison (low rate raw IMU, Baro and magnetometer data)
-7 : Topics for computer vision and collision prevention
-8 : Raw FIFO high-rate IMU (Gyro)
-9 : Raw FIFO high-rate IMU (Accel)
-10: Logging of mavlink tunnel message (useful for payload communication debugging)</long_desc>
+      <long_desc>This integer bitmask controls the set and rates of logged topics. The default allows for general log analysis while keeping the log file size reasonably small. Enabling multiple sets leads to higher bandwidth requirements and larger log files. Set bits true to enable: 0 : Default set (used for general log analysis) 1 : Full rate estimator (EKF2) replay topics 2 : Topics for thermal calibration (high rate raw IMU and Baro sensor data) 3 : Topics for system identification (high rate actuator control and IMU data) 4 : Full rates for analysis of fast maneuvers (RC, attitude, rates and actuators) 5 : Debugging topics (debug_*.msg topics, for custom code) 6 : Topics for sensor comparison (low rate raw IMU, Baro and magnetometer data) 7 : Topics for computer vision and collision prevention 8 : Raw FIFO high-rate IMU (Gyro) 9 : Raw FIFO high-rate IMU (Accel) 10: Logging of mavlink tunnel message (useful for payload communication debugging)</long_desc>
       <min>0</min>
       <max>4095</max>
-      <reboot_required>true</reboot_required>
+      <reboot_required>True</reboot_required>
       <bitmask>
         <bit index="0">Default set (general log analysis)</bit>
         <bit index="1">Estimator replay (EKF2)</bit>
@@ -12400,11 +12333,7 @@ Set bits true to enable:
     </parameter>
     <parameter name="SDLOG_UTC_OFFSET" default="0" type="INT32">
       <short_desc>UTC offset (unit: min)</short_desc>
-      <long_desc>the difference in hours and minutes from Coordinated
-Universal Time (UTC) for a your place and date.
-for example, In case of South Korea(UTC+09:00),
-UTC offset is 540 min (9*60)
-refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets</long_desc>
+      <long_desc>the difference in hours and minutes from Coordinated Universal Time (UTC) for a your place and date. for example, In case of South Korea(UTC+09:00), UTC offset is 540 min (9*60) refer to https://en.wikipedia.org/wiki/List_of_UTC_time_offsets</long_desc>
       <min>-1000</min>
       <max>1000</max>
       <unit>min</unit>
