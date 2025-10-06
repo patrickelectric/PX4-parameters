@@ -1481,17 +1481,7 @@ are doing, and in a safe environment.
 Any motion of the remote stick will abort the signal
 injection and reset this parameter
 Best is to perform the identification in position or
-hold mode.
-Increase the amplitude of the injected signal using
-FW_AT_SYSID_AMP for more signal/noise ratio</long_desc>
-    </parameter>
-    <parameter name="FW_AT_SYSID_AMP" default="1.0" type="FLOAT">
-      <short_desc>Amplitude of the injected signal</short_desc>
-      <long_desc>This parameter scales the signal sent to the
-rate controller during system identification.</long_desc>
-      <min>0.1</min>
-      <max>6.0</max>
-      <decimal>1</decimal>
+hold mode.</long_desc>
     </parameter>
     <parameter name="FW_AT_SYSID_F0" default="1." type="FLOAT">
       <short_desc>Start frequency of the injected signal</short_desc>
@@ -1501,7 +1491,7 @@ rate controller during system identification.</long_desc>
       <unit>Hz</unit>
       <decimal>1</decimal>
     </parameter>
-    <parameter name="FW_AT_SYSID_F1" default="20." type="FLOAT">
+    <parameter name="FW_AT_SYSID_F1" default="10." type="FLOAT">
       <short_desc>End frequency of the injected signal</short_desc>
       <long_desc>Can be set lower or higher than the start frequency</long_desc>
       <min>0.1</min>
@@ -1517,7 +1507,7 @@ rate controller during system identification.</long_desc>
       <unit>s</unit>
       <decimal>0</decimal>
     </parameter>
-    <parameter name="FW_AT_SYSID_TYPE" default="0" type="INT32">
+    <parameter name="FW_AT_SYSID_TYPE" default="1" type="INT32">
       <short_desc>Input signal type</short_desc>
       <long_desc>Type of signal used during system identification to excite the system.</long_desc>
       <values>
@@ -2690,24 +2680,31 @@ External modes requiring stick input will still failsafe.</long_desc>
       <unit>ms</unit>
     </parameter>
     <parameter name="COM_RC_IN_MODE" default="3" type="INT32">
-      <short_desc>RC control input mode</short_desc>
-      <long_desc>A value of 0 enables RC transmitter control (only). A valid RC transmitter calibration is required.
-A value of 1 allows joystick control only. RC input handling and the associated checks are disabled.
-A value of 2 allows either RC Transmitter or Joystick input. The first valid input is used, will fallback to other sources if the input stream becomes invalid.
-A value of 3 allows either input from RC or joystick. The first available source is selected and used until reboot.
-A value of 4 ignores any stick input.
-A value of 5 allows either RC Transmitter or Joystick input. But RC has priority and whenever avaiable is immedietely used.
-A value of 6 allows either RC Transmitter or Joystick input. But Joystick has priority and whenever avaiable is immedietely used.</long_desc>
+      <short_desc>Manual control input source configuration</short_desc>
+      <long_desc>Selects stick input selection behavior:
+either a traditional remote control receiver (RC) or a MAVLink joystick (MANUAL_CONTROL message)
+Priority sources are immediately switched to whenever they get valid.
+0 RC only. Requires valid RC calibration.
+1 MAVLink only. RC and related checks are disabled.
+2 Switches only if current source becomes invalid.
+3 Locks to the first valid source until reboot.
+4 Ignores all sources.
+5 RC priority, then MAVLink (lower instance before higher)
+6 MAVLink priority (lower instance before higher), then RC
+7 RC priority, then MAVLink (higher instance before lower)
+8 MAVLink priority (higher instance before lower), then RC</long_desc>
       <min>0</min>
-      <max>4</max>
+      <max>8</max>
       <values>
-        <value code="0">RC Transmitter only</value>
-        <value code="1">Joystick only</value>
-        <value code="2">RC and Joystick with fallback</value>
-        <value code="3">RC or Joystick keep first</value>
-        <value code="4">Stick input disabled</value>
-        <value code="5">RC priority, Joystick fallback</value>
-        <value code="6">Joystick priority, RC fallback</value>
+        <value code="0">RC only</value>
+        <value code="1">MAVLink only</value>
+        <value code="2">RC or MAVLink with fallback</value>
+        <value code="3">RC or MAVLink keep first</value>
+        <value code="4">Disable manual control</value>
+        <value code="5">Prio: RC &gt; MAVL 1 &gt; MAVL 2</value>
+        <value code="6">Prio: MAVL 1 &gt; MAVL 2 &gt; RC</value>
+        <value code="7">Prio: RC &gt; MAVL 2 &gt; MAVL 1</value>
+        <value code="8">Prio: MAVL 2 &gt; MAVL 1 &gt; RC</value>
       </values>
     </parameter>
     <parameter name="COM_RC_LOSS_T" default="0.5" type="FLOAT">
