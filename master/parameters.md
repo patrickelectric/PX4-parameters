@@ -22723,7 +22723,7 @@ table {
 </ul>  <p><b>Reboot required:</b> true</p>
 </td>
  <td></td>
- <td>102</td>
+ <td>0</td>
  <td></td>
 </tr>
 <tr>
@@ -23545,12 +23545,12 @@ table {
 <tr>
  <td><strong id="SF45_ORIENT_CFG">SF45_ORIENT_CFG</strong> (INT32)</td>
  <td>Orientation upright or facing downward <p><strong>Comment:</strong> The SF45 mounted facing upward or downward on the frame</p> <strong>Values:</strong><ul>
-<li><strong>0:</strong> Rotation upward</li>
-<li><strong>1:</strong> Rotation downward</li>
+<li><strong>24:</strong> Rotation upward</li>
+<li><strong>25:</strong> Rotation downward</li>
 </ul>  <p><b>Reboot required:</b> True</p>
 </td>
  <td></td>
- <td>0</td>
+ <td>24</td>
  <td></td>
 </tr>
 <tr>
@@ -23571,16 +23571,16 @@ table {
 </ul>  <p><b>Reboot required:</b> True</p>
 </td>
  <td></td>
- <td>1</td>
+ <td>5</td>
  <td></td>
 </tr>
 <tr>
  <td><strong id="SF45_YAW_CFG">SF45_YAW_CFG</strong> (INT32)</td>
  <td>Sensor facing forward or backward <p><strong>Comment:</strong> The usb port on the sensor indicates 180deg, opposite usb is forward facing</p> <strong>Values:</strong><ul>
 <li><strong>0:</strong> Rotation forward</li>
-<li><strong>1:</strong> Rotation backward</li>
 <li><strong>2:</strong> Rotation right</li>
-<li><strong>3:</strong> Rotation left</li>
+<li><strong>4:</strong> Rotation backward</li>
+<li><strong>6:</strong> Rotation left</li>
 </ul>  <p><b>Reboot required:</b> True</p>
 </td>
  <td></td>

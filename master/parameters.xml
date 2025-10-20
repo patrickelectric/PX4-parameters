@@ -8417,12 +8417,11 @@ stream parameters continuously.</long_desc>
       <long_desc>The mavlink heartbeat message will not be forwarded if this parameter is set to 'disabled'.
 The main reason for disabling heartbeats to be forwarded is because they confuse dronekit.</long_desc>
     </parameter>
-    <parameter name="MAV_PROTO_VER" default="0" type="INT32">
+    <parameter name="MAV_PROTO_VER" default="2" type="INT32">
       <short_desc>MAVLink protocol version</short_desc>
       <values>
-        <value code="0">Default to 1, switch to 2 if GCS sends version 2</value>
-        <value code="1">Always use version 1</value>
-        <value code="2">Always use version 2</value>
+        <value code="1">Version 1 with auto-upgrade to v2 if detected</value>
+        <value code="2">Version 2</value>
       </values>
     </parameter>
     <parameter name="MAV_RADIO_TOUT" default="5" type="INT32">
@@ -8448,6 +8447,25 @@ factory defaults. Only applies if this mavlink instance is going through a SiK r
       <min>1</min>
       <max>250</max>
       <reboot_required>true</reboot_required>
+    </parameter>
+    <parameter name="MAV_S_FORWARD" default="0" type="INT32" boolean="true">
+      <short_desc>Enable MAVLink forwarding on TELEM2</short_desc>
+      <long_desc>TELEM2 on Skynode only.</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="MAV_S_MODE" default="11" type="INT32">
+      <short_desc>MAVLink Mode for SOM to FMU communication channel</short_desc>
+      <long_desc>The MAVLink Mode defines the set of streamed messages (for example the
+vehicle's attitude) and their sending rates.</long_desc>
+      <reboot_required>True</reboot_required>
+      <values>
+        <value code="0">Normal</value>
+        <value code="2">Onboard</value>
+        <value code="5">Config</value>
+        <value code="7">Minimal</value>
+        <value code="11">Onboard Low Bandwidth</value>
+        <value code="13">Low Bandwidth</value>
+      </values>
     </parameter>
     <parameter name="MAV_TYPE" default="0" type="INT32">
       <short_desc>MAVLink airframe type</short_desc>
@@ -10134,12 +10152,6 @@ this time before considering gripper actuation successful and publish a
     </parameter>
   </group>
   <group name="Radio Calibration">
-    <parameter name="RC10_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 10 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC10_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 10 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10170,12 +10182,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC11_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 11 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC11_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 11 maximum</short_desc>
@@ -10208,12 +10214,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC12_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 12 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC12_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 12 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10244,12 +10244,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC13_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 13 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC13_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 13 maximum</short_desc>
@@ -10282,12 +10276,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC14_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 14 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC14_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 14 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10318,12 +10306,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC15_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 15 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC15_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 15 maximum</short_desc>
@@ -10356,12 +10338,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC16_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 16 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC16_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 16 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10392,12 +10368,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC17_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 17 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC17_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 17 maximum</short_desc>
@@ -10430,12 +10400,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC18_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 18 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC18_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 18 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10465,13 +10429,6 @@ this time before considering gripper actuation successful and publish a
       <long_desc>Mid point value</long_desc>
       <min>800.0</min>
       <max>2200.0</max>
-      <unit>us</unit>
-    </parameter>
-    <parameter name="RC1_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 1 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
       <unit>us</unit>
     </parameter>
     <parameter name="RC1_MAX" default="2000.0" type="FLOAT">
@@ -10505,13 +10462,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC2_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 2 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-      <unit>us</unit>
-    </parameter>
     <parameter name="RC2_MAX" default="2000.0" type="FLOAT">
       <short_desc>RC channel 2 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10541,13 +10491,6 @@ this time before considering gripper actuation successful and publish a
       <long_desc>Mid point value</long_desc>
       <min>800.0</min>
       <max>2200.0</max>
-      <unit>us</unit>
-    </parameter>
-    <parameter name="RC3_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 3 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
       <unit>us</unit>
     </parameter>
     <parameter name="RC3_MAX" default="2000" type="FLOAT">
@@ -10581,13 +10524,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC4_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 4 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-      <unit>us</unit>
-    </parameter>
     <parameter name="RC4_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 4 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10618,12 +10554,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC5_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 5 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC5_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 5 maximum</short_desc>
@@ -10656,12 +10586,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC6_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 6 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC6_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 6 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10692,12 +10616,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC7_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 7 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC7_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 7 maximum</short_desc>
@@ -10730,12 +10648,6 @@ this time before considering gripper actuation successful and publish a
       <max>2200.0</max>
       <unit>us</unit>
     </parameter>
-    <parameter name="RC8_DZ" default="10.0" type="FLOAT">
-      <short_desc>RC channel 8 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
-    </parameter>
     <parameter name="RC8_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 8 maximum</short_desc>
       <long_desc>Maximum value for this channel.</long_desc>
@@ -10766,12 +10678,6 @@ this time before considering gripper actuation successful and publish a
       <min>800.0</min>
       <max>2200.0</max>
       <unit>us</unit>
-    </parameter>
-    <parameter name="RC9_DZ" default="0.0" type="FLOAT">
-      <short_desc>RC channel 9 dead zone</short_desc>
-      <long_desc>The +- range of this value around the trim value will be considered as zero.</long_desc>
-      <min>0.0</min>
-      <max>100.0</max>
     </parameter>
     <parameter name="RC9_MAX" default="2000" type="FLOAT">
       <short_desc>RC channel 9 maximum</short_desc>
