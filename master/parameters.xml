@@ -9264,11 +9264,14 @@ limit descending velocity to "MPC_LAND_CRWL" below this altitude.</long_desc>
       <unit>m/s</unit>
       <decimal>1</decimal>
     </parameter>
-    <parameter name="MPC_LAND_RADIUS" default="1000." type="FLOAT">
+    <parameter name="MPC_LAND_RADIUS" default="-1.0" type="FLOAT">
       <short_desc>User assisted landing radius</short_desc>
-      <long_desc>When nudging is enabled (see MPC_LAND_RC_HELP), this controls
-the maximum allowed horizontal displacement from the original landing point.</long_desc>
-      <min>0</min>
+      <long_desc>When nudging is enabled (see MPC_LAND_RC_HELP), this defines the maximum
+allowed horizontal displacement from the original landing point.
+- If inside of the radius, only allow nudging inputs that do not move the vehicle outside of it.
+- If outside of the radius, only allow nudging inputs that move the vehicle back towards it.
+Set it to -1 for infinite radius.</long_desc>
+      <min>-1</min>
       <unit>m</unit>
       <decimal>0</decimal>
       <increment>1</increment>
