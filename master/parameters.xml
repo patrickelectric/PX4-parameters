@@ -1299,7 +1299,6 @@ Set to a negative value to disable the re-enabling in flight.</long_desc>
       <min>0.5</min>
       <max>2.0</max>
       <decimal>2</decimal>
-      <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="ASPD_SCALE_2" default="1.0" type="FLOAT" volatile="true">
       <short_desc>Scale of airspeed sensor 2</short_desc>
@@ -1307,7 +1306,6 @@ Set to a negative value to disable the re-enabling in flight.</long_desc>
       <min>0.5</min>
       <max>2.0</max>
       <decimal>2</decimal>
-      <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="ASPD_SCALE_3" default="1.0" type="FLOAT" volatile="true">
       <short_desc>Scale of airspeed sensor 3</short_desc>
@@ -1315,7 +1313,6 @@ Set to a negative value to disable the re-enabling in flight.</long_desc>
       <min>0.5</min>
       <max>2.0</max>
       <decimal>2</decimal>
-      <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="ASPD_SCALE_APPLY" default="2" type="INT32">
       <short_desc>Controls when to apply the new estimated airspeed scale(s)</short_desc>
@@ -15887,7 +15884,7 @@ A value less than one disables the TX rate timeout.</long_desc>
       <increment>0.1</increment>
     </parameter>
     <parameter name="VT_B_DEC_I" default="0.1" type="FLOAT">
-      <short_desc>Backtransition deceleration setpoint to pitch I gain</short_desc>
+      <short_desc>Backtransition deceleration setpoint to tilt I gain</short_desc>
       <min>0</min>
       <max>0.3</max>
       <unit>rad s/m</unit>
@@ -16055,7 +16052,7 @@ reach VT_ARSP_BLEND after this time.</long_desc>
       <decimal>1</decimal>
       <increment>0.5</increment>
     </parameter>
-    <parameter name="VT_LND_PITCH_MIN" default="-5.0" type="FLOAT">
+    <parameter name="VT_LND_PITCH_MIN" default="0.0" type="FLOAT">
       <short_desc>Minimum pitch angle during hover landing</short_desc>
       <long_desc>Overrides VT_PITCH_MIN when the vehicle is in LAND mode (hovering).
 During landing it can be beneficial to reduce the pitch angle to reduce the generated lift in head wind.</long_desc>
@@ -16065,7 +16062,7 @@ During landing it can be beneficial to reduce the pitch angle to reduce the gene
       <decimal>1</decimal>
       <increment>0.1</increment>
     </parameter>
-    <parameter name="VT_PITCH_MIN" default="-5.0" type="FLOAT">
+    <parameter name="VT_PITCH_MIN" default="0.0" type="FLOAT">
       <short_desc>Minimum pitch angle during hover</short_desc>
       <long_desc>Any pitch setpoint below this value is translated to a forward force by the fixed-wing forward actuation if
 VT_FWD_TRHUST_EN is set.</long_desc>
