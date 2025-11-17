@@ -3230,7 +3230,8 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
       </bitmask>
     </parameter>
     <parameter name="EKF2_GPS_DELAY" default="110" type="FLOAT">
-      <short_desc>GPS measurement delay relative to IMU measurements</short_desc>
+      <short_desc>GPS measurement delay relative to IMU measurement</short_desc>
+      <long_desc>GPS measurement delay relative to IMU measurement if PPS time correction is not available/enabled (PPS_CAP_ENABLE).</long_desc>
       <min>0</min>
       <max>300</max>
       <unit>ms</unit>
