@@ -2110,16 +2110,17 @@ disabled, warn only or deny arming.</long_desc>
     <parameter name="COM_ARM_SWISBTN" default="0" type="INT32" boolean="true">
       <short_desc>Arm switch is a momentary button</short_desc>
       <long_desc>0: Arming/disarming triggers on switch transition.
-1: Arming/disarming triggers when holding the momentary button down
-for COM_RC_ARM_HYST like the stick gesture.</long_desc>
+1: Arming/disarming triggers when holding the momentary button down like the stick gesture.</long_desc>
     </parameter>
     <parameter name="COM_ARM_WO_GPS" default="1" type="INT32">
-      <short_desc>GPS preflight check</short_desc>
-      <long_desc>Measures taken when a check defined by EKF2_GPS_CHECK is failing.</long_desc>
+      <short_desc>Arming without GNSS configuration</short_desc>
+      <long_desc>Configures whether arming is allowed without GNSS, for modes that require a global position
+(specifically, in those modes when a check defined by EKF2_GPS_CHECK fails).
+The settings deny arming and warn, allow arming and warn, or silently allow arming.</long_desc>
       <values>
         <value code="0">Deny arming</value>
-        <value code="1">Warning only</value>
-        <value code="2">Disabled</value>
+        <value code="1">Allow arming (with warning)</value>
+        <value code="2">Allow arming (no warning)</value>
       </values>
     </parameter>
     <parameter name="COM_CPU_MAX" default="95.0" type="FLOAT">
@@ -2668,13 +2669,6 @@ External modes requiring stick input will still failsafe.</long_desc>
         <bit index="3">External Mode</bit>
         <bit index="4">Altitude Cruise</bit>
       </bitmask>
-    </parameter>
-    <parameter name="COM_RC_ARM_HYST" default="1000" type="INT32">
-      <short_desc>Manual control input arm/disarm command duration</short_desc>
-      <long_desc>The default value of 1000 requires the stick to be held in the arm or disarm position for 1 second.</long_desc>
-      <min>100</min>
-      <max>1500</max>
-      <unit>ms</unit>
     </parameter>
     <parameter name="COM_RC_IN_MODE" default="3" type="INT32">
       <short_desc>Manual control input source configuration</short_desc>
@@ -3240,7 +3234,7 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
     </parameter>
     <parameter name="EKF2_GPS_MODE" default="0" type="INT32">
       <short_desc>Fusion reset mode</short_desc>
-      <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
+      <long_desc>Automatic: reset on fusion timeout if no other source of position is available. Dead-reckoning: reset on fusion timeout if no source of velocity is available.</long_desc>
       <values>
         <value code="0">Automatic</value>
         <value code="1">Dead-reckoning</value>
@@ -4847,6 +4841,17 @@ normalize performance across the operating range of the battery.</long_desc>
       <long_desc>This increment is added to TRIM_YAW when airspeed is FW_AIRSPD_MIN.</long_desc>
       <min>-0.5</min>
       <max>0.5</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="FW_GC_EN" default="1" type="INT32" boolean="true">
+      <short_desc>Enable rate gain compression</short_desc>
+    </parameter>
+    <parameter name="FW_GC_GAIN_MIN" default="0.3" type="FLOAT">
+      <short_desc>Compression gain lower limit</short_desc>
+      <long_desc>The range of the compression gain is between this parameter and 1.0</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
@@ -6949,7 +6954,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS0_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 0 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7004,7 +7011,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS1_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 1 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7059,7 +7068,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS2_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 2 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7114,7 +7125,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS3_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 3 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7169,7 +7182,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS4_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 4 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7224,7 +7239,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS5_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 5 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7279,7 +7296,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS6_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 6 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
@@ -7334,7 +7353,9 @@ Zero means that slew rate limiting is disabled.</long_desc>
     </parameter>
     <parameter name="CA_SV_CS7_TRIM" default="0.0" type="FLOAT">
       <short_desc>Control Surface 7 trim</short_desc>
-      <long_desc>Can be used to add an offset to the servo control.</long_desc>
+      <long_desc>Can be used to add an offset to the servo control.
+NOTE: Do not use for PWM servos. Use the PWM CENTER parameters instead (e.g., PWM_MAIN_CENT, PWM_AUX_CENT) instead.
+This parameter can only be set if all PWM Center parameters are set to default.</long_desc>
       <min>-1.0</min>
       <max>1.0</max>
       <decimal>2</decimal>
