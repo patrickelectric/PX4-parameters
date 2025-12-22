@@ -1580,15 +1580,20 @@ the drone properly.</long_desc>
     </parameter>
     <parameter name="BAT1_SOURCE" default="0" type="INT32">
       <short_desc>Battery 1 monitoring source</short_desc>
-      <long_desc>This parameter controls the source of battery data. The value 'Power Module'
-means that measurements are expected to come from a power module. If the value is set to
-'External' then the system expects to receive mavlink battery status messages.
+      <long_desc>This parameter controls the source of battery data. The value 'Power Module / Analog'
+means that measurements are expected to come from either analog (ADC) inputs
+or an I2C power monitor (e.g. INA226). Analog inputs are voltage and current
+measurements read from the board's ADC channels, typically from an onboard
+voltage divider and current shunt, or an external analog power module.
+I2C power monitors are digital sensors on the I2C bus.
+If the value is set to 'External' then the system expects to receive MAVLink
+or CAN battery status messages, or the battery data is published by an external driver.
 If the value is set to 'ESCs', the battery information are taken from the esc_status message.
-This requires the ESC to provide both voltage as well as current.</long_desc>
+This requires the ESC to provide both voltage as well as current (via ESC telemetry).</long_desc>
       <reboot_required>True</reboot_required>
       <values>
         <value code="-1">Disabled</value>
-        <value code="0">Power Module</value>
+        <value code="0">Power Module / Analog</value>
         <value code="1">External</value>
         <value code="2">ESCs</value>
       </values>
@@ -1658,15 +1663,20 @@ it drops off to a voltage level damaging the cells.</long_desc>
     </parameter>
     <parameter name="BAT2_SOURCE" default="-1" type="INT32">
       <short_desc>Battery 2 monitoring source</short_desc>
-      <long_desc>This parameter controls the source of battery data. The value 'Power Module'
-means that measurements are expected to come from a power module. If the value is set to
-'External' then the system expects to receive mavlink battery status messages.
+      <long_desc>This parameter controls the source of battery data. The value 'Power Module / Analog'
+means that measurements are expected to come from either analog (ADC) inputs
+or an I2C power monitor (e.g. INA226). Analog inputs are voltage and current
+measurements read from the board's ADC channels, typically from an onboard
+voltage divider and current shunt, or an external analog power module.
+I2C power monitors are digital sensors on the I2C bus.
+If the value is set to 'External' then the system expects to receive MAVLink
+or CAN battery status messages, or the battery data is published by an external driver.
 If the value is set to 'ESCs', the battery information are taken from the esc_status message.
-This requires the ESC to provide both voltage as well as current.</long_desc>
+This requires the ESC to provide both voltage as well as current (via ESC telemetry).</long_desc>
       <reboot_required>True</reboot_required>
       <values>
         <value code="-1">Disabled</value>
-        <value code="0">Power Module</value>
+        <value code="0">Power Module / Analog</value>
         <value code="1">External</value>
         <value code="2">ESCs</value>
       </values>
@@ -1736,15 +1746,20 @@ it drops off to a voltage level damaging the cells.</long_desc>
     </parameter>
     <parameter name="BAT3_SOURCE" default="-1" type="INT32">
       <short_desc>Battery 3 monitoring source</short_desc>
-      <long_desc>This parameter controls the source of battery data. The value 'Power Module'
-means that measurements are expected to come from a power module. If the value is set to
-'External' then the system expects to receive mavlink battery status messages.
+      <long_desc>This parameter controls the source of battery data. The value 'Power Module / Analog'
+means that measurements are expected to come from either analog (ADC) inputs
+or an I2C power monitor (e.g. INA226). Analog inputs are voltage and current
+measurements read from the board's ADC channels, typically from an onboard
+voltage divider and current shunt, or an external analog power module.
+I2C power monitors are digital sensors on the I2C bus.
+If the value is set to 'External' then the system expects to receive MAVLink
+or CAN battery status messages, or the battery data is published by an external driver.
 If the value is set to 'ESCs', the battery information are taken from the esc_status message.
-This requires the ESC to provide both voltage as well as current.</long_desc>
+This requires the ESC to provide both voltage as well as current (via ESC telemetry).</long_desc>
       <reboot_required>True</reboot_required>
       <values>
         <value code="-1">Disabled</value>
-        <value code="0">Power Module</value>
+        <value code="0">Power Module / Analog</value>
         <value code="1">External</value>
         <value code="2">ESCs</value>
       </values>
@@ -3178,7 +3193,7 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
       <short_desc>Integer bitmask controlling GPS checks</short_desc>
       <long_desc>Each threshold value is defined by the parameter indicated next to the check. Drift and offset checks only run when the vehicle is on ground and stationary.</long_desc>
       <min>0</min>
-      <max>2047</max>
+      <max>4095</max>
       <bitmask>
         <bit index="0">Sat count (EKF2_REQ_NSATS)</bit>
         <bit index="1">PDOP (EKF2_REQ_PDOP)</bit>
@@ -3191,6 +3206,7 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
         <bit index="8">Vertical speed offset (EKF2_REQ_VDRIFT)</bit>
         <bit index="9">Spoofing</bit>
         <bit index="10">GPS fix type (EKF2_REQ_FIX)</bit>
+        <bit index="11">Jamming</bit>
       </bitmask>
     </parameter>
     <parameter name="EKF2_GPS_CTRL" default="7" type="INT32">
@@ -5362,6 +5378,10 @@ Mode 6 is intended for use with a ground control station (not necessarily an RTK
         <value code="5">Rover with Static Base on UART2 (similar to Default, except coming in on UART2)</value>
         <value code="6">Ground Control Station (UART2 outputs NMEA)</value>
       </values>
+    </parameter>
+    <parameter name="GPS_UBX_PPK" default="0" type="INT32" boolean="true">
+      <short_desc>Enable MSM7 message output for PPK workflow</short_desc>
+      <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="GPS_YAW_OFFSET" default="0." type="FLOAT">
       <short_desc>Heading/Yaw offset for dual antenna GPS</short_desc>
