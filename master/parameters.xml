@@ -2153,13 +2153,16 @@ A negative value disables autmoatic disarming triggered by a pre-takeoff timeout
     </parameter>
     <parameter name="COM_DLL_EXCEPT" default="0" type="INT32">
       <short_desc>Datalink loss exceptions</short_desc>
-      <long_desc>Specify modes in which datalink loss is ignored and the failsafe action not triggered.</long_desc>
+      <long_desc>Specify modes in which ground control station connection loss is ignored and no failsafe action is triggered.
+See also COM_RCL_EXCEPT.</long_desc>
       <min>0</min>
-      <max>7</max>
+      <max>31</max>
       <bitmask>
         <bit index="0">Mission</bit>
-        <bit index="1">Hold</bit>
+        <bit index="1">Auto modes</bit>
         <bit index="2">Offboard</bit>
+        <bit index="3">External Mode</bit>
+        <bit index="4">Altitude Cruise</bit>
       </bitmask>
     </parameter>
     <parameter name="COM_DL_LOSS_T" default="10" type="INT32">
@@ -2651,13 +2654,14 @@ A negative value disables the check.</long_desc>
     </parameter>
     <parameter name="COM_RCL_EXCEPT" default="0" type="INT32">
       <short_desc>Manual control loss exceptions</short_desc>
-      <long_desc>Specify modes where manual control loss is ignored and no failsafe is triggered.
-External modes requiring stick input will still failsafe.</long_desc>
+      <long_desc>Specify modes in which stick input is ignored and no failsafe action is triggered.
+External modes requiring stick input will still failsafe.
+Auto modes are: Hold, Takeoff, Land, RTL, Descend, Follow Target, Precland, Orbit.</long_desc>
       <min>0</min>
       <max>31</max>
       <bitmask>
         <bit index="0">Mission</bit>
-        <bit index="1">Hold</bit>
+        <bit index="1">Auto modes</bit>
         <bit index="2">Offboard</bit>
         <bit index="3">External Mode</bit>
         <bit index="4">Altitude Cruise</bit>
@@ -7411,6 +7415,12 @@ This parameter can only be set if all PWM Center parameters are set to default.<
         <value code="7">7</value>
         <value code="8">8</value>
       </values>
+    </parameter>
+    <parameter name="CA_SV_FLAP_SLEW" default="0.5" type="FLOAT">
+      <short_desc>Control Surface slew rate for normalized flaps setpoint</short_desc>
+      <min>0.0</min>
+      <max>5.0</max>
+      <decimal>1</decimal>
     </parameter>
     <parameter name="CA_SV_TL0_CT" default="1" type="INT32">
       <short_desc>Tilt 0 is used for control</short_desc>
@@ -14241,11 +14251,14 @@ Zero rotation is defined as X on flow board pointing towards front of vehicle.</
 The GPS selection logic waits until the primary receiver is available to
 send data to the EKF even if a secondary instance is already available.
 The secondary instance is then only used if the primary one times out.
-To have an equal priority of all the instances, set this parameter to -1 and
-the best receiver will be used.
+Accepted values:
+-1 : Auto (equal priority for all instances)
+0 : Main serial GPS instance
+1 : Secondary serial GPS instance
+2-127 : UAVCAN module node ID
 This parameter has no effect if blending is active.</long_desc>
       <min>-1</min>
-      <max>1</max>
+      <max>127</max>
     </parameter>
     <parameter name="SENS_GPS_TAU" default="10.0" type="FLOAT">
       <short_desc>Multi GPS Blending Time Constant</short_desc>
@@ -15818,6 +15831,12 @@ in int32 format. For example, 192.168.1.2 is mapped to -1062731518;
     <parameter name="UXRCE_DDS_DOM_ID" default="0" type="INT32" category="System">
       <short_desc>uXRCE-DDS domain ID</short_desc>
       <long_desc>uXRCE-DDS domain ID</long_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="UXRCE_DDS_FLCTRL" default="0" type="INT32" boolean="true" category="System">
+      <short_desc>Enable serial flow control for UXRCE interface</short_desc>
+      <long_desc>This is used to enable flow control for the serial uXRCE instance.
+Used for reliable high bandwidth communication.</long_desc>
       <reboot_required>True</reboot_required>
     </parameter>
     <parameter name="UXRCE_DDS_KEY" default="1" type="INT32" category="System">
