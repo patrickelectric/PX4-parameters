@@ -5343,6 +5343,14 @@ Set this to 57600 if you want to attach a telemetry radio on UART2.</long_desc>
         <bit index="5">Enable I2C output protocol RTCM3X</bit>
       </bitmask>
     </parameter>
+    <parameter name="GPS_UBX_DGNSS_TO" default="0" type="INT32">
+      <short_desc>u-blox GPS DGNSS timeout</short_desc>
+      <long_desc>When set to 0 (default), default DGNSS timeout set by u-blox will be used.</long_desc>
+      <min>0</min>
+      <max>255</max>
+      <unit>s</unit>
+      <reboot_required>true</reboot_required>
+    </parameter>
     <parameter name="GPS_UBX_DYNMODEL" default="7" type="INT32">
       <short_desc>u-blox GPS dynamic platform model</short_desc>
       <long_desc>u-blox receivers support different dynamic platform models to adjust the navigation engine to
@@ -5357,6 +5365,22 @@ the expected application environment.</long_desc>
         <value code="7">airborne with &lt;2g acceleration</value>
         <value code="8">airborne with &lt;4g acceleration</value>
       </values>
+    </parameter>
+    <parameter name="GPS_UBX_MIN_CNO" default="0" type="INT32">
+      <short_desc>u-blox GPS minimum satellite signal level for navigation</short_desc>
+      <long_desc>When set to 0 (default), default minimum satellite signal level set by u-blox wll be used.</long_desc>
+      <min>0</min>
+      <max>255</max>
+      <unit>dBHz</unit>
+      <reboot_required>true</reboot_required>
+    </parameter>
+    <parameter name="GPS_UBX_MIN_ELEV" default="0" type="INT32">
+      <short_desc>u-blox GPS minimum elevation for a GNSS satellite to be used in navigation</short_desc>
+      <long_desc>When set to 0 (default), default minimum elevation set by u-blox will be used.</long_desc>
+      <min>0</min>
+      <max>127</max>
+      <unit>deg</unit>
+      <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="GPS_UBX_MODE" default="0" type="INT32">
       <short_desc>u-blox GPS Mode</short_desc>
@@ -11794,10 +11818,11 @@ This is affected by RTL_MIN_DIST and RTL_CONE_ANG.</long_desc>
       <long_desc>Return mode destination and flight path (home location, rally point, mission landing pattern, reverse mission)</long_desc>
       <values>
         <value code="0">Return to closest safe point (home or rally point) via direct path.</value>
-        <value code="1">Return to closest safe point other than home (mission landing pattern or rally point), via direct path. If no mission landing or rally points are defined return home via direct path. Always chose closest safe landing point if vehicle is a VTOL in hover mode.</value>
+        <value code="1">Return to closest safe point other than home (mission landing pattern or rally point), via direct path. If no mission landing or rally points are defined return home via direct path. Always choose closest safe landing point if vehicle is a VTOL in hover mode.</value>
         <value code="2">Return to a planned mission landing, if available, using the mission path, else return to home via the reverse mission path. Do not consider rally points.</value>
         <value code="3">Return via direct path to closest destination: home, start of mission landing pattern or safe point. If the destination is a mission landing pattern, follow the pattern to land.</value>
         <value code="4">Return to the planned mission landing, or to home via the reverse mission path, whichever is closer by counting waypoints. Do not consider rally points.</value>
+        <value code="5">Return directly to safe landing point (do not consider mission landing and Home)</value>
       </values>
     </parameter>
   </group>
