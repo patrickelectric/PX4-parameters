@@ -5667,6 +5667,18 @@ tail_output += CA_HELI_YAW_TH_S * throttle</long_desc>
       <decimal>3</decimal>
       <increment>0.1</increment>
     </parameter>
+    <parameter name="CA_ICE_PERIOD" default="0.0" type="FLOAT">
+      <short_desc>Ice shedding cycle period</short_desc>
+      <long_desc>Ice shedding prevents ice buildup in VTOL aircraft motors by
+periodically spinning inactive rotors. When enabled (period
+&gt; 0), every cycle lasts for the defined period and includes
+a 2‑second spin at 0.01 motor output. If period &lt;= 0, the
+feature is disabled.</long_desc>
+      <min>0.0</min>
+      <unit>s</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
+    </parameter>
     <parameter name="CA_MAX_SVO_THROW" default="0.0" type="FLOAT">
       <short_desc>Throw angle of swashplate servo at maximum commands for linearization</short_desc>
       <long_desc>Used to linearize mechanical output of swashplate servos to avoid axis coupling and binding with 4 servo redundancy.
