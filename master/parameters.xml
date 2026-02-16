@@ -5034,16 +5034,36 @@ This gain enables the use of a yaw actuator to counteract this effect.</long_des
     </parameter>
   </group>
   <group name="Failure Detector">
-    <parameter name="FD_ACT_EN" default="1" type="INT32" boolean="true">
+    <parameter name="FD_ACT_EN" default="0" type="INT32" boolean="true">
       <short_desc>Enable Actuator Failure check</short_desc>
       <long_desc>If enabled, failure detector will verify that for motors, a minimum amount of ESC current per throttle
 level is being consumed.
 Otherwise this indicates an motor failure.</long_desc>
       <reboot_required>true</reboot_required>
     </parameter>
-    <parameter name="FD_ACT_MOT_C2T" default="2.0" type="FLOAT">
-      <short_desc>Motor Failure Current/Throttle Threshold</short_desc>
-      <long_desc>Motor failure triggers only below this current value</long_desc>
+    <parameter name="FD_ACT_HIGH_OFF" default="10." type="FLOAT">
+      <short_desc>Overcurrent motor failure limit offset</short_desc>
+      <long_desc>threshold = FD_ACT_MOT_C2T * thrust + FD_ACT_HIGH_OFF</long_desc>
+      <min>0</min>
+      <max>30</max>
+      <unit>A</unit>
+      <decimal>2</decimal>
+      <increment>1</increment>
+    </parameter>
+    <parameter name="FD_ACT_LOW_OFF" default="10." type="FLOAT">
+      <short_desc>Undercurrent motor failure limit offset</short_desc>
+      <long_desc>threshold = FD_ACT_MOT_C2T * thrust - FD_ACT_LOW_OFF</long_desc>
+      <min>0</min>
+      <max>30</max>
+      <unit>A</unit>
+      <decimal>2</decimal>
+      <increment>1</increment>
+    </parameter>
+    <parameter name="FD_ACT_MOT_C2T" default="35." type="FLOAT">
+      <short_desc>Motor Failure Current/Throttle Scale</short_desc>
+      <long_desc>Determines the slope between expected steady state current and linearized, normalized thrust command.
+E.g. FD_ACT_MOT_C2T A represents the expected steady state current at 100%.
+FD_ACT_LOW_OFF and FD_ACT_HIGH_OFF offset the threshold from that slope.</long_desc>
       <min>0.0</min>
       <max>50.0</max>
       <unit>A/%</unit>
@@ -5051,18 +5071,18 @@ Otherwise this indicates an motor failure.</long_desc>
       <increment>1</increment>
     </parameter>
     <parameter name="FD_ACT_MOT_THR" default="0.2" type="FLOAT">
-      <short_desc>Motor Failure Throttle Threshold</short_desc>
-      <long_desc>Motor failure triggers only above this throttle value.</long_desc>
+      <short_desc>Motor Failure Thrust Threshold</short_desc>
+      <long_desc>Failure detection per motor only triggers above this thrust value.
+Set to 1 to disable the detection.</long_desc>
       <min>0.0</min>
       <max>1.0</max>
       <unit>norm</unit>
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
-    <parameter name="FD_ACT_MOT_TOUT" default="100" type="INT32">
-      <short_desc>Motor Failure Time Threshold</short_desc>
-      <long_desc>Motor failure triggers only if the throttle threshold and the
-current to throttle threshold are violated for this time.</long_desc>
+    <parameter name="FD_ACT_MOT_TOUT" default="1000" type="INT32">
+      <short_desc>Motor Failure Hysteresis Time</short_desc>
+      <long_desc>Motor failure only triggers after current thresholds are exceeded for this time.</long_desc>
       <min>10</min>
       <max>10000</max>
       <unit>ms</unit>
@@ -5366,6 +5386,14 @@ the expected application environment.</long_desc>
         <value code="8">airborne with &lt;4g acceleration</value>
       </values>
     </parameter>
+    <parameter name="GPS_UBX_JAM_DET" default="1" type="INT32" boolean="true">
+      <short_desc>u-blox GPS jamming detection high sensitivity mode</short_desc>
+      <long_desc>Enables or disables the high sensitivity mode for the u-blox jamming detection
+(CFG-SEC-JAMDET_SENSITIVITY_HI). When enabled, the receiver uses a
+more sensitive algorithm to detect jamming. Disabling this may reduce false
+positives in electrically noisy environments.</long_desc>
+      <reboot_required>true</reboot_required>
+    </parameter>
     <parameter name="GPS_UBX_MIN_CNO" default="0" type="INT32">
       <short_desc>u-blox GPS minimum satellite signal level for navigation</short_desc>
       <long_desc>When set to 0 (default), default minimum satellite signal level set by u-blox wll be used.</long_desc>
@@ -5409,6 +5437,19 @@ Mode 6 is intended for use with a ground control station (not necessarily an RTK
     </parameter>
     <parameter name="GPS_UBX_PPK" default="0" type="INT32" boolean="true">
       <short_desc>Enable MSM7 message output for PPK workflow</short_desc>
+      <reboot_required>true</reboot_required>
+    </parameter>
+    <parameter name="GPS_UBX_RATE" default="0" type="INT32">
+      <short_desc>u-blox GPS output rate</short_desc>
+      <long_desc>Configure the output rate of u-blox GPS receivers (protocol v27+).
+When set to 0, automatic rate selection is used based on the receiver model.
+Default rates: M9N=8Hz, F9P L1L2=5Hz, F9P L1L5=5Hz, Others=10Hz.
+Note: Higher rates reduce satellite count (e.g., &gt;8Hz limits to 16 SVs on M9N).
+Max rates vary by model and RTK mode: F9P L1L2=5-7Hz, F9P L1L5=7-8Hz, X20=25Hz.
+High rates at 115200 baud may cause dropouts.</long_desc>
+      <min>0</min>
+      <max>25</max>
+      <unit>Hz</unit>
       <reboot_required>true</reboot_required>
     </parameter>
     <parameter name="GPS_YAW_OFFSET" default="0." type="FLOAT">
