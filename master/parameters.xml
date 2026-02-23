@@ -2105,6 +2105,18 @@ disabled, warn only or deny arming.</long_desc>
       <long_desc>0: Arming/disarming triggers on switch transition.
 1: Arming/disarming triggers when holding the momentary button down like the stick gesture.</long_desc>
     </parameter>
+    <parameter name="COM_ARM_TRAFF" default="0" type="INT32">
+      <short_desc>Enable Traffic Avoidance system detection check</short_desc>
+      <long_desc>This check detects if a traffic avoidance system (ADSB/FLARM transponder)
+is missing. Depending on the value of the parameter, the check can be
+disabled, warn only, or deny arming.</long_desc>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Warning only</value>
+        <value code="2">Enforce for all modes</value>
+        <value code="3">Enforce for mission modes only</value>
+      </values>
+    </parameter>
     <parameter name="COM_ARM_WO_GPS" default="1" type="INT32">
       <short_desc>Arming without GNSS configuration</short_desc>
       <long_desc>Configures whether arming is allowed without GNSS, for modes that require a global position
@@ -2897,8 +2909,8 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
       <unit>m/s^2</unit>
       <decimal>2</decimal>
     </parameter>
-    <parameter name="EKF2_AGP_CTRL" default="0" type="INT32">
-      <short_desc>Aux global position (AGP) sensor aiding</short_desc>
+    <parameter name="EKF2_AGP0_CTRL" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 0 aiding</short_desc>
       <long_desc>Set bits in the following positions to enable: 0 : Horizontal position fusion 1 : Vertical position fusion</long_desc>
       <min>0</min>
       <max>3</max>
@@ -2907,31 +2919,175 @@ set by COM_RC_LOSS_T in seconds.</long_desc>
         <bit index="1">Vertical position</bit>
       </bitmask>
     </parameter>
-    <parameter name="EKF2_AGP_DELAY" default="0" type="FLOAT">
-      <short_desc>Aux global position estimator delay relative to IMU measurements</short_desc>
+    <parameter name="EKF2_AGP0_DELAY" default="0" type="FLOAT">
+      <short_desc>Auxiliary global position sensor 0 delay (to IMU)</short_desc>
       <min>0</min>
-      <max>300</max>
+      <max>1000</max>
       <unit>ms</unit>
       <decimal>1</decimal>
       <reboot_required>True</reboot_required>
     </parameter>
-    <parameter name="EKF2_AGP_GATE" default="3.0" type="FLOAT">
-      <short_desc>Gate size for aux global position fusion</short_desc>
+    <parameter name="EKF2_AGP0_GATE" default="3.0" type="FLOAT">
+      <short_desc>Gate size for auxiliary global position sensor 0 fusion</short_desc>
       <long_desc>Sets the number of standard deviations used by the innovation consistency test.</long_desc>
       <min>1.0</min>
       <unit>SD</unit>
       <decimal>1</decimal>
     </parameter>
-    <parameter name="EKF2_AGP_MODE" default="0" type="INT32">
-      <short_desc>Fusion reset mode</short_desc>
+    <parameter name="EKF2_AGP0_ID" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 0 ID</short_desc>
+      <long_desc>Sensor ID for slot 0. Set to 0 to disable this slot.</long_desc>
+      <min>0</min>
+      <max>255</max>
+    </parameter>
+    <parameter name="EKF2_AGP0_MODE" default="0" type="INT32">
+      <short_desc>Fusion reset mode for sensor 0</short_desc>
       <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
       <values>
         <value code="0">Automatic</value>
         <value code="1">Dead-reckoning</value>
       </values>
     </parameter>
-    <parameter name="EKF2_AGP_NOISE" default="0.9" type="FLOAT">
-      <short_desc>Measurement noise for aux global position measurements</short_desc>
+    <parameter name="EKF2_AGP0_NOISE" default="1.0" type="FLOAT">
+      <short_desc>Measurement noise for auxiliary global position sensor 0</short_desc>
+      <long_desc>Used to lower bound or replace the uncertainty included in the message</long_desc>
+      <min>0.01</min>
+      <unit>m</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP1_CTRL" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 1 aiding</short_desc>
+      <long_desc>Set bits in the following positions to enable: 0 : Horizontal position fusion 1 : Vertical position fusion</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">Horizontal position</bit>
+        <bit index="1">Vertical position</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="EKF2_AGP1_DELAY" default="0" type="FLOAT">
+      <short_desc>Auxiliary global position sensor 1 delay (to IMU)</short_desc>
+      <min>0</min>
+      <max>1000</max>
+      <unit>ms</unit>
+      <decimal>1</decimal>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="EKF2_AGP1_GATE" default="3.0" type="FLOAT">
+      <short_desc>Gate size for auxiliary global position sensor 1 fusion</short_desc>
+      <long_desc>Sets the number of standard deviations used by the innovation consistency test.</long_desc>
+      <min>1.0</min>
+      <unit>SD</unit>
+      <decimal>1</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP1_ID" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 1 ID</short_desc>
+      <long_desc>Sensor ID for slot 1. Set to 0 to disable this slot.</long_desc>
+      <min>0</min>
+      <max>255</max>
+    </parameter>
+    <parameter name="EKF2_AGP1_MODE" default="0" type="INT32">
+      <short_desc>Fusion reset mode for sensor 1</short_desc>
+      <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
+      <values>
+        <value code="0">Automatic</value>
+        <value code="1">Dead-reckoning</value>
+      </values>
+    </parameter>
+    <parameter name="EKF2_AGP1_NOISE" default="1.0" type="FLOAT">
+      <short_desc>Measurement noise for auxiliary global position sensor 1</short_desc>
+      <long_desc>Used to lower bound or replace the uncertainty included in the message</long_desc>
+      <min>0.01</min>
+      <unit>m</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP2_CTRL" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 2 aiding</short_desc>
+      <long_desc>Set bits in the following positions to enable: 0 : Horizontal position fusion 1 : Vertical position fusion</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">Horizontal position</bit>
+        <bit index="1">Vertical position</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="EKF2_AGP2_DELAY" default="0" type="FLOAT">
+      <short_desc>Auxiliary global position sensor 2 delay (to IMU)</short_desc>
+      <min>0</min>
+      <max>1000</max>
+      <unit>ms</unit>
+      <decimal>1</decimal>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="EKF2_AGP2_GATE" default="3.0" type="FLOAT">
+      <short_desc>Gate size for auxiliary global position sensor 2 fusion</short_desc>
+      <long_desc>Sets the number of standard deviations used by the innovation consistency test.</long_desc>
+      <min>1.0</min>
+      <unit>SD</unit>
+      <decimal>1</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP2_ID" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 2 ID</short_desc>
+      <long_desc>Sensor ID for slot 2. Set to 0 to disable this slot.</long_desc>
+      <min>0</min>
+      <max>255</max>
+    </parameter>
+    <parameter name="EKF2_AGP2_MODE" default="0" type="INT32">
+      <short_desc>Fusion reset mode for sensor 2</short_desc>
+      <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
+      <values>
+        <value code="0">Automatic</value>
+        <value code="1">Dead-reckoning</value>
+      </values>
+    </parameter>
+    <parameter name="EKF2_AGP2_NOISE" default="1.0" type="FLOAT">
+      <short_desc>Measurement noise for auxiliary global position sensor 2</short_desc>
+      <long_desc>Used to lower bound or replace the uncertainty included in the message</long_desc>
+      <min>0.01</min>
+      <unit>m</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP3_CTRL" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 3 aiding</short_desc>
+      <long_desc>Set bits in the following positions to enable: 0 : Horizontal position fusion 1 : Vertical position fusion</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">Horizontal position</bit>
+        <bit index="1">Vertical position</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="EKF2_AGP3_DELAY" default="0" type="FLOAT">
+      <short_desc>Auxiliary global position sensor 3 delay (to IMU)</short_desc>
+      <min>0</min>
+      <max>1000</max>
+      <unit>ms</unit>
+      <decimal>1</decimal>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="EKF2_AGP3_GATE" default="3.0" type="FLOAT">
+      <short_desc>Gate size for auxiliary global position sensor 3 fusion</short_desc>
+      <long_desc>Sets the number of standard deviations used by the innovation consistency test.</long_desc>
+      <min>1.0</min>
+      <unit>SD</unit>
+      <decimal>1</decimal>
+    </parameter>
+    <parameter name="EKF2_AGP3_ID" default="0" type="INT32">
+      <short_desc>Auxiliary global position sensor 3 ID</short_desc>
+      <long_desc>Sensor ID for slot 3. Set to 0 to disable this slot.</long_desc>
+      <min>0</min>
+      <max>255</max>
+    </parameter>
+    <parameter name="EKF2_AGP3_MODE" default="0" type="INT32">
+      <short_desc>Fusion reset mode for sensor 3</short_desc>
+      <long_desc>Automatic: reset on fusion timeout if no other source of position is available Dead-reckoning: reset on fusion timeout if no source of velocity is available</long_desc>
+      <values>
+        <value code="0">Automatic</value>
+        <value code="1">Dead-reckoning</value>
+      </values>
+    </parameter>
+    <parameter name="EKF2_AGP3_NOISE" default="1.0" type="FLOAT">
+      <short_desc>Measurement noise for auxiliary global position sensor 3</short_desc>
       <long_desc>Used to lower bound or replace the uncertainty included in the message</long_desc>
       <min>0.01</min>
       <unit>m</unit>
@@ -4228,6 +4384,16 @@ Also applies to flaperons if enabled in the mixer/allocation.</long_desc>
       <unit>m/s^2</unit>
       <decimal>1</decimal>
       <increment>0.5</increment>
+    </parameter>
+    <parameter name="FW_LAUN_CS_LK_DY" default="0." type="FLOAT">
+      <short_desc>Control surface launch delay</short_desc>
+      <long_desc>Locks control surfaces during pre-launch (armed) and until this time since launch has passed.
+Only affects control surfaces that have corresponding flag set, and not active for runway takeoff.
+Set to 0 to disable any surface locking after arming.</long_desc>
+      <min>0.0</min>
+      <unit>s</unit>
+      <decimal>1</decimal>
+      <increment>0.1</increment>
     </parameter>
     <parameter name="FW_LAUN_DETCN_ON" default="0" type="INT32" boolean="true">
       <short_desc>Fixed-wing launch detection</short_desc>
@@ -5548,6 +5714,22 @@ Some are generic, while others are specifically fit to a certain vehicle with a 
         <value code="14">Spacecraft 2D</value>
         <value code="15">Spacecraft 3D</value>
       </values>
+    </parameter>
+    <parameter name="CA_CS_LAUN_LK" default="0" type="INT32">
+      <short_desc>Control surface launch lock enabled</short_desc>
+      <long_desc>If actuator launch lock is enabled, this surface is kept at the disarmed value.</long_desc>
+      <min>0</min>
+      <max>255</max>
+      <bitmask>
+        <bit index="0">Control Surface 1</bit>
+        <bit index="1">Control Surface 2</bit>
+        <bit index="2">Control Surface 3</bit>
+        <bit index="3">Control Surface 4</bit>
+        <bit index="4">Control Surface 5</bit>
+        <bit index="5">Control Surface 6</bit>
+        <bit index="6">Control Surface 7</bit>
+        <bit index="7">Control Surface 8</bit>
+      </bitmask>
     </parameter>
     <parameter name="CA_FAILURE_MODE" default="0" type="INT32">
       <short_desc>Motor failure handling mode</short_desc>
@@ -7795,16 +7977,6 @@ A negative value indicates no ground effect.</long_desc>
       <unit>deg/s</unit>
       <decimal>1</decimal>
     </parameter>
-    <parameter name="LNDMC_TRIG_TIME" default="1.0" type="FLOAT">
-      <short_desc>Multicopter land detection trigger time</short_desc>
-      <long_desc>Total time it takes to go through all three land detection stages:
-ground contact, maybe landed, landed
-when all necessary conditions are constantly met.</long_desc>
-      <min>0.1</min>
-      <max>10.0</max>
-      <unit>s</unit>
-      <decimal>1</decimal>
-    </parameter>
     <parameter name="LNDMC_XY_VEL_MAX" default="1.5" type="FLOAT">
       <short_desc>Multicopter max horizontal velocity</short_desc>
       <long_desc>Maximum horizontal velocity allowed in the landed state</long_desc>
@@ -9468,7 +9640,7 @@ With MPC_THR_HOVER 0.5 it's equivalent to No rescale.</long_desc>
     <parameter name="MPC_THR_HOVER" default="0.5" type="FLOAT">
       <short_desc>Vertical thrust required to hover</short_desc>
       <long_desc>Mapped to center throttle stick in Stabilized mode (see MPC_THR_CURVE).
-Used for initialization of the hover thrust estimator (see MPC_USE_HTE).
+Used for initialization of the hover thrust estimator.
 The estimated hover thrust is used as base for zero vertical acceleration in altitude control.
 The hover thrust is important for land detection to work correctly.</long_desc>
       <min>0.1</min>
@@ -9541,11 +9713,6 @@ A time constant of 0 disables the ramp</long_desc>
       <max>5</max>
       <unit>m/s</unit>
       <decimal>2</decimal>
-    </parameter>
-    <parameter name="MPC_USE_HTE" default="1" type="INT32" boolean="true">
-      <short_desc>Use hover thrust estimate for altitude control</short_desc>
-      <long_desc>Disable to use the fixed parameter MPC_THR_HOVER instead of the hover thrust estimate in the position controller.
-This parameter does not influence Stabilized mode throttle curve (see MPC_THR_CURVE).</long_desc>
     </parameter>
     <parameter name="MPC_VELD_LP" default="5.0" type="FLOAT">
       <short_desc>Velocity derivative low pass cutoff frequency</short_desc>
@@ -15743,6 +15910,40 @@ reloaded from the airframe configuration.</long_desc>
     </parameter>
   </group>
   <group name="UUV Attitude Control">
+    <parameter name="UUV_HGT_B_DOWN" default="12" type="INT32">
+      <short_desc>Height rc-button down</short_desc>
+      <min>0</min>
+      <max>16</max>
+    </parameter>
+    <parameter name="UUV_HGT_B_UP" default="11" type="INT32">
+      <short_desc>Height rc-button up</short_desc>
+      <min>0</min>
+      <max>16</max>
+    </parameter>
+    <parameter name="UUV_HGT_D" default="1.0" type="FLOAT">
+      <short_desc>Height differential gain</short_desc>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="UUV_HGT_I" default="0.2" type="FLOAT">
+      <short_desc>Height integrational gain</short_desc>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="UUV_HGT_I_SPD" default="1.0" type="FLOAT">
+      <short_desc>sum speed of error for integrational gain</short_desc>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="UUV_HGT_MAX_DIFF" default="0.3" type="FLOAT">
+      <short_desc>maximum Height distance controlled by manual input. Diff between actual and desired Height cant be higher than that</short_desc>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="UUV_HGT_P" default="1.0" type="FLOAT">
+      <short_desc>Height proportional gain</short_desc>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="UUV_HGT_STR" default="1.0" type="FLOAT">
+      <short_desc>Height change strength from manual input</short_desc>
+      <decimal>2</decimal>
+    </parameter>
     <parameter name="UUV_MGM_PITCH" default="0.05" type="FLOAT">
       <short_desc>Pitch gain for manual inputs in manual control mode</short_desc>
       <min>0.0</min>
