@@ -2588,7 +2588,7 @@ set by COM_OF_LOSS_T in seconds.</long_desc>
       <increment>0.01</increment>
     </parameter>
     <parameter name="COM_PARACHUTE" default="0" type="INT32" boolean="true">
-      <short_desc>Expect and require a healthy MAVLink parachute system</short_desc>
+      <short_desc>Require MAVLink parachute system to be present and healthy</short_desc>
     </parameter>
     <parameter name="COM_POS_FS_EPH" default="5." type="FLOAT">
       <short_desc>Horizontal position error threshold for hovering systems</short_desc>
@@ -5892,11 +5892,9 @@ tail_output += CA_HELI_YAW_TH_S * throttle</long_desc>
     </parameter>
     <parameter name="CA_ICE_PERIOD" default="0.0" type="FLOAT">
       <short_desc>Ice shedding cycle period</short_desc>
-      <long_desc>Ice shedding prevents ice buildup in VTOL aircraft motors by
-periodically spinning inactive rotors. When enabled (period
-&gt; 0), every cycle lasts for the defined period and includes
-a 2‑second spin at 0.01 motor output. If period &lt;= 0, the
-feature is disabled.</long_desc>
+      <long_desc>Ice shedding prevents ice buildup in VTOL aircraft motors by periodically spinning inactive rotors.
+When enabled (period &gt; 0), every cycle lasts for the defined period and includes a 2-second spin at 0.01 motor output.
+If period &lt;= 0, the feature is disabled.</long_desc>
       <min>0.0</min>
       <unit>s</unit>
       <decimal>1</decimal>
@@ -14921,6 +14919,14 @@ This value is usually about 5 times the mass of the quadrotor.</long_desc>
         <value code="4">Hexacopter</value>
         <value code="5">Rover Ackermann</value>
       </values>
+    </parameter>
+    <parameter name="SIH_WIND_E" default="0.0" type="FLOAT">
+      <short_desc>Wind velocity from east direction</short_desc>
+      <unit>m/s</unit>
+    </parameter>
+    <parameter name="SIH_WIND_N" default="0.0" type="FLOAT">
+      <short_desc>Wind velocity from north direction</short_desc>
+      <unit>m/s</unit>
     </parameter>
   </group>
   <group name="Simulator">
