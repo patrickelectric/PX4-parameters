@@ -1641,6 +1641,19 @@ the drone properly.
       <increment>50</increment>
       <reboot_required>True</reboot_required>
     </parameter>
+    <parameter name="BAT1_I_OVERWRITE" default="0" type="FLOAT">
+      <short_desc>Battery 1 idle current overwrite</short_desc>
+      <long_desc>This parameter allows to overwrite the current measured during
+idle (unarmed) state with a user-defined constant value (expressed in amperes).
+When the system is armed, the measured current is used. This is useful
+because on certain ESCs current measurements are inaccurate in case of no load.
+Negative values are ignored and will cause the measured current to be used.
+The default value of 0 disables the overwrite, in which case the measured value
+is always used.
+
+</long_desc>
+      <decimal>2</decimal>
+    </parameter>
     <parameter name="BAT1_N_CELLS" default="0" type="INT32">
       <short_desc>Number of cells for battery 1</short_desc>
       <long_desc>Defines the number of cells the attached battery consists of.
@@ -1736,6 +1749,19 @@ it drops off to a voltage level damaging the cells.
       <increment>50</increment>
       <reboot_required>True</reboot_required>
     </parameter>
+    <parameter name="BAT2_I_OVERWRITE" default="0" type="FLOAT">
+      <short_desc>Battery 2 idle current overwrite</short_desc>
+      <long_desc>This parameter allows to overwrite the current measured during
+idle (unarmed) state with a user-defined constant value (expressed in amperes).
+When the system is armed, the measured current is used. This is useful
+because on certain ESCs current measurements are inaccurate in case of no load.
+Negative values are ignored and will cause the measured current to be used.
+The default value of 0 disables the overwrite, in which case the measured value
+is always used.
+
+</long_desc>
+      <decimal>2</decimal>
+    </parameter>
     <parameter name="BAT2_N_CELLS" default="0" type="INT32">
       <short_desc>Number of cells for battery 2</short_desc>
       <long_desc>Defines the number of cells the attached battery consists of.
@@ -1830,6 +1856,19 @@ it drops off to a voltage level damaging the cells.
       <decimal>0</decimal>
       <increment>50</increment>
       <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="BAT3_I_OVERWRITE" default="0" type="FLOAT">
+      <short_desc>Battery 3 idle current overwrite</short_desc>
+      <long_desc>This parameter allows to overwrite the current measured during
+idle (unarmed) state with a user-defined constant value (expressed in amperes).
+When the system is armed, the measured current is used. This is useful
+because on certain ESCs current measurements are inaccurate in case of no load.
+Negative values are ignored and will cause the measured current to be used.
+The default value of 0 disables the overwrite, in which case the measured value
+is always used.
+
+</long_desc>
+      <decimal>2</decimal>
     </parameter>
     <parameter name="BAT3_N_CELLS" default="0" type="INT32">
       <short_desc>Number of cells for battery 3</short_desc>
@@ -4161,6 +4200,40 @@ If GPS is set as reference and EKF2_GPS_CTRL is not 0, the GPS altitude is still
       <unit>m/s</unit>
       <decimal>2</decimal>
     </parameter>
+    <parameter name="EKF2_RNGBC_CTRL" default="0" type="INT32">
+      <short_desc>Ranging beacon fusion control</short_desc>
+      <long_desc>Enable/disable ranging beacon fusion.
+</long_desc>
+      <values>
+        <value code="0">Disable ranging beacon fusion</value>
+        <value code="1">Enable ranging beacon fusion</value>
+      </values>
+    </parameter>
+    <parameter name="EKF2_RNGBC_DELAY" default="0" type="FLOAT">
+      <short_desc>Ranging beacon measurement delay relative to IMU measurements</short_desc>
+      <min>0</min>
+      <max>1000</max>
+      <unit>ms</unit>
+      <decimal>1</decimal>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="EKF2_RNGBC_GATE" default="5.0" type="FLOAT">
+      <short_desc>Gate size for ranging beacon fusion</short_desc>
+      <long_desc>Sets the number of standard deviations used by the innovation consistency test.
+</long_desc>
+      <min>1.0</min>
+      <unit>SD</unit>
+      <decimal>1</decimal>
+    </parameter>
+    <parameter name="EKF2_RNGBC_NOISE" default="30.0" type="FLOAT">
+      <short_desc>Measurement noise for ranging beacon fusion</short_desc>
+      <long_desc>Used to lower bound or replace the uncertainty included in the message
+</long_desc>
+      <min>0.1</min>
+      <max>500.0</max>
+      <unit>m</unit>
+      <decimal>1</decimal>
+    </parameter>
     <parameter name="EKF2_RNG_A_HMAX" default="5.0" type="FLOAT">
       <short_desc>Maximum height above ground allowed for conditional range aid mode</short_desc>
       <long_desc>If the vehicle absolute altitude exceeds this value then the estimator will not fuse range measurements to estimate its height. This only applies when conditional range aid mode is activated (EKF2_RNG_CTRL = 1).
@@ -4298,6 +4371,28 @@ If GPS is set as reference and EKF2_GPS_CTRL is not 0, the GPS altitude is still
       <long_desc>EKF2 selector maximum accumulated velocity threshold for comparing accelerometers. Accumulated velocity error larger than this will result in the sensor being declared faulty.
 </long_desc>
       <unit>m/s</unit>
+    </parameter>
+    <parameter name="EKF2_SENS_EN" default="8191" type="INT32">
+      <short_desc>Sensor fusion enable bitmask</short_desc>
+      <long_desc>Bitmask to control which sensor fusion sources are enabled. Sources whose bit is cleared will be disabled. Only applied while disarmed. For in-flight changes use the MAVLink command VEHICLE_CMD_ESTIMATOR_SENSOR_ENABLE or the individual CTRL params (e.g. EKF2_GPS_CTRL, EKF2_BARO_CTRL).
+</long_desc>
+      <min>0</min>
+      <max>8191</max>
+      <bitmask>
+        <bit index="0">GNSS 0</bit>
+        <bit index="1">GNSS 1</bit>
+        <bit index="2">Optical flow</bit>
+        <bit index="3">External vision</bit>
+        <bit index="4">Aux global position 0</bit>
+        <bit index="5">Aux global position 1</bit>
+        <bit index="6">Aux global position 2</bit>
+        <bit index="7">Aux global position 3</bit>
+        <bit index="8">Barometer</bit>
+        <bit index="9">Range finder</bit>
+        <bit index="10">Magnetometer</bit>
+        <bit index="11">Airspeed</bit>
+        <bit index="12">Ranging beacon</bit>
+      </bitmask>
     </parameter>
     <parameter name="EKF2_SYNT_MAG_Z" default="0" type="INT32" boolean="true">
       <short_desc>Enable synthetic magnetometer Z component measurement</short_desc>
@@ -5441,6 +5536,20 @@ normalize performance across the operating range of the battery.
       <decimal>2</decimal>
       <increment>0.01</increment>
     </parameter>
+    <parameter name="FW_FLAPS_MAN" default="0" type="INT32">
+      <short_desc>Flap input in manual flight</short_desc>
+      <long_desc>Chose source for manual setting of flaps in manual flight modes.
+</long_desc>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Aux1</value>
+        <value code="2">Aux2</value>
+        <value code="3">Aux3</value>
+        <value code="4">Aux4</value>
+        <value code="5">Aux5</value>
+        <value code="6">Flaps channel</value>
+      </values>
+    </parameter>
     <parameter name="FW_GC_EN" default="1" type="INT32" boolean="true">
       <short_desc>Enable rate gain compression</short_desc>
     </parameter>
@@ -5586,6 +5695,10 @@ This gain enables the use of a yaw actuator to counteract this effect.
         <value code="0">Disabled</value>
         <value code="1">Flaps channel</value>
         <value code="2">Aux1</value>
+        <value code="3">Aux2</value>
+        <value code="4">Aux3</value>
+        <value code="5">Aux4</value>
+        <value code="6">Aux5</value>
       </values>
     </parameter>
     <parameter name="FW_USE_AIRSPD" default="1" type="INT32" boolean="true">
@@ -16410,6 +16523,15 @@ This value is usually about few percent of the maximum thrust force.
       <unit>Nm</unit>
       <decimal>3</decimal>
       <increment>0.05</increment>
+    </parameter>
+    <parameter name="SIH_RNGBC_NOISE" default="30.0" type="FLOAT">
+      <short_desc>Ranging beacon measurement noise standard deviation</short_desc>
+      <long_desc>Gaussian noise added to simulated ranging beacon measurements. Set to 0 to disable noise.
+</long_desc>
+      <min>0.0</min>
+      <max>100.0</max>
+      <unit>m</unit>
+      <decimal>1</decimal>
     </parameter>
     <parameter name="SIH_T_MAX" default="5.0" type="FLOAT">
       <short_desc>Max propeller thrust force</short_desc>
