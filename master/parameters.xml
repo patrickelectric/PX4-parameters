@@ -39,7 +39,7 @@ For CALLSIGN shorter than 8 characters use the null terminator at the end '\0'.
       <long_desc>Configure the emitter type of the vehicle.
 </long_desc>
       <min>0</min>
-      <max>15</max>
+      <max>19</max>
       <reboot_required>True</reboot_required>
       <values>
         <value code="0">Unknown</value>
@@ -2168,7 +2168,7 @@ WARNING: ENABLING THIS CIRCUIT BREAKER IS AT OWN RISK
 parameters.
 </long_desc>
       <min>0</min>
-      <max>3</max>
+      <max>4</max>
       <values>
         <value code="0">Warning only</value>
         <value code="1">Hold mode</value>
@@ -6133,7 +6133,7 @@ RTK is still possible with this setup.
 Mode 6 is intended for use with a ground control station (not necessarily an RTK correction base).
 </long_desc>
       <min>0</min>
-      <max>1</max>
+      <max>6</max>
       <reboot_required>True</reboot_required>
       <values>
         <value code="0">Default</value>
@@ -9677,14 +9677,6 @@ control is reset.
       <max>250</max>
       <unit>s</unit>
     </parameter>
-    <parameter name="MAV_SIGN_CFG" default="0" type="INT32">
-      <short_desc>MAVLink protocol signing</short_desc>
-      <values>
-        <value code="0">Message signing disabled</value>
-        <value code="1">Signing enabled except on USB</value>
-        <value code="2">Signing always enabled</value>
-      </values>
-    </parameter>
     <parameter name="MAV_SIK_RADIO_ID" default="0" type="INT32">
       <short_desc>MAVLink SiK Radio ID</short_desc>
       <long_desc>When non-zero the MAVLink app will attempt to configure the
@@ -9727,7 +9719,7 @@ vehicle's attitude) and their sending rates.
     <parameter name="MAV_TYPE" default="0" type="INT32">
       <short_desc>MAVLink airframe type</short_desc>
       <min>0</min>
-      <max>22</max>
+      <max>23</max>
       <values>
         <value code="0">Generic micro air vehicle</value>
         <value code="1">Fixed wing aircraft</value>
@@ -9908,7 +9900,7 @@ yaw in wind. Disabled by default.
     <parameter name="MPC_YAW_MODE" default="0" type="INT32">
       <short_desc>Heading behavior in autonomous modes</short_desc>
       <min>0</min>
-      <max>4</max>
+      <max>5</max>
       <values>
         <value code="0">towards waypoint</value>
         <value code="1">towards home</value>
@@ -13863,18 +13855,12 @@ If set &lt;= 0.0, defaults to 0.9 * takeoff airspeed (see FW_TKO_AIRSPD)
   </group>
   <group name="SITL">
     <parameter name="SIM_BAT_DRAIN" default="60" type="FLOAT">
-      <short_desc>Simulator Battery drain interval</short_desc>
-      <min>1</min>
-      <max>86400</max>
+      <short_desc>Simulated battery full-discharge time</short_desc>
+      <long_desc>Time in seconds for the simulated battery to drain from 100% to 0% while armed. Set to 0 to disable the battery simulator entirely (useful when battery state is provided externally, e.g. via MAVLink).
+</long_desc>
+      <min>0</min>
       <unit>s</unit>
       <increment>1</increment>
-    </parameter>
-    <parameter name="SIM_BAT_ENABLE" default="1" type="INT32" boolean="true">
-      <short_desc>Simulator Battery enabled</short_desc>
-      <long_desc>Enable or disable the internal battery simulation. This is useful
-when the battery is simulated externally and interfaced with PX4
-through MAVLink for example.
-</long_desc>
     </parameter>
     <parameter name="SIM_BAT_MIN_PCT" default="50.0" type="FLOAT">
       <short_desc>Simulator Battery minimal percentage</short_desc>
@@ -16358,6 +16344,74 @@ right side of the vehicle and the moving base antenna is on the left side.
 </long_desc>
       <unit>m</unit>
     </parameter>
+    <parameter name="SIH_F_CP0" default="0.0" type="FLOAT">
+      <short_desc>Forward thruster static power coefficient</short_desc>
+      <min>0.0</min>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_CP1" default="0.0" type="FLOAT">
+      <short_desc>Forward thruster power coefficient 1</short_desc>
+      <long_desc>CP(J) = CP0 + CP1*J + CP2*J^2
+</long_desc>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_CP2" default="0.0" type="FLOAT">
+      <short_desc>Forward thruster power coefficient 2</short_desc>
+      <long_desc>CP(J) = CP0 + CP1*J + CP2*J^2
+</long_desc>
+      <max>0.0</max>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_CT0" default="0.0" type="FLOAT">
+      <short_desc>Forward thruster static thrust coefficient</short_desc>
+      <min>0.0</min>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_CT1" default="0.0" type="FLOAT">
+      <short_desc>Forward thruster thrust coefficient 1</short_desc>
+      <long_desc>CT(J) = CT0 + CT1*J + CT2*J^2
+</long_desc>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_CT2" default="0.0" type="FLOAT">
+      <short_desc>Forward thruster thrust coefficient 2</short_desc>
+      <long_desc>CT(J) = CT0 + CT1*J + CT2*J^2
+</long_desc>
+      <max>0.0</max>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_DIA_INCH" default="0.1" type="FLOAT">
+      <short_desc>Forward thruster propeller diameter in inches</short_desc>
+      <min>0.1</min>
+      <decimal>1</decimal>
+    </parameter>
+    <parameter name="SIH_F_Q_MAX" default="0.0165" type="FLOAT">
+      <short_desc>Forward thruster max torque (Nm)</short_desc>
+      <long_desc>This is used for the Fixed-Wing, Tailsitter, or pusher of the Standard VTOL
+if SIH_F_CP0 &lt;= 0.
+If SIH_F_CP0 &gt; 0, propeller model with advance ratio J is used
+and this parameter value is overridden at simulation startup.
+</long_desc>
+      <min>0.0</min>
+      <unit>Nm</unit>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="SIH_F_RPM_MAX" default="6000.0" type="FLOAT">
+      <short_desc>Forward thruster max RPM</short_desc>
+      <min>0.1</min>
+      <decimal>1</decimal>
+    </parameter>
+    <parameter name="SIH_F_T_MAX" default="2.0" type="FLOAT">
+      <short_desc>Forward thruster max thrust (N)</short_desc>
+      <long_desc>This is used for the Fixed-Wing, Tailsitter, or pusher of the Standard VTOL
+if SIH_F_CT0 &lt;= 0.
+If SIH_F_CT0 &gt; 0, propeller model with advance ratio J is used
+and this parameter value is overridden at simulation startup.
+</long_desc>
+      <min>0.0</min>
+      <unit>N</unit>
+      <decimal>3</decimal>
+    </parameter>
     <parameter name="SIH_IXX" default="0.025" type="FLOAT">
       <short_desc>Vehicle inertia about X axis</short_desc>
       <long_desc>The inertia is a 3 by 3 symmetric matrix.
@@ -16513,11 +16567,13 @@ This corresponds to half the distance between the left and right motors.
       <increment>0.1</increment>
     </parameter>
     <parameter name="SIH_Q_MAX" default="0.1" type="FLOAT">
-      <short_desc>Max propeller torque</short_desc>
+      <short_desc>Max multicopter propeller torque</short_desc>
       <long_desc>This is the maximum torque delivered by one propeller
 when the motor is running at full speed.
 
 This value is usually about few percent of the maximum thrust force.
+
+Refer to SIH_F_Q_MAX for the propeller torque for FW, Tailsitter, and VTOL pusher.
 </long_desc>
       <min>0.0</min>
       <unit>Nm</unit>
@@ -16534,11 +16590,13 @@ This value is usually about few percent of the maximum thrust force.
       <decimal>1</decimal>
     </parameter>
     <parameter name="SIH_T_MAX" default="5.0" type="FLOAT">
-      <short_desc>Max propeller thrust force</short_desc>
+      <short_desc>Max multicopter propeller thrust force</short_desc>
       <long_desc>This is the maximum force delivered by one propeller
 when the motor is running at full speed.
 
 This value is usually about 5 times the mass of the quadrotor.
+
+Refer to SIH_F_T_MAX for the thrust for FW, Tailsitter, and VTOL pusher.
 </long_desc>
       <min>0.0</min>
       <unit>N</unit>
