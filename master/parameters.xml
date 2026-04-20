@@ -5753,6 +5753,25 @@ This gain enables the use of a yaw actuator to counteract this effect.
     </parameter>
   </group>
   <group name="Failure Detector">
+    <parameter name="FD_ALT_LOSS" default="0.0" type="FLOAT">
+      <short_desc>Altitude loss threshold for termination and parachute deployment</short_desc>
+      <long_desc>Maximum altitude loss below the setpoint allowed before the vehicle terminates and deploys the parachute. Set to 0 to disable.
+</long_desc>
+      <min>0.0</min>
+      <max>200.0</max>
+      <unit>m</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="FD_ALT_LOSS_T" default="1.0" type="FLOAT">
+      <short_desc>Altitude loss failure trigger time</short_desc>
+      <long_desc>Seconds that the altitude loss threshold must be exceeded before the failure is declared.
+</long_desc>
+      <min>0.02</min>
+      <max>5.0</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+    </parameter>
     <parameter name="FD_EXT_ATS_EN" default="0" type="INT32" boolean="true">
       <short_desc>Enable PWM input from external ATS for failsafe</short_desc>
       <long_desc>Enable PWM input on for engaging failsafe from an external automatic trigger system (ATS)
@@ -13322,9 +13341,9 @@ This is affected by RTL_MIN_DIST and RTL_CONE_ANG.
       <values>
         <value code="0">Return to closest safe point (home or rally point) via direct path.</value>
         <value code="1">Return to closest safe point other than home (mission landing pattern or rally point), via direct path. If no mission landing or rally points are defined return home via direct path. Always choose closest safe landing point if vehicle is a VTOL in hover mode.</value>
-        <value code="2">Return to a planned mission landing, if available, using the mission path, else return to home via the reverse mission path. Do not consider rally points.</value>
+        <value code="2">Return to a planned mission landing, if available, using the mission path while skipping DO_JUMP and other non-position mission items, else return to home via the reverse mission path with the same traversal rules. Do not consider rally points.</value>
         <value code="3">Return via direct path to closest destination: home, start of mission landing pattern or safe point. If the destination is a mission landing pattern, follow the pattern to land.</value>
-        <value code="4">Return to the planned mission landing, or to home via the reverse mission path, whichever is closer by counting waypoints. Do not consider rally points.</value>
+        <value code="4">Return to the planned mission landing, or to home via the reverse mission path, whichever is estimated to be closer using mission item indices. Skip DO_JUMP and other non-position mission items while following either mission path. Do not consider rally points.</value>
         <value code="5">Return directly to safe landing point (do not consider mission landing and Home)</value>
       </values>
     </parameter>
