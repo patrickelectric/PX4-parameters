@@ -2290,15 +2290,16 @@ disturbance (check enabled by EKF2_MAG_CHECK)
 </long_desc>
     </parameter>
     <parameter name="COM_ARM_ODID" default="0" type="INT32">
-      <short_desc>Enable Drone ID system detection and health check</short_desc>
-      <long_desc>This check detects if the Open Drone ID system is missing.
-Depending on the value of the parameter, the check can be
-disabled, warn only or deny arming.
+      <short_desc>Open Drone ID system check and in-flight failsafe</short_desc>
+      <long_desc>Actions other than warning also prevent arming.
 </long_desc>
       <values>
         <value code="0">Disabled</value>
         <value code="1">Warning only</value>
-        <value code="2">Enforce Open Drone ID system presence</value>
+        <value code="2">Error only</value>
+        <value code="3">Return</value>
+        <value code="4">Land</value>
+        <value code="5">Terminate</value>
       </values>
     </parameter>
     <parameter name="COM_ARM_ON_BOOT" default="0" type="INT32" boolean="true">
@@ -13806,11 +13807,19 @@ If set &lt;= 0.0, defaults to 0.9 * takeoff airspeed (see FW_TKO_AIRSPD)
     </parameter>
     <parameter name="SDLOG_DIRS_MAX" default="0" type="INT32">
       <short_desc>Maximum number of log directories to keep</short_desc>
-      <long_desc>If there are more log directories than this value, the system will delete the oldest directories during startup. In addition, the system will delete old logs if there is not enough free space left. The minimum amount is 300 MB. If this is set to 0, old directories will only be removed if the free space falls below the minimum. Note: this does not apply to mission log files.
+      <long_desc>If greater than 0, the oldest log directories are deleted at log start to keep the total directory count at or below this value. This cleanup is orthogonal to the free-space cleanup driven by SDLOG_ROTATE and SDLOG_MAX_SIZE, and is useful for capping log usage by count independent of available disk size (e.g. in SITL). A value of 0 disables this count-based cleanup.
 </long_desc>
       <min>0</min>
       <max>1000</max>
-      <reboot_required>True</reboot_required>
+      <reboot_required>False</reboot_required>
+    </parameter>
+    <parameter name="SDLOG_MAX_SIZE" default="1024" type="INT32">
+      <short_desc>Maximum log file size</short_desc>
+      <long_desc>Maximum size of a single log file in megabytes. When reached, the log file is closed and a new one is started. This value is also added to the cleanup threshold (see SDLOG_ROTATE) to reserve headroom for the next log file. A value of 0 disables both file rotation and the cleanup reservation. Must stay below the FAT32 file size limit of 4 GiB.
+</long_desc>
+      <min>0</min>
+      <max>4095</max>
+      <reboot_required>False</reboot_required>
     </parameter>
     <parameter name="SDLOG_MISSION" default="0" type="INT32">
       <short_desc>Mission Log</short_desc>
@@ -13857,6 +13866,14 @@ If set &lt;= 0.0, defaults to 0.9 * takeoff airspeed (see FW_TKO_AIRSPD)
         <bit index="10">Mavlink tunnel message logging</bit>
         <bit index="11">High rate sensors</bit>
       </bitmask>
+    </parameter>
+    <parameter name="SDLOG_ROTATE" default="90" type="INT32">
+      <short_desc>Maximum disk usage percentage</short_desc>
+      <long_desc>Maximum percentage of disk space that logs may occupy during operation, including while writing a new log file. For example, a value of 90 means at least 10% of disk is always kept free, even while writing. A value of 100 lets logs fill the disk completely. A value of 0 disables space-based cleanup entirely. At log start, oldest logs are deleted as needed to maintain this guarantee, accounting for the next file write of up to SDLOG_MAX_SIZE. Cleanup always happens at log start (not boot) so logs can be downloaded via FTP before deletion.
+</long_desc>
+      <min>0</min>
+      <max>100</max>
+      <reboot_required>False</reboot_required>
     </parameter>
     <parameter name="SDLOG_UTC_OFFSET" default="0" type="INT32">
       <short_desc>UTC offset (unit: min)</short_desc>
@@ -16144,16 +16161,6 @@ ORIENTATION_RIGHTSIDE_UP = 32
         <value code="34">Two side calibration</value>
         <value code="38">Three side calibration</value>
         <value code="63">Six side calibration</value>
-      </values>
-    </parameter>
-    <parameter name="SIM_ARSPD_FAIL" default="0" type="INT32">
-      <short_desc>Dynamically simulate failure of airspeed sensor instance</short_desc>
-      <min>0</min>
-      <max>1</max>
-      <reboot_required>True</reboot_required>
-      <values>
-        <value code="0">Disabled</value>
-        <value code="1">Enabled</value>
       </values>
     </parameter>
   </group>
