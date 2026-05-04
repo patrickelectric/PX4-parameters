@@ -1262,23 +1262,6 @@ Note: this is only useful for servos.
     </parameter>
   </group>
   <group name="Airspeed Validator">
-    <parameter name="ASPD_BETA_GATE" default="1" type="INT32">
-      <short_desc>Gate size for sideslip angle fusion</short_desc>
-      <long_desc>Sets the number of standard deviations used by the innovation consistency test.
-</long_desc>
-      <min>1</min>
-      <max>5</max>
-      <unit>SD</unit>
-    </parameter>
-    <parameter name="ASPD_BETA_NOISE" default="0.15" type="FLOAT">
-      <short_desc>Wind estimator sideslip measurement noise</short_desc>
-      <long_desc>Sideslip measurement noise of the internal wind estimator(s) of the airspeed selector.
-</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <unit>rad</unit>
-      <decimal>3</decimal>
-    </parameter>
     <parameter name="ASPD_DO_CHECKS" default="7" type="INT32">
       <short_desc>Enable checks on airspeed sensors</short_desc>
       <long_desc>Controls which checks are run to check airspeed data for validity. Only applied if ASPD_PRIMARY &gt; 0.
@@ -1396,24 +1379,6 @@ Set to a negative value to disable the re-enabling in flight.
         <value code="1">Apply the estimated scale after disarm</value>
         <value code="2">Apply the estimated scale in air</value>
       </values>
-    </parameter>
-    <parameter name="ASPD_SCALE_NSD" default="0.0001" type="FLOAT">
-      <short_desc>Wind estimator true airspeed scale process noise spectral density</short_desc>
-      <long_desc>Airspeed scale process noise of the internal wind estimator(s) of the airspeed selector.
-When unaided, the scale uncertainty (1-sigma, unitless) increases by this amount every second.
-</long_desc>
-      <min>0</min>
-      <max>0.1</max>
-      <unit>1/s/sqrt(Hz)</unit>
-      <decimal>5</decimal>
-    </parameter>
-    <parameter name="ASPD_TAS_GATE" default="4" type="INT32">
-      <short_desc>Gate size for true airspeed fusion</short_desc>
-      <long_desc>Sets the number of standard deviations used by the innovation consistency test.
-</long_desc>
-      <min>1</min>
-      <max>5</max>
-      <unit>SD</unit>
     </parameter>
     <parameter name="ASPD_TAS_NOISE" default="1.4" type="FLOAT">
       <short_desc>Wind estimator true airspeed measurement noise</short_desc>
@@ -2310,18 +2275,6 @@ Has no effect if COM_ARMABLE is 0.
 </long_desc>
       <reboot_required>True</reboot_required>
     </parameter>
-    <parameter name="COM_ARM_SDCARD" default="1" type="INT32">
-      <short_desc>Enable FMU SD card detection check</short_desc>
-      <long_desc>This check detects if the FMU SD card is missing.
-Depending on the value of the parameter, the check can be
-disabled, warn only or deny arming.
-</long_desc>
-      <values>
-        <value code="0">Disabled</value>
-        <value code="1">Warning only</value>
-        <value code="2">Enforce SD card presence</value>
-      </values>
-    </parameter>
     <parameter name="COM_ARM_SWISBTN" default="0" type="INT32" boolean="true">
       <short_desc>Arm switch is a momentary button</short_desc>
       <long_desc>0: Arming/disarming triggers on switch transition.
@@ -2699,31 +2652,6 @@ The true home position is back-computed if a local position is estimate if avail
 If no local position is available, home is set to the current position.
 </long_desc>
     </parameter>
-    <parameter name="COM_IMB_PROP_ACT" default="0" type="INT32">
-      <short_desc>Imbalanced propeller failsafe mode</short_desc>
-      <long_desc>Action the system takes when an imbalanced propeller is detected by the failure detector.
-See also FD_IMB_PROP_THR to set the failure threshold.
-</long_desc>
-      <increment>1</increment>
-      <values>
-        <value code="-1">Disabled</value>
-        <value code="0">Warning</value>
-        <value code="1">Return</value>
-        <value code="2">Land</value>
-      </values>
-    </parameter>
-    <parameter name="COM_LKDOWN_TKO" default="3.0" type="FLOAT">
-      <short_desc>Timeout for detecting a failure after takeoff</short_desc>
-      <long_desc>A non-zero, positive value specifies the timeframe in seconds within failure detector is allowed to disarm the vehicle
-if attitude exceeds the limits defined in FD_FAIL_P and FD_FAIL_R.
-The check is not executed for flight modes that do support acrobatic maneuvers, e.g: Acro (MC/FW) and Manual (FW).
-A zero or negative value means that the check is disabled.
-</long_desc>
-      <min>-1.0</min>
-      <max>5.0</max>
-      <unit>s</unit>
-      <decimal>3</decimal>
-    </parameter>
     <parameter name="COM_LOW_BAT_ACT" default="0" type="INT32">
       <short_desc>Battery failsafe mode</short_desc>
       <long_desc>Action the system takes at critical battery. See also BAT_CRIT_THR and BAT_EMERGEN_THR
@@ -2803,15 +2731,6 @@ which is required when mapping an external mode to an RC switch.
       <short_desc>Allow external mode registration while armed</short_desc>
       <long_desc>By default disabled for safety reasons
 </long_desc>
-    </parameter>
-    <parameter name="COM_OBC_LOSS_T" default="5.0" type="FLOAT">
-      <short_desc>Onboard computer connection loss timeout</short_desc>
-      <long_desc>Time-out to wait when onboard computer connection is lost before warning about loss connection
-</long_desc>
-      <min>0</min>
-      <max>60</max>
-      <unit>s</unit>
-      <increment>0.01</increment>
     </parameter>
     <parameter name="COM_OBL_RC_ACT" default="0" type="INT32">
       <short_desc>Set offboard loss failsafe mode</short_desc>
@@ -3023,15 +2942,6 @@ e.g. for stuck rotors before the vehicle is off the ground
       <unit>s</unit>
       <decimal>1</decimal>
       <increment>0.1</increment>
-    </parameter>
-    <parameter name="COM_TAKEOFF_ACT" default="0" type="INT32">
-      <short_desc>Action after TAKEOFF has been accepted</short_desc>
-      <long_desc>The mode transition after TAKEOFF has completed successfully.
-</long_desc>
-      <values>
-        <value code="0">Hold</value>
-        <value code="1">Mission (if valid)</value>
-      </values>
     </parameter>
     <parameter name="COM_THROW_EN" default="0" type="INT32" boolean="true">
       <short_desc>Enable throw-start</short_desc>
@@ -5083,7 +4993,7 @@ A negative value disables fast descend.
       <min>-1.0</min>
       <decimal>0</decimal>
     </parameter>
-    <parameter name="FW_T_HRATE_FF" default="0.3" type="FLOAT">
+    <parameter name="FW_T_HRATE_FF" default="0.5" type="FLOAT">
       <short_desc>Height rate feed forward</short_desc>
       <min>0.0</min>
       <max>1.0</max>
@@ -5132,37 +5042,6 @@ and reduce if the aircraft initially gains energy in turns.
       <unit>m/s</unit>
       <decimal>1</decimal>
       <increment>0.5</increment>
-    </parameter>
-    <parameter name="FW_T_SPD_DEV_STD" default="0.2" type="FLOAT">
-      <short_desc>Airspeed rate measurement standard deviation</short_desc>
-      <long_desc>For the airspeed filter in TECS.
-</long_desc>
-      <min>0.01</min>
-      <max>10.0</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_SPD_PRC_STD" default="0.2" type="FLOAT">
-      <short_desc>Process noise standard deviation for the airspeed rate</short_desc>
-      <long_desc>This is defining the noise in the airspeed rate for the constant airspeed rate model
-of the TECS airspeed filter.
-</long_desc>
-      <min>0.01</min>
-      <max>10.0</max>
-      <unit>m/s^2</unit>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
-    </parameter>
-    <parameter name="FW_T_SPD_STD" default="0.07" type="FLOAT">
-      <short_desc>Airspeed measurement standard deviation</short_desc>
-      <long_desc>For the airspeed filter in TECS.
-</long_desc>
-      <min>0.01</min>
-      <max>10.0</max>
-      <unit>m/s</unit>
-      <decimal>2</decimal>
-      <increment>0.1</increment>
     </parameter>
     <parameter name="FW_T_STE_R_TC" default="0.4" type="FLOAT">
       <short_desc>Specific total energy rate first order filter time constant</short_desc>
@@ -11325,9 +11204,11 @@ it will still be 0.5 at 60% battery.
       <long_desc>Global gain of the controller.
 
 This gain scales the P, I and D terms of the controller:
+```
 output = MC_PITCHRATE_K * (MC_PITCHRATE_P * error
 + MC_PITCHRATE_I * error_integral
 + MC_PITCHRATE_D * error_derivative)
+```
 Set MC_PITCHRATE_P=1 to implement a PID in the ideal form.
 Set MC_PITCHRATE_K=1 to implement a PID in the parallel form.
 </long_desc>
@@ -11382,9 +11263,11 @@ Set MC_PITCHRATE_K=1 to implement a PID in the parallel form.
       <long_desc>Global gain of the controller.
 
 This gain scales the P, I and D terms of the controller:
+```
 output = MC_ROLLRATE_K * (MC_ROLLRATE_P * error
 + MC_ROLLRATE_I * error_integral
 + MC_ROLLRATE_D * error_derivative)
+```
 Set MC_ROLLRATE_P=1 to implement a PID in the ideal form.
 Set MC_ROLLRATE_K=1 to implement a PID in the parallel form.
 </long_desc>
@@ -11438,9 +11321,11 @@ Set MC_ROLLRATE_K=1 to implement a PID in the parallel form.
       <long_desc>Global gain of the controller.
 
 This gain scales the P, I and D terms of the controller:
+```
 output = MC_YAWRATE_K * (MC_YAWRATE_P * error
 + MC_YAWRATE_I * error_integral
 + MC_YAWRATE_D * error_derivative)
+```
 Set MC_YAWRATE_P=1 to implement a PID in the ideal form.
 Set MC_YAWRATE_K=1 to implement a PID in the parallel form.
 </long_desc>
@@ -11558,8 +11443,12 @@ This is lower-bounded by the nominal loop rate of this module.
       <long_desc>Parameter used to model the nonlinear relationship between
 motor control signal (e.g. PWM) and static thrust.
 
-The model is: rel_thrust = factor * rel_signal^2 + (1-factor) * rel_signal,
-where rel_thrust is the normalized thrust between 0 and 1, and
+The model is:
+
+```
+rel_thrust = factor * rel_signal^2 + (1-factor) * rel_signal
+```
+, where rel_thrust is the normalized thrust between 0 and 1, and
 rel_signal is the relative motor control signal between 0 and 1.
 </long_desc>
       <min>0.0</min>
@@ -13699,7 +13588,9 @@ For mecanum rovers this limit is used for longitudinal and lateral jerk.
     </parameter>
     <parameter name="RO_SPEED_RED" default="-1.0" type="FLOAT">
       <short_desc>Tuning parameter for the speed reduction based on the course error</short_desc>
-      <long_desc>Reduced_speed = RO_MAX_THR_SPEED * (1 - normalized_course_error * RO_SPEED_RED)
+      <long_desc>```
+Reduced_speed = RO_MAX_THR_SPEED * (1 - normalized_course_error * RO_SPEED_RED)
+```
 The normalized course error is the angle between the current course and the bearing setpoint
 interpolated from [0, 180] -&gt; [0, 1].
 Higher value -&gt; More speed reduction.
@@ -13815,10 +13706,11 @@ If set &lt;= 0.0, defaults to 0.9 * takeoff airspeed (see FW_TKO_AIRSPD)
     </parameter>
     <parameter name="SDLOG_MAX_SIZE" default="1024" type="INT32">
       <short_desc>Maximum log file size</short_desc>
-      <long_desc>Maximum size of a single log file in megabytes. When reached, the log file is closed and a new one is started. This value is also added to the cleanup threshold (see SDLOG_ROTATE) to reserve headroom for the next log file. A value of 0 disables both file rotation and the cleanup reservation. Must stay below the FAT32 file size limit of 4 GiB.
+      <long_desc>Maximum size of a single log file in mebibytes (1 MiB = 1024 * 1024 bytes). When reached, the log file is closed and a new one is started. This value is also added to the cleanup threshold (see SDLOG_ROTATE) to reserve headroom for the next log file. A value of 0 disables both file rotation and the cleanup reservation. Must stay below the FAT32 file size limit of 4 GiB.
 </long_desc>
       <min>0</min>
       <max>4095</max>
+      <unit>MiB</unit>
       <reboot_required>False</reboot_required>
     </parameter>
     <parameter name="SDLOG_MISSION" default="0" type="INT32">
