@@ -2328,16 +2328,6 @@ A zero or negative value means that automatic disarming triggered by landing det
       <decimal>1</decimal>
       <increment>0.1</increment>
     </parameter>
-    <parameter name="COM_DISARM_MAN" default="1" type="INT32" boolean="true">
-      <short_desc>Allow disarming in manual thrust modes</short_desc>
-      <long_desc>Allow disarming via switch/stick/button on multicopters in manual thrust modes
-
-0: Disallow disarming when not landed
-1: Allow disarming in multicopter flight in modes where
-the thrust is directly controlled by thr throttle stick
-e.g. Stabilized, Acro
-</long_desc>
-    </parameter>
     <parameter name="COM_DISARM_PRFLT" default="10.0" type="FLOAT">
       <short_desc>Time-out for auto disarm if not taking off</short_desc>
       <long_desc>A non-zero, positive value specifies the time in seconds, within which the
@@ -9975,19 +9965,9 @@ FD_ACT_LOW_OFF and FD_ACT_HIGH_OFF offset the threshold from that slope.
       <decimal>2</decimal>
       <increment>1</increment>
     </parameter>
-    <parameter name="MOTFAIL_HIGH_OFF" default="10.0" type="FLOAT">
-      <short_desc>Overcurrent motor failure limit offset</short_desc>
-      <long_desc>threshold = FD_ACT_MOT_C2T * thrust + FD_ACT_HIGH_OFF
-</long_desc>
-      <min>0</min>
-      <max>30</max>
-      <unit>A</unit>
-      <decimal>2</decimal>
-      <increment>1</increment>
-    </parameter>
-    <parameter name="MOTFAIL_LOW_OFF" default="10.0" type="FLOAT">
-      <short_desc>Undercurrent motor failure limit offset</short_desc>
-      <long_desc>threshold = FD_ACT_MOT_C2T * thrust - FD_ACT_LOW_OFF
+    <parameter name="MOTFAIL_OFF" default="10.0" type="FLOAT">
+      <short_desc>Under/over-current motor failure limit offset</short_desc>
+      <long_desc>Check is triggered if `abs(FD_ACT_MOT_C2T * thrust - FD_ACT_OFF)` is above this value.
 </long_desc>
       <min>0</min>
       <max>30</max>
