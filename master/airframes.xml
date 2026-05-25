@@ -288,6 +288,11 @@
       <type>Rover</type>
       <url>https://docs.px4.io/main/en/complete_vehicles_rover/aion_r1</url>
     </airframe>
+    <airframe name="Hiwonder Tracked" id="50002" maintainer="John Doe &lt;john@example.com&gt;">
+      <class>Rover</class>
+      <type>Rover</type>
+      <url>https://www.hiwonder.com/products/suspended-shock-absorbing-tracked-chassis?variant=40378709835863</url>
+    </airframe>
     <airframe name="Generic Rover Ackermann" id="51000" maintainer="John Doe &lt;john@example.com&gt;">
       <class>Rover</class>
       <type>Rover</type>
@@ -301,9 +306,19 @@
       <class>Rover</class>
       <type>Rover</type>
     </airframe>
+    <airframe name="Hiwonder Ackermann" id="51003" maintainer="John Doe &lt;john@example.com&gt;">
+      <class>Rover</class>
+      <type>Rover</type>
+      <url>https://www.hiwonder.com/products/ackermann-steering-chassis?variant=40382428348503</url>
+    </airframe>
     <airframe name="Generic Rover Mecanum" id="52000" maintainer="John Doe &lt;john@example.com&gt;">
       <class>Rover</class>
       <type>Rover</type>
+    </airframe>
+    <airframe name="Hiwonder Mecanum" id="52001" maintainer="John Doe &lt;john@example.com&gt;">
+      <class>Rover</class>
+      <type>Rover</type>
+      <url>https://www.hiwonder.com/products/large-metal-4wd-vehicle-chassis-green</url>
     </airframe>
   </airframe_group>
   <airframe_group name="Free-Flyer" image="FreeFlyer">

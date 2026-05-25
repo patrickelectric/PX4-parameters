@@ -12120,10 +12120,9 @@ this time before considering gripper actuation successful and publish a
       <unit>us</unit>
     </parameter>
     <parameter name="RC_CHAN_CNT" default="0" type="INT32">
-      <short_desc>RC channel count</short_desc>
-      <long_desc>This parameter is used by Ground Station software to save the number
-of channels which were used during RC calibration. It is only meant
-for ground station use.
+      <short_desc>Calibrated RC channel count</short_desc>
+      <long_desc>Number of channels detected during RC calibration. Must be non-zero
+for RC manual control input to be accepted.
 </long_desc>
       <min>0</min>
       <max>18</max>
