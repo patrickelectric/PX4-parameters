@@ -3352,6 +3352,13 @@ set by COM_RC_LOSS_T in seconds.
       <decimal>1</decimal>
       <reboot_required>True</reboot_required>
     </parameter>
+    <parameter name="EKF2_AVEL_EN" default="1" type="INT32" boolean="true">
+      <short_desc>Fuse the landing-target relative velocity as auxiliary velocity</short_desc>
+      <long_desc>When enabled, EKF2 fuses the relative velocity published in landing_target_pose
+(vx_rel, vy_rel) as a horizontal auxiliary velocity measurement. The data is
+only fused when landing_target_pose.rel_vel_ekf2_valid is true.
+</long_desc>
+    </parameter>
     <parameter name="EKF2_BARO_CTRL" default="1" type="INT32" boolean="true">
       <short_desc>Barometric sensor height aiding</short_desc>
       <long_desc>If this parameter is enabled then the estimator will make use of the barometric height measurements to estimate its height in addition to other height sources (if activated).
@@ -8779,105 +8786,6 @@ Flight time in microseconds = (LND_FLIGHT_T_HI &lt;&lt; 32) | LND_FLIGHT_T_LO.
       <min>0</min>
     </parameter>
   </group>
-  <group name="Landing Target Estimator">
-    <parameter name="LTEST_ACC_UNC" default="10.0" type="FLOAT">
-      <short_desc>Acceleration uncertainty</short_desc>
-      <long_desc>Variance of acceleration measurement used for landing target position prediction.
-Higher values results in tighter following of the measurements and more lenient outlier rejection
-</long_desc>
-      <min>0.01</min>
-      <unit>(m/s^2)^2</unit>
-      <decimal>2</decimal>
-    </parameter>
-    <parameter name="LTEST_MEAS_UNC" default="0.005" type="FLOAT">
-      <short_desc>Landing target measurement uncertainty</short_desc>
-      <long_desc>Variance of the landing target measurement from the driver.
-Higher values result in less aggressive following of the measurement and a smoother output as well as fewer rejected measurements.
-</long_desc>
-      <unit>tan(rad)^2</unit>
-      <decimal>4</decimal>
-    </parameter>
-    <parameter name="LTEST_MODE" default="0" type="INT32">
-      <short_desc>Landing target mode</short_desc>
-      <long_desc>Configure the mode of the landing target. Depending on the mode, the landing target observations are used differently to aid position estimation.
-
-Mode Moving:     The landing target may be moving around while in the field of view of the vehicle. Landing target measurements are not used to aid positioning.
-Mode Stationary: The landing target is stationary. Measured velocity w.r.t. the landing target is used to aid velocity estimation.
-</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <values>
-        <value code="0">Moving</value>
-        <value code="1">Stationary</value>
-      </values>
-    </parameter>
-    <parameter name="LTEST_POS_UNC_IN" default="0.1" type="FLOAT">
-      <short_desc>Initial landing target position uncertainty</short_desc>
-      <long_desc>Initial variance of the relative landing target position in x and y direction
-</long_desc>
-      <min>0.001</min>
-      <unit>m^2</unit>
-      <decimal>3</decimal>
-    </parameter>
-    <parameter name="LTEST_SCALE_X" default="1.0" type="FLOAT">
-      <short_desc>Scale factor for sensor measurements in sensor x axis</short_desc>
-      <long_desc>Landing target x measurements are scaled by this factor before being used
-</long_desc>
-      <min>0.01</min>
-      <decimal>3</decimal>
-    </parameter>
-    <parameter name="LTEST_SCALE_Y" default="1.0" type="FLOAT">
-      <short_desc>Scale factor for sensor measurements in sensor y axis</short_desc>
-      <long_desc>Landing target y measurements are scaled by this factor before being used
-</long_desc>
-      <min>0.01</min>
-      <decimal>3</decimal>
-    </parameter>
-    <parameter name="LTEST_SENS_POS_X" default="0.0" type="FLOAT">
-      <short_desc>X Position of IRLOCK in body frame (forward)</short_desc>
-      <unit>m</unit>
-      <decimal>3</decimal>
-      <reboot_required>True</reboot_required>
-    </parameter>
-    <parameter name="LTEST_SENS_POS_Y" default="0.0" type="FLOAT">
-      <short_desc>Y Position of IRLOCK in body frame (right)</short_desc>
-      <unit>m</unit>
-      <decimal>3</decimal>
-      <reboot_required>True</reboot_required>
-    </parameter>
-    <parameter name="LTEST_SENS_POS_Z" default="0.0" type="FLOAT">
-      <short_desc>Z Position of IRLOCK in body frame (downward)</short_desc>
-      <unit>m</unit>
-      <decimal>3</decimal>
-      <reboot_required>True</reboot_required>
-    </parameter>
-    <parameter name="LTEST_SENS_ROT" default="2" type="INT32">
-      <short_desc>Rotation of IRLOCK sensor relative to airframe</short_desc>
-      <long_desc>Default orientation of Yaw 90°
-</long_desc>
-      <min>-1</min>
-      <max>40</max>
-      <reboot_required>True</reboot_required>
-      <values>
-        <value code="0">No rotation</value>
-        <value code="1">Yaw 45°</value>
-        <value code="2">Yaw 90°</value>
-        <value code="3">Yaw 135°</value>
-        <value code="4">Yaw 180°</value>
-        <value code="5">Yaw 225°</value>
-        <value code="6">Yaw 270°</value>
-        <value code="7">Yaw 315°</value>
-      </values>
-    </parameter>
-    <parameter name="LTEST_VEL_UNC_IN" default="0.1" type="FLOAT">
-      <short_desc>Initial landing target velocity uncertainty</short_desc>
-      <long_desc>Initial variance of the relative landing target velocity in x and y directions
-</long_desc>
-      <min>0.001</min>
-      <unit>(m/s)^2</unit>
-      <decimal>3</decimal>
-    </parameter>
-  </group>
   <group name="Local Position Estimator">
     <parameter name="LPE_ACC_XY" default="0.012" type="FLOAT">
       <short_desc>Accelerometer xy noise density</short_desc>
@@ -11512,6 +11420,26 @@ this time before considering gripper actuation successful and publish a
       <min>0</min>
       <max>100</max>
     </parameter>
+    <parameter name="PLD_MOVING_T_MAX" default="3.0" type="FLOAT">
+      <short_desc>Maximum moving-target prediction time</short_desc>
+      <long_desc>When the landing target is moving, precision land aims at the estimated future
+target position after a constrained prediction time. This sets the maximum time.
+</long_desc>
+      <min>0.1</min>
+      <max>60</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="PLD_MOVING_T_MIN" default="2.0" type="FLOAT">
+      <short_desc>Minimum moving-target prediction time</short_desc>
+      <long_desc>When the landing target is moving, precision land aims at the estimated future
+target position after a constrained prediction time. This sets the minimum time.
+</long_desc>
+      <min>0.1</min>
+      <max>30</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+    </parameter>
     <parameter name="PLD_SRCH_ALT" default="10.0" type="FLOAT">
       <short_desc>Search altitude</short_desc>
       <long_desc>Altitude above home to which to climb when searching for the landing target.
@@ -11531,6 +11459,13 @@ this time before considering gripper actuation successful and publish a
       <unit>s</unit>
       <decimal>1</decimal>
       <increment>0.1</increment>
+    </parameter>
+    <parameter name="PLD_YAW_EN" default="0" type="INT32" boolean="true">
+      <short_desc>Set to true to control yaw while landing</short_desc>
+      <long_desc>Control the orientation when landing. The orientation comes from the topic vte_orientation.
+</long_desc>
+      <min>0</min>
+      <max>1</max>
     </parameter>
   </group>
   <group name="Pure Pursuit">
@@ -18237,6 +18172,310 @@ Set to 0 do disable this threshold.
       <unit>m</unit>
       <decimal>1</decimal>
       <increment>1</increment>
+    </parameter>
+  </group>
+  <group name="Vision Target Estimator">
+    <parameter name="VTE_ACC_D_UNC" default="0.02" type="FLOAT">
+      <short_desc>UAV acceleration white-noise power spectral density</short_desc>
+      <long_desc>White-noise PSD on the UAV acceleration input. The
+1-sigma vel_uav change allowed over a time t is sqrt(VTE_ACC_D_UNC * t).
+
+This is a variance rate, not a per-step variance; the value is independent
+of the filter update rate. Higher values let the filter follow new
+measurements more tightly and reject fewer outliers.
+
+Unit: m^2/s^3.
+</long_desc>
+      <min>0.0001</min>
+      <decimal>4</decimal>
+    </parameter>
+    <parameter name="VTE_ACC_T_UNC" default="0.1" type="FLOAT">
+      <short_desc>Target acceleration random-walk process noise</short_desc>
+      <long_desc>Process-noise spectral density of the target acceleration random walk
+(moving-target builds only). The 1-sigma target-acceleration change over a
+time t is sqrt(VTE_ACC_T_UNC * t) (e.g. for the 0.1 default, ~0.32 m/s^2
+after 1 s, ~1.0 m/s^2 after 10 s).
+
+This is a variance rate, not a linear rate of change; the value is
+independent of the filter update rate. Higher values let the filter follow
+target manoeuvres more aggressively and accept more outliers.
+
+Unit: ((m/s^2)^2)/s.
+</long_desc>
+      <min>0.01</min>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_ACC_UNC_IN" default="0.1" type="FLOAT">
+      <short_desc>Initial target absolute acceleration uncertainty</short_desc>
+      <long_desc>Initial variance of the relative target acceleration in x, y, and z directions
+(moving-target builds only).
+Changes while the estimator is running are picked up immediately by the module but only take effect
+the next time the estimator initializes or resets.
+Once the filter is running, the steady-state target-acceleration variance is
+governed by VTE_ACC_T_UNC and the measurement updates, so this parameter does
+not influence runtime behaviour.
+</long_desc>
+      <min>0.001</min>
+      <unit>(m/s^2)^2</unit>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="VTE_AID_MASK" default="14" type="INT32">
+      <short_desc>Integer bitmask controlling data fusion and aiding methods</short_desc>
+      <long_desc>Set bits in the following positions to enable:
+0 : Set to true to use the target's GNSS position data if available. (+1)
+1 : Set to true to use the UAV GNSS velocity data if available. (+2)
+2 : Set to true to use the target relative position from vision-based data if available. (+4)
+3 : Set to true to use the mission land point. Ignored if target GNSS position enabled. (+8)
+4 : Set to true to use the target GNSS velocity if available. (+16)
+</long_desc>
+      <min>0</min>
+      <max>31</max>
+      <bitmask>
+        <bit index="0">target GNSS position</bit>
+        <bit index="1">UAV GNSS velocity</bit>
+        <bit index="2">vision relative position</bit>
+        <bit index="3">mission position</bit>
+        <bit index="4">target GNSS velocity</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="VTE_BIAS_UNC" default="0.001" type="FLOAT">
+      <short_desc>Bias random-walk process noise</short_desc>
+      <long_desc>Process-noise spectral density of the GPS/vision bias random walk. The
+1-sigma expected bias change over a time t is sqrt(VTE_BIAS_UNC * t) (e.g.
+for the 0.001 default, ~3 cm after 1 s, ~10 cm after 10 s, ~32 cm after
+100 s).
+
+This is a variance rate, not a linear drift rate; the value is independent
+of the filter update rate. Higher values let the bias follow new
+observations more aggressively; lower values keep it stiff. Tune to match
+the realistic physical drift of the absolute reference (typically a few
+centimetres over tens of seconds for consumer GNSS, less for RTK).
+
+Unit: m^2/s.
+</long_desc>
+      <min>0.0001</min>
+      <decimal>4</decimal>
+    </parameter>
+    <parameter name="VTE_BIA_AVG_THR" default="0.3" type="FLOAT">
+      <short_desc>Initial GNSS/vision bias averaging threshold</short_desc>
+      <long_desc>When the GNSS/vision bias first becomes observable while the estimator is still referenced to GNSS,
+VTE low-pass filters the first GNSS/vision bias samples before activating the bias estimate.
+The LPF exit requires consecutive raw bias samples to stay within this threshold and for the LPF
+to have run for at least 2 * tau, or until VTE_BIA_AVG_TOUT elapses.
+</long_desc>
+      <min>0.0</min>
+      <unit>m</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_BIA_AVG_TOUT" default="1.0" type="FLOAT">
+      <short_desc>Initial GNSS/vision bias averaging timeout</short_desc>
+      <long_desc>Maximum time spent averaging the initial GNSS bias before activating it once GNSS and vision
+are jointly observable while the estimator is still referenced to GNSS. During that phase, valid
+vision samples keep updating the LPF. While the current GNSS-relative measurement stays valid,
+it can be propagated with the UAV velocity estimate to match the vision timestamp. If that GNSS
+sample is no longer valid, averaging stops, the current vision position is used, and the current
+LPF bias is activated.
+
+Set to 0 to disable averaging and activate the bias immediately.
+</long_desc>
+      <min>0.0</min>
+      <unit>s</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_BIA_UNC_IN" default="1.0" type="FLOAT">
+      <short_desc>Initial GPS bias uncertainty</short_desc>
+      <long_desc>Initial variance of the bias between the GPS on the target and the GPS on the drone.
+Changes while the estimator is running are picked up immediately by the module but only take effect
+the next time the estimator initializes or resets.
+Once the filter is running, the steady-state bias variance is governed by VTE_BIAS_UNC
+and the measurement updates, so this parameter does not influence runtime behaviour.
+Keep it large so initialization can absorb initial misalignments.
+</long_desc>
+      <min>0.001</min>
+      <unit>m^2</unit>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="VTE_BTOUT" default="3.0" type="FLOAT">
+      <short_desc>Vision target timeout</short_desc>
+      <long_desc>Time after which the target is considered lost without any new fused measurements. When this timeout expires, the estimator is reset and can restart immediately once an enabled fusion source is available.
+</long_desc>
+      <min>0.0</min>
+      <max>50</max>
+      <unit>s</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
+    <parameter name="VTE_EN" default="1" type="INT32" boolean="true">
+      <short_desc>Vision Target Estimator module enable</short_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="VTE_EVA_NOISE" default="0.07" type="FLOAT">
+      <short_desc>Minimum standard deviation for vision yaw observations</short_desc>
+      <long_desc>Lower bound on the standard deviation used when fusing the vision yaw
+observation. The estimator squares this value and clamps the per-sample
+observation variance to max(reported_variance, VTE_EVA_NOISE^2). The floor only
+takes effect when the sensor under-reports its own noise.
+The default of ~0.07 rad (4 deg) is a reasonable starting point for marker-based
+yaw detection. Lowering it makes the filter trust each yaw sample more, which
+can cause the controller to chase the resulting setpoint changes and oscillate.
+</long_desc>
+      <min>0.05</min>
+      <unit>rad</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_EVP_NOISE" default="0.1" type="FLOAT">
+      <short_desc>Minimum standard deviation for vision relative-position observations</short_desc>
+      <long_desc>Lower bound on the standard deviation used when fusing the vision relative
+position. The estimator squares this value and clamps the per-sample
+observation variance to max(reported_variance, VTE_EVP_NOISE^2). The floor only
+takes effect when the sensor under-reports its own noise.
+</long_desc>
+      <min>0.01</min>
+      <unit>m</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_GPS_P_NOISE" default="0.5" type="FLOAT">
+      <short_desc>Minimum standard deviation for GPS position observations</short_desc>
+      <long_desc>Lower bound on the standard deviation used when fusing GPS position (target or
+mission landing waypoint). The estimator squares this value and clamps the
+per-sample observation variance to max(reported_variance, VTE_GPS_P_NOISE^2).
+The floor only takes effect when the sensor under-reports its own noise.
+</long_desc>
+      <min>0.01</min>
+      <max>10.0</max>
+      <unit>m</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_GPS_V_NOISE" default="0.3" type="FLOAT">
+      <short_desc>Minimum standard deviation for GPS velocity observations</short_desc>
+      <long_desc>Lower bound on the standard deviation used when fusing GPS velocity. The
+estimator squares this value and clamps the per-sample observation variance
+to max(reported_variance, VTE_GPS_V_NOISE^2). The floor only takes effect when
+the sensor under-reports its own noise; if the reported variance is already
+above the floor, this parameter has no effect.
+</long_desc>
+      <min>0.01</min>
+      <max>5.0</max>
+      <unit>m/s</unit>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_M_REC_TOUT" default="1.0" type="FLOAT">
+      <short_desc>Measurement recent timeout</short_desc>
+      <long_desc>Time window for considering a raw measurement as recent and eligible for fusion.
+</long_desc>
+      <min>0.0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="VTE_M_UPD_TOUT" default="0.1" type="FLOAT">
+      <short_desc>Measurement updated timeout</short_desc>
+      <long_desc>Maximum allowed age of a retained measurement before it is discarded from the estimator's cache.
+</long_desc>
+      <min>0.0</min>
+      <max>5</max>
+      <unit>s</unit>
+      <decimal>3</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="VTE_POS_EN" default="1" type="INT32" boolean="true">
+      <short_desc>Vision Target Estimator module enable position estimation</short_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="VTE_POS_NIS_THRE" default="3.84" type="FLOAT">
+      <short_desc>Normalized innovation squared threshold for the position estimator</short_desc>
+      <long_desc>Lower values mean that more measurements will be rejected. Null hypothesis H0: the innovation is
+consistent with the innovation covariance matrix. Values of 0.46, 1.64, 2.71, 3.84, 6.63, and 10.83
+correspond to 50%, 20%, 10%, 5%, 1%, and 0.1% probability respectively that H0 is incorrectly rejected.
+The confidence interval is computed from the chi-squared distribution.
+</long_desc>
+      <min>0.46</min>
+      <max>10.83</max>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_POS_UNC_IN" default="0.5" type="FLOAT">
+      <short_desc>Initial target and drone relative position uncertainty</short_desc>
+      <long_desc>Initial variance of the relative target position in x, y, and z direction.
+Changes while the estimator is running are picked up immediately by the module but only take effect
+the next time the estimator initializes or resets.
+</long_desc>
+      <min>0.001</min>
+      <unit>m^2</unit>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="VTE_TASK_MASK" default="1" type="INT32">
+      <short_desc>Integer bitmask controlling the tasks of the target estimator</short_desc>
+      <long_desc>Set bits in the following positions to enable:
+0 : Set to true to use the vision target estimator for precision landing. (+1)
+1 : DEBUG, always active. (+2)
+</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">precision landing</bit>
+        <bit index="1">DEBUG, always active</bit>
+      </bitmask>
+    </parameter>
+    <parameter name="VTE_TGT_TOUT" default="2.0" type="FLOAT">
+      <short_desc>Target validity timeout</short_desc>
+      <long_desc>Maximum time without any fused measurements before the published relative pose/yaw is flagged invalid.
+</long_desc>
+      <min>0.0</min>
+      <max>50</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.25</increment>
+    </parameter>
+    <parameter name="VTE_VEL_UNC_IN" default="0.5" type="FLOAT">
+      <short_desc>Initial target and drone relative velocity uncertainty</short_desc>
+      <long_desc>Initial variance of the relative target velocity in x, y, and z directions.
+Changes while the estimator is running are picked up immediately by the module but only take effect
+the next time the estimator initializes or resets.
+</long_desc>
+      <min>0.001</min>
+      <unit>(m/s)^2</unit>
+      <decimal>3</decimal>
+    </parameter>
+    <parameter name="VTE_YAW_ACC_UNC" default="0.004" type="FLOAT">
+      <short_desc>Yaw acceleration white-noise power spectral density</short_desc>
+      <long_desc>White-noise PSD on the yaw acceleration driving the
+yaw-rate state. The 1-sigma yaw-rate change allowed over a time t is
+sqrt(VTE_YAW_ACC_UNC * t) (e.g. for the 0.004 default, ~3.6 deg/s after 1 s,
+~11.5 deg/s after 10 s).
+
+This is a variance rate, not a per-step variance; the value is independent
+of the filter update rate. Higher values let the filter follow rapid
+heading changes; lower values smooth the yaw estimate aggressively.
+
+Unit: rad^2/s^3.
+</long_desc>
+      <min>0.0</min>
+      <decimal>4</decimal>
+    </parameter>
+    <parameter name="VTE_YAW_EN" default="0" type="INT32" boolean="true">
+      <short_desc>Vision Target Estimator module enable orientation estimation</short_desc>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="VTE_YAW_NIS_THRE" default="3.84" type="FLOAT">
+      <short_desc>Normalized innovation squared threshold for the orientation estimator</short_desc>
+      <long_desc>Lower values mean that more measurements will be rejected. Null hypothesis H0: the innovation is
+consistent with the innovation covariance matrix. Values of 0.46, 1.64, 2.71, 3.84, 6.63, and 10.83
+correspond to 50%, 20%, 10%, 5%, 1%, and 0.1% probability respectively that H0 is incorrectly rejected.
+The confidence interval is computed from the chi-squared distribution.
+</long_desc>
+      <min>0.46</min>
+      <max>10.83</max>
+      <decimal>2</decimal>
+    </parameter>
+    <parameter name="VTE_YAW_UNC_IN" default="1.0" type="FLOAT">
+      <short_desc>Initial orientation uncertainty</short_desc>
+      <long_desc>Initial variance of the target orientation yaw in rad^2.
+Changes while the estimator is running are picked up immediately by the module but only take effect
+the next time the estimator initializes or resets.
+</long_desc>
+      <min>0.001</min>
+      <decimal>3</decimal>
     </parameter>
   </group>
 </parameters>
