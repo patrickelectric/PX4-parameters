@@ -213,6 +213,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -279,6 +286,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -345,6 +359,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -411,6 +432,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -477,6 +505,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -543,6 +578,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -609,6 +651,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -675,6 +724,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -741,6 +797,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -807,6 +870,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -873,6 +943,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -939,6 +1016,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -1005,6 +1089,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -1071,6 +1162,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -1137,6 +1235,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -1203,6 +1308,13 @@ The default failsafe value is set according to the selected function:
         <value code="206">Servo 6</value>
         <value code="207">Servo 7</value>
         <value code="208">Servo 8</value>
+        <value code="209">Servo 9</value>
+        <value code="210">Servo 10</value>
+        <value code="211">Servo 11</value>
+        <value code="212">Servo 12</value>
+        <value code="213">Servo 13</value>
+        <value code="214">Servo 14</value>
+        <value code="215">Servo 15</value>
         <value code="301">Peripheral via Actuator Set 1</value>
         <value code="302">Peripheral via Actuator Set 2</value>
         <value code="303">Peripheral via Actuator Set 3</value>
@@ -6135,15 +6247,6 @@ Disabled if 0.
       <unit>m</unit>
       <increment>1</increment>
     </parameter>
-    <parameter name="GF_PREDICT" default="0" type="INT32" boolean="true">
-      <short_desc>[EXPERIMENTAL] Use Pre-emptive geofence triggering</short_desc>
-      <long_desc>WARNING: This experimental feature may cause flyaways. Use at your own risk.
-
-Predict the motion of the vehicle and trigger the breach if it is determined that the current trajectory
-would result in a breach happening before the vehicle can make evasive maneuvers.
-The vehicle is then re-routed to a safe hold position (stop for multirotor, loiter for fixed wing).
-</long_desc>
-    </parameter>
     <parameter name="GF_SOURCE" default="0" type="INT32">
       <short_desc>Geofence source</short_desc>
       <long_desc>Select which position source should be used. Selecting GPS instead of global position makes sure that there is
@@ -7814,6 +7917,76 @@ Zero means that slew rate limiting is disabled.
       <decimal>2</decimal>
       <increment>0.05</increment>
     </parameter>
+    <parameter name="CA_SV10_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 10 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="CA_SV11_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 11 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="CA_SV12_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 12 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="CA_SV13_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 13 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="CA_SV14_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 14 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
     <parameter name="CA_SV1_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 1 slew rate limit</short_desc>
       <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
@@ -7900,6 +8073,34 @@ Zero means that slew rate limiting is disabled.
     </parameter>
     <parameter name="CA_SV7_SLEW" default="0.0" type="FLOAT">
       <short_desc>Servo 7 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="CA_SV8_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 8 slew rate limit</short_desc>
+      <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
+to traverse its full range [-100%, 100%].
+
+Zero means that slew rate limiting is disabled.
+
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <unit>s</unit>
+      <decimal>2</decimal>
+      <increment>0.05</increment>
+    </parameter>
+    <parameter name="CA_SV9_SLEW" default="0.0" type="FLOAT">
+      <short_desc>Servo 9 slew rate limit</short_desc>
       <long_desc>Forces the servo output signal to take at least the configured time (in seconds)
 to traverse its full range [-100%, 100%].
 
@@ -9643,6 +9844,8 @@ Set a value of zero or less to disable.
       <short_desc>Landing abort min altitude</short_desc>
       <long_desc>Minimum altitude above landing point that the vehicle will climb to after an aborted landing.
 Then vehicle will loiter in this altitude until further command is received.
+Used as the default when the landing mission item does not specify its own abort altitude
+(MAV_CMD_NAV_LAND param1).
 Only applies to fixed-wing vehicles.
 </long_desc>
       <min>0</min>
@@ -9725,7 +9928,7 @@ yaw in wind. Disabled by default.
     <parameter name="NAV_ACC_RAD" default="10.0" type="FLOAT">
       <short_desc>Acceptance Radius</short_desc>
       <long_desc>Default acceptance radius, overridden by acceptance radius of waypoint if set.
-For fixed wing the npfg switch distance is used for horizontal acceptance.
+For fixed-wing and rovers, the high level controllers output their own acceptance radius. Those values are used instead only when above this parameter.
 </long_desc>
       <min>0.05</min>
       <max>200.0</max>
@@ -13170,7 +13373,8 @@ This is affected by RTL_MIN_DIST and RTL_CONE_ANG.
   <group name="Return To Land">
     <parameter name="RTL_APPR_FORCE" default="0" type="INT32" boolean="true">
       <short_desc>RTL force approach landing</short_desc>
-      <long_desc>Only consider RTL point, if it has an approach defined.
+      <long_desc>Only consider home/rally RTL points that have a VTOL approach loiter.
+A VTOL approach loiter is a MAV_CMD_NAV_LOITER_TO_ALT item with finite position and altitude.
 </long_desc>
     </parameter>
     <parameter name="RTL_TIME_FACTOR" default="1.1" type="FLOAT">
