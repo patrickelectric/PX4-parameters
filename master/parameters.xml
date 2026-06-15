@@ -16138,9 +16138,9 @@ steady state position differences.
 </long_desc>
       <reboot_required>True</reboot_required>
     </parameter>
-    <parameter name="SENS_MAG_AUTOCAL" default="1" type="INT32" boolean="true" category="System">
+    <parameter name="SENS_MAG_AUTOCAL" default="0" type="INT32" boolean="true" category="System">
       <short_desc>Magnetometer auto calibration</short_desc>
-      <long_desc>Automatically initialize magnetometer calibration from bias estimate if available.
+      <long_desc>Automatically initialize magnetometer calibration from bias estimate if available. The estimate only captures hard-iron offsets, so a full calibration is still recommended. Mainly intended for remote nodes (e.g. CAN GPS units) that cannot be calibrated from a ground station.
 </long_desc>
     </parameter>
     <parameter name="SENS_MAG_AUTOROT" default="1" type="INT32" boolean="true">
