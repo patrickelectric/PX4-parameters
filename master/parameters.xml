@@ -2416,6 +2416,18 @@ The settings deny arming and warn, allow arming and warn, or silently allow armi
         <value code="2">Allow arming (no warning)</value>
       </values>
     </parameter>
+    <parameter name="COM_CC_TEMP_WARN" default="80.0" type="FLOAT">
+      <short_desc>Companion computer high-temperature warning threshold</short_desc>
+      <long_desc>Arming is not prevented as the temperature typically drops in flight.
+
+Set to -1 to disable.
+</long_desc>
+      <min>-1</min>
+      <max>127</max>
+      <unit>celcius</unit>
+      <decimal>0</decimal>
+      <increment>1</increment>
+    </parameter>
     <parameter name="COM_CPU_MAX" default="95.0" type="FLOAT">
       <short_desc>Maximum allowed CPU load to still arm</short_desc>
       <long_desc>The check fails if the CPU load is above this threshold for 2s.
@@ -2693,6 +2705,33 @@ selected flight mode will be applied.
         <value code="105">External Mode 6</value>
         <value code="106">External Mode 7</value>
         <value code="107">External Mode 8</value>
+      </values>
+    </parameter>
+    <parameter name="COM_FLTMODE_BOOT" default="4" type="INT32">
+      <short_desc>Flight mode on boot</short_desc>
+      <long_desc>Flight mode set on boot and after a power cycle, before any RC input or
+mode command is received.
+</long_desc>
+      <values>
+        <value code="0">Manual</value>
+        <value code="1">Altitude</value>
+        <value code="2">Position</value>
+        <value code="3">Mission</value>
+        <value code="4">Hold</value>
+        <value code="6">Position Slow</value>
+        <value code="8">Altitude Cruise</value>
+        <value code="10">Acro</value>
+        <value code="14">Offboard</value>
+        <value code="15">Stabilized</value>
+        <value code="17">Takeoff</value>
+        <value code="23">External 1</value>
+        <value code="24">External 2</value>
+        <value code="25">External 3</value>
+        <value code="26">External 4</value>
+        <value code="27">External 5</value>
+        <value code="28">External 6</value>
+        <value code="29">External 7</value>
+        <value code="30">External 8</value>
       </values>
     </parameter>
     <parameter name="COM_FLTT_LOW_ACT" default="0" type="INT32">
@@ -4483,6 +4522,19 @@ If GPS is set as reference and EKF2_GPS_CTRL is not 0, the GPS altitude is still
       <max>1.0</max>
       <unit>m/s^2/sqrt(Hz)</unit>
       <decimal>3</decimal>
+    </parameter>
+  </group>
+  <group name="ESC">
+    <parameter name="ESC_TEMP_WARN_TH" default="90.0" type="FLOAT">
+      <short_desc>ESC temperature warning threshold</short_desc>
+      <long_desc>Warning only, no failsafe or arming blocked.
+-1 disables the check.
+</long_desc>
+      <min>-1</min>
+      <max>150</max>
+      <unit>celcius</unit>
+      <decimal>1</decimal>
+      <increment>1</increment>
     </parameter>
   </group>
   <group name="Events">
@@ -10126,6 +10178,13 @@ and relies on the IMU's attitude estimation.
         <value code="3">Stabilize pitch for absolute/lock mode.</value>
       </values>
     </parameter>
+    <parameter name="MNT_FIXED_PITCH" default="0.0" type="FLOAT">
+      <short_desc>Tracked pitch angle when in fixed mode (MNT_MODE_IN=5)</short_desc>
+      <min>-90</min>
+      <max>90</max>
+      <unit>deg</unit>
+      <decimal>1</decimal>
+    </parameter>
     <parameter name="MNT_LND_P_MAX" default="90.0" type="FLOAT">
       <short_desc>Pitch maximum when landed</short_desc>
       <min>-90.0</min>
@@ -10214,7 +10273,7 @@ Recommended is Auto, RC only or MAVLink gimbal protocol v2.
 The rest will be deprecated.
 </long_desc>
       <min>-1</min>
-      <max>4</max>
+      <max>5</max>
       <reboot_required>True</reboot_required>
       <values>
         <value code="-1">DISABLED</value>
@@ -10223,6 +10282,7 @@ The rest will be deprecated.
         <value code="2">MAVLINK_ROI (protocol v1, to be deprecated)</value>
         <value code="3">MAVLINK_DO_MOUNT (protocol v1, to be deprecated)</value>
         <value code="4">MAVlink gimbal protocol v2</value>
+        <value code="5">Fixed world-frame attitude, not user controllable</value>
       </values>
     </parameter>
     <parameter name="MNT_MODE_OUT" default="0" type="INT32">
