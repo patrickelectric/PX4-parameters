@@ -5291,6 +5291,18 @@ system more robust against disturbances (turbulence) in high wind.
     </parameter>
   </group>
   <group name="FW NPFG Control">
+    <parameter name="FW_WP_RST_DIST" default="-1.0" type="FLOAT">
+      <short_desc>Max position reset distance</short_desc>
+      <long_desc>If a horizontal position reset larger than this occurs while flying between two
+waypoints, fly directly to the current waypoint instead of rejoining the line.
+-1 to disable.
+</long_desc>
+      <min>-1.0</min>
+      <max>10000.0</max>
+      <unit>m</unit>
+      <decimal>0</decimal>
+      <increment>1</increment>
+    </parameter>
     <parameter name="NPFG_DAMPING" default="0.7" type="FLOAT">
       <short_desc>NPFG damping ratio</short_desc>
       <long_desc>Damping ratio of NPFG control law.
