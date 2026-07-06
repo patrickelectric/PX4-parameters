@@ -2491,8 +2491,8 @@ See also COM_RCL_EXCEPT.
       <short_desc>Delay between failsafe condition triggered and failsafe reaction</short_desc>
       <long_desc>Before entering failsafe (RTL, Land, Hold), wait COM_FAIL_ACT_T seconds in Hold mode
 for the user to realize.
-During that time the user can switch modes, but cannot take over control via the stick override feature (see COM_RC_OVERRIDE).
-Afterwards the configured failsafe action is triggered and the user may use stick override.
+During that time the user can switch modes, but cannot take over control via the manual control override feature (see MAN_OVERRIDE_SPD).
+Afterwards the configured failsafe action is triggered and the user may use manual control override.
 
 A zero value disables the delay.
 </long_desc>
@@ -3064,31 +3064,6 @@ Ensure the value is not set lower than the update interval of the RC or Joystick
       <decimal>1</decimal>
       <increment>0.1</increment>
     </parameter>
-    <parameter name="COM_RC_OVERRIDE" default="1" type="INT32">
-      <short_desc>Enable manual control stick override</short_desc>
-      <long_desc>When enabled, moving the sticks more than COM_RC_STICK_OV
-immediately gives control back to the pilot by switching to Position mode and
-if position is unavailable Altitude mode.
-Note: Only has an effect on multicopters, and VTOLs in multicopter mode.
-</long_desc>
-      <min>0</min>
-      <max>3</max>
-      <bitmask>
-        <bit index="0">Enable override during auto modes (except for in critical battery reaction)</bit>
-        <bit index="1">Enable override during offboard mode</bit>
-      </bitmask>
-    </parameter>
-    <parameter name="COM_RC_STICK_OV" default="30.0" type="FLOAT">
-      <short_desc>Stick override threshold</short_desc>
-      <long_desc>If COM_RC_OVERRIDE is enabled and the joystick input is moved more than this threshold
-the pilot takes over control.
-</long_desc>
-      <min>5</min>
-      <max>80</max>
-      <unit>%</unit>
-      <decimal>0</decimal>
-      <increment>0.05</increment>
-    </parameter>
     <parameter name="COM_SPOOLUP_TIME" default="1.0" type="FLOAT">
       <short_desc>Enforced delay between arming and further navigation</short_desc>
       <long_desc>The minimal time from arming the motors until moving the vehicle is possible is COM_SPOOLUP_TIME seconds.
@@ -3191,6 +3166,12 @@ action will be executed.
       <short_desc>Set manual control loss failsafe mode</short_desc>
       <long_desc>The manual control loss failsafe will only be entered after a timeout,
 set by COM_RC_LOSS_T in seconds.
+
+"Hold mode (no failsafe)" does not trigger the failsafe: instead, if manual control
+is lost while actively flying a manual mode, the vehicle switches to Hold as a regular
+mode change (no failsafe state, no alarming notification). If Hold cannot be entered
+(e.g. without a valid position estimate), the normal failsafe takes over and escalates
+from there (Return/Land/Descend/Terminate as applicable).
 </long_desc>
       <values>
         <value code="1">Hold mode</value>
@@ -3198,6 +3179,7 @@ set by COM_RC_LOSS_T in seconds.
         <value code="3">Land mode</value>
         <value code="5">Terminate</value>
         <value code="6">Disarm</value>
+        <value code="7">Hold mode (no failsafe)</value>
       </values>
     </parameter>
   </group>
@@ -5673,9 +5655,12 @@ to adjust the throws of the control surfaces.
     </parameter>
     <parameter name="FW_PR_FF" default="0.5" type="FLOAT">
       <short_desc>Pitch rate feed forward</short_desc>
-      <long_desc>Direct feed forward from rate setpoint to control surface output
+      <long_desc>Direct feed forward from rate setpoint to torque setpoint.
+Positive values compensate aerodynamic damping (scaled linearly with airspeed).
+Negative values reduce setpoint tracking aggressiveness while preserving disturbance rejection (2-DOF controller, scaled quadratically with airspeed)
+
 </long_desc>
-      <min>0.0</min>
+      <min>-10.0</min>
       <max>10.0</max>
       <unit>%/rad/s</unit>
       <decimal>2</decimal>
@@ -5724,9 +5709,12 @@ This gain enables the use of a yaw actuator to counteract this effect.
     </parameter>
     <parameter name="FW_RR_FF" default="0.5" type="FLOAT">
       <short_desc>Roll rate feed forward</short_desc>
-      <long_desc>Direct feed forward from rate setpoint to control surface output.
+      <long_desc>Direct feed forward from rate setpoint to torque setpoint.
+Positive values compensate aerodynamic damping (scaled linearly with airspeed).
+Negative values reduce setpoint tracking aggressiveness while preserving disturbance rejection (2-DOF controller, scaled quadratically with airspeed)
+
 </long_desc>
-      <min>0.0</min>
+      <min>-10.0</min>
       <max>10.0</max>
       <unit>%/rad/s</unit>
       <decimal>2</decimal>
@@ -5788,9 +5776,12 @@ This gain enables the use of a yaw actuator to counteract this effect.
     </parameter>
     <parameter name="FW_YR_FF" default="0.3" type="FLOAT">
       <short_desc>Yaw rate feed forward</short_desc>
-      <long_desc>Direct feed forward from rate setpoint to control surface output
+      <long_desc>Direct feed forward from rate setpoint to torque setpoint.
+Positive values compensate aerodynamic damping (scaled linearly with airspeed).
+Negative values reduce setpoint tracking aggressiveness while preserving disturbance rejection (2-DOF controller, scaled quadratically with airspeed)
+
 </long_desc>
-      <min>0.0</min>
+      <min>-10.0</min>
       <max>10.0</max>
       <unit>%/rad/s</unit>
       <decimal>2</decimal>
@@ -5914,6 +5905,16 @@ Setting this value to 0 disables the feature.
       <min>0</min>
       <max>1000</max>
       <increment>1</increment>
+    </parameter>
+  </group>
+  <group name="Failure Injection">
+    <parameter name="SYS_FAILURE_EN" default="0" type="INT32" boolean="true">
+      <short_desc>Enable failure injection</short_desc>
+      <long_desc>If enabled allows Injection of Failures.
+
+WARNING: the failures can easily cause crashes and are to be used with caution!
+</long_desc>
+      <reboot_required>True</reboot_required>
     </parameter>
   </group>
   <group name="Flight Task Orbit">
@@ -9876,6 +9877,16 @@ A negative value disables the feature.
       <unit>s</unit>
       <decimal>2</decimal>
     </parameter>
+    <parameter name="MAN_OVERRIDE_SPD" default="1" type="FLOAT">
+      <short_desc>Manual control override speed threshold</short_desc>
+      <long_desc>Stick velocity above which the pilot regains control by switching to Position mode (or Altitude if position is unavailable). Unit: normalized stick travel per second — at 1.0, moving a stick half its range in ~0.5s triggers it. A negative value disables the feature. Only applies to multicopters and VTOLs in MC mode.
+</long_desc>
+      <min>-1</min>
+      <max>10.0</max>
+      <unit>1/s</unit>
+      <decimal>1</decimal>
+      <increment>0.5</increment>
+    </parameter>
   </group>
   <group name="Mission">
     <parameter name="MIS_COMMAND_TOUT" default="0.0" type="FLOAT">
@@ -10469,6 +10480,37 @@ measurement rate of the gyro.
       <decimal>2</decimal>
       <increment>0.1</increment>
     </parameter>
+    <parameter name="MC_REF_FF" default="0.0" type="FLOAT">
+      <short_desc>Attitude reference-model feed-forward gain</short_desc>
+      <long_desc>Scale on the reference-model rate feed-forward. 0 disables it.
+</long_desc>
+      <min>0.0</min>
+      <max>1.0</max>
+      <decimal>2</decimal>
+      <increment>0.01</increment>
+    </parameter>
+    <parameter name="MC_REF_FF_MAX" default="100.0" type="FLOAT">
+      <short_desc>Feed-forward angular-rate cap; 0 = disabled</short_desc>
+      <long_desc>Per-axis cap on the rate feed-forward.
+</long_desc>
+      <min>0.0</min>
+      <max>1800.0</max>
+      <unit>deg/s</unit>
+      <decimal>0</decimal>
+      <increment>5</increment>
+    </parameter>
+    <parameter name="MC_REF_W_N" default="50.0" type="FLOAT">
+      <short_desc>Attitude reference-model natural frequency</short_desc>
+      <long_desc>Bandwidth of the reference model that smooths the attitude setpoint
+and generates the rate feed-forward. Higher = less lag, more peak
+rate demand.
+</long_desc>
+      <min>1.0</min>
+      <max>200.0</max>
+      <unit>rad/s</unit>
+      <decimal>0</decimal>
+      <increment>1</increment>
+    </parameter>
     <parameter name="MC_ROLLRATE_MAX" default="220.0" type="FLOAT">
       <short_desc>Max roll rate</short_desc>
       <long_desc>Limit for roll rate in manual and auto modes (except acro).
@@ -10655,6 +10697,28 @@ The speed threshold is MPC_HOLD_MAX_XY
         <value code="2">Terrain hold</value>
       </values>
     </parameter>
+    <parameter name="MPC_AUTO_NUDGING" default="0" type="INT32">
+      <short_desc>Enable stick nudging in autonomous modes</short_desc>
+      <long_desc>Bitmask to enable pilot override of heading and position during auto modes.
+
+Bit 0 - Yaw nudging: yaw stick rotates the heading in all auto types
+(takeoff, mission, RTL, hold, landing). The new heading is held until a
+mode switch resets it.
+
+Bit 1 - Land nudging: during autonomous landing the pitch/roll sticks move
+the vehicle horizontally, the throttle stick amends the descent speed
+(stick full up: 0, centered: MPC_LAND_SPEED, full down: 2 * MPC_LAND_SPEED),
+and the yaw stick rotates the heading.
+
+Stick override must be disabled (set MAN_OVERRIDE_SPD = -1).
+</long_desc>
+      <min>0</min>
+      <max>3</max>
+      <bitmask>
+        <bit index="0">Yaw nudging</bit>
+        <bit index="1">Landing nudging</bit>
+      </bitmask>
+    </parameter>
     <parameter name="MPC_HOLD_MAX_XY" default="0.8" type="FLOAT">
       <short_desc>Max horizontal velocity for position hold</short_desc>
       <long_desc>Maximum horizontal velocity for which position hold is enabled (use 0 to disable check)
@@ -10745,7 +10809,7 @@ limit descending velocity to "MPC_LAND_CRWL" below this altitude.
     </parameter>
     <parameter name="MPC_LAND_RADIUS" default="-1.0" type="FLOAT">
       <short_desc>User assisted landing radius</short_desc>
-      <long_desc>When nudging is enabled (see MPC_LAND_RC_HELP), this defines the maximum
+      <long_desc>When landing nudging is enabled (MPC_AUTO_NUDGING bit 1), this defines the maximum
 allowed horizontal displacement from the original landing point.
 - If inside of the radius, only allow nudging inputs that do not move the vehicle outside of it.
 - If outside of the radius, only allow nudging inputs that move the vehicle back towards it.
@@ -10756,23 +10820,6 @@ Set it to -1 for infinite radius.
       <unit>m</unit>
       <decimal>0</decimal>
       <increment>1</increment>
-    </parameter>
-    <parameter name="MPC_LAND_RC_HELP" default="0" type="INT32">
-      <short_desc>Enable nudging based on user input during autonomous land routine</short_desc>
-      <long_desc>Using stick input the vehicle can be moved horizontally and yawed.
-The descend speed is amended:
-stick full up - 0
-stick centered - MPC_LAND_SPEED
-stick full down - 2 * MPC_LAND_SPEED
-
-Manual override during auto modes has to be disabled to use this feature (see COM_RC_OVERRIDE).
-</long_desc>
-      <min>0</min>
-      <max>1</max>
-      <values>
-        <value code="0">Nudging disabled</value>
-        <value code="1">Nudging enabled</value>
-      </values>
     </parameter>
     <parameter name="MPC_LAND_SPEED" default="0.7" type="FLOAT">
       <short_desc>Landing descend rate</short_desc>
@@ -11034,9 +11081,10 @@ error is above this parameter, the integration of the
 trajectory is stopped to wait for the drone.
 
 This value can be adjusted depending on the tracking
-capabilities of the vehicle.
+capabilities of the vehicle. Set to 0 to disable the horizontal
+time-stretch.
 </long_desc>
-      <min>0.1</min>
+      <min>0</min>
       <max>10</max>
       <decimal>1</decimal>
       <increment>1</increment>
@@ -11105,6 +11153,21 @@ Any higher value is truncated.
       <min>1.2</min>
       <max>5</max>
       <decimal>2</decimal>
+      <increment>0.1</increment>
+    </parameter>
+    <parameter name="MPC_Z_ERR_MAX" default="1.0" type="FLOAT">
+      <short_desc>Maximum vertical error allowed by the trajectory generator</short_desc>
+      <long_desc>Vertical analog of MPC_XY_ERR_MAX. When the smoothed trajectory z
+leads the drone by more than this value, trajectory integration is
+slowed down so the virtual setpoint can't walk away from the drone.
+This suppresses altitude overshoots caused by a noisy altitude
+reference (e.g. mission setpoint jittering as the home altitude
+estimate is refined in flight). Set to 0 to disable the vertical
+time-stretch.
+</long_desc>
+      <min>0</min>
+      <max>10</max>
+      <decimal>1</decimal>
       <increment>0.1</increment>
     </parameter>
     <parameter name="MPC_Z_P" default="1.0" type="FLOAT">
@@ -16912,13 +16975,6 @@ Note: this is only supported on boards with a separate calibration storage
         <value code="1">All sensors</value>
         <value code="2">All sensors except mag</value>
       </values>
-    </parameter>
-    <parameter name="SYS_FAILURE_EN" default="0" type="INT32" boolean="true">
-      <short_desc>Enable failure injection</short_desc>
-      <long_desc>If enabled allows MAVLink INJECT_FAILURE commands.
-
-WARNING: the failures can easily cause crashes and are to be used with caution!
-</long_desc>
     </parameter>
     <parameter name="SYS_HAS_BARO" default="1" type="INT32" boolean="true">
       <short_desc>Control if the vehicle has a barometer</short_desc>

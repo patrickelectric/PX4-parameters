@@ -3,6 +3,17 @@
   <airframe_version_major>1</airframe_version_major>
   <airframe_version_minor>1</airframe_version_minor>
   <airframe_group name="Airship" image="Airship">
+    <airframe name="Generic Airship" id="2500" maintainer="Hyunduk Shin &lt;hyunduk@icarus-airship.com&gt;">
+      <class>Airship</class>
+      <maintainer>Hyunduk Shin &lt;hyunduk@icarus-airship.com&gt;</maintainer>
+      <type>Airship</type>
+      <output name="Motor1">starboard thruster</output>
+      <output name="Motor2">port thruster</output>
+      <output name="Servo1">right elevator</output>
+      <output name="Servo2">left elevator</output>
+      <output name="Servo3">upper rudder</output>
+      <output name="Servo4">lower rudder</output>
+    </airframe>
     <airframe name="Cloudship" id="2507" maintainer="John Doe &lt;john@example.com&gt;">
       <class>Airship</class>
       <type>Airship</type>
