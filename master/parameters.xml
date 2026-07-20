@@ -94,9 +94,17 @@ For CALLSIGN shorter than 8 characters use the null terminator at the end '\0'.
         <value code="1">AppliedBySensor</value>
       </values>
     </parameter>
-    <parameter name="ADSB_ICAO_ID" default="1194684" type="INT32">
-      <short_desc>ADSB-Out ICAO configuration</short_desc>
-      <long_desc>Defines the ICAO ID of the vehicle
+    <parameter name="ADSB_ICAO_ID" default="-1" type="INT32">
+      <short_desc>ADSB-Out ICAO ID</short_desc>
+      <long_desc>Vehicle ICAO ID. Use -1 to disable.
+</long_desc>
+      <min>-1</min>
+      <max>16777215</max>
+      <reboot_required>True</reboot_required>
+    </parameter>
+    <parameter name="ADSB_ICAO_ID_2" default="-1" type="INT32">
+      <short_desc>Secondary ownship ICAO ID</short_desc>
+      <long_desc>Optional second ownship ICAO ID used to filter self-detections. Use -1 to disable.
 </long_desc>
       <min>-1</min>
       <max>16777215</max>
@@ -3181,6 +3189,151 @@ from there (Return/Land/Descend/Terminate as applicable).
         <value code="6">Disarm</value>
         <value code="7">Hold mode (no failsafe)</value>
       </values>
+    </parameter>
+  </group>
+  <group name="Detect and Avoid">
+    <parameter name="DAA_EN" default="1" type="INT32" boolean="true">
+      <short_desc>Enable DAA</short_desc>
+    </parameter>
+    <parameter name="DAA_NOTIF_STATE" default="20" type="INT32">
+      <short_desc>DAA status notification period</short_desc>
+      <long_desc>Time between notifications for the most urgent conflict. Set to 0 to disable the periodic status notification.
+</long_desc>
+      <min>0</min>
+      <max>600</max>
+      <unit>s</unit>
+    </parameter>
+    <parameter name="DAA_TRAFF_TOUT" default="20" type="INT32">
+      <short_desc>DAA stale conflict timeout</short_desc>
+      <long_desc>Conflict age before removal.
+</long_desc>
+      <min>1</min>
+      <max>120</max>
+      <unit>s</unit>
+    </parameter>
+  </group>
+  <group name="Detect and Avoid F3442 Standard">
+    <parameter name="DAA_DFLT_VEL" default="10.0" type="FLOAT">
+      <short_desc>Default vertical speed of other aircraft</short_desc>
+      <long_desc>Used when DAA_EN_DFLT_VEL is enabled. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <unit>m/s</unit>
+    </parameter>
+    <parameter name="DAA_EN_DFLT_VEL" default="1" type="INT32" boolean="true">
+      <short_desc>Ignore reported vertical speed of other aircraft</short_desc>
+      <long_desc>Use DAA_DFLT_VEL instead of reported traffic vertical speed. Specific to the F3442 DAA standard.
+</long_desc>
+    </parameter>
+    <parameter name="DAA_LVL_CRIT_ACT" default="1" type="INT32">
+      <short_desc>Critical conflict action</short_desc>
+      <long_desc>Action requested when the critical conflict level is reached.
+Runtime changes apply on later conflict level transitions.
+Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <max>5</max>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Warn only</value>
+        <value code="2">Return mode</value>
+        <value code="3">Land mode</value>
+        <value code="4">Position Hold mode</value>
+        <value code="5">Terminate</value>
+      </values>
+    </parameter>
+    <parameter name="DAA_LVL_CRIT_HGT" default="16.0" type="FLOAT">
+      <short_desc>Critical conflict zone cylinder height (NMAC)</short_desc>
+      <long_desc>Per-aircraft half-zone. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>10</min>
+      <unit>m</unit>
+    </parameter>
+    <parameter name="DAA_LVL_CRIT_RAD" default="77.0" type="FLOAT">
+      <short_desc>Critical conflict zone cylinder radius (NMAC)</short_desc>
+      <long_desc>Per-aircraft half-zone. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>10</min>
+      <unit>m</unit>
+    </parameter>
+    <parameter name="DAA_LVL_HIGH_ACT" default="1" type="INT32">
+      <short_desc>High conflict action</short_desc>
+      <long_desc>Action requested when the high conflict level is reached.
+Runtime changes apply on later conflict level transitions.
+Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <max>5</max>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Warn only</value>
+        <value code="2">Return mode</value>
+        <value code="3">Land mode</value>
+        <value code="4">Position Hold mode</value>
+        <value code="5">Terminate</value>
+      </values>
+    </parameter>
+    <parameter name="DAA_LVL_HIGH_HGT" default="39.0" type="FLOAT">
+      <short_desc>High conflict zone cylinder height (WC)</short_desc>
+      <long_desc>Per-aircraft half-zone. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>10</min>
+      <unit>m</unit>
+    </parameter>
+    <parameter name="DAA_LVL_HIGH_RAD" default="305.0" type="FLOAT">
+      <short_desc>High conflict zone cylinder radius (WC)</short_desc>
+      <long_desc>Per-aircraft half-zone. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>10</min>
+      <unit>m</unit>
+    </parameter>
+    <parameter name="DAA_LVL_LOW_ACT" default="1" type="INT32">
+      <short_desc>Low conflict action</short_desc>
+      <long_desc>Action requested when the low conflict level is reached.
+Runtime changes apply on later conflict level transitions.
+Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <max>5</max>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Warn only</value>
+        <value code="2">Return mode</value>
+        <value code="3">Land mode</value>
+        <value code="4">Position Hold mode</value>
+        <value code="5">Terminate</value>
+      </values>
+    </parameter>
+    <parameter name="DAA_LVL_LOW_TIME" default="33" type="INT32">
+      <short_desc>Low conflict latency time</short_desc>
+      <long_desc>Expands well-clear bounds by aircraft speed times this value. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <unit>s</unit>
+    </parameter>
+    <parameter name="DAA_LVL_MED_ACT" default="1" type="INT32">
+      <short_desc>Medium conflict action</short_desc>
+      <long_desc>Action requested when the medium conflict level is reached.
+Runtime changes apply on later conflict level transitions.
+Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <max>5</max>
+      <values>
+        <value code="0">Disabled</value>
+        <value code="1">Warn only</value>
+        <value code="2">Return mode</value>
+        <value code="3">Land mode</value>
+        <value code="4">Position Hold mode</value>
+        <value code="5">Terminate</value>
+      </values>
+    </parameter>
+    <parameter name="DAA_LVL_MED_TIME" default="33" type="INT32">
+      <short_desc>Medium conflict latency time</short_desc>
+      <long_desc>Expands NMAC bounds by aircraft speed times this value. Specific to the F3442 DAA standard.
+</long_desc>
+      <min>0</min>
+      <unit>s</unit>
     </parameter>
   </group>
   <group name="EKF2">
@@ -8890,8 +9043,9 @@ by the innovation consistency test.
     </parameter>
     <parameter name="HTE_HT_ERR_INIT" default="0.1" type="FLOAT">
       <short_desc>1-sigma initial hover thrust uncertainty</short_desc>
-      <long_desc>Sets the number of standard deviations used
-by the innovation consistency test.
+      <long_desc>Initial standard deviation of the hover thrust state estimate.
+Larger values allow the estimate to move farther from the initial
+hover thrust before process noise takes over.
 </long_desc>
       <min>0.0</min>
       <max>1.0</max>
@@ -10092,35 +10246,38 @@ Set to a negative value to disable.
       <increment>0.5</increment>
     </parameter>
     <parameter name="NAV_TRAFF_AVOID" default="1" type="INT32">
-      <short_desc>Set traffic avoidance mode</short_desc>
-      <long_desc>Enabling this will allow the system to respond
-to transponder data from e.g. ADSB transponders
+      <short_desc>Set traffic avoidance action</short_desc>
+      <long_desc>Action requested for a crosstrack traffic conflict.
+Runtime changes apply on later conflict level transitions.
 </long_desc>
+      <min>0</min>
+      <max>5</max>
       <values>
         <value code="0">Disabled</value>
         <value code="1">Warn only</value>
         <value code="2">Return mode</value>
         <value code="3">Land mode</value>
         <value code="4">Position Hold mode</value>
+        <value code="5">Terminate</value>
       </values>
     </parameter>
     <parameter name="NAV_TRAFF_A_HOR" default="500" type="FLOAT">
-      <short_desc>Set NAV TRAFFIC AVOID horizontal distance</short_desc>
-      <long_desc>Defines a crosstrack horizontal distance
+      <short_desc>Crosstrack conflict distance threshold</short_desc>
+      <long_desc>Maximum absolute distance from the projected traffic track.
 </long_desc>
       <min>500</min>
       <unit>m</unit>
     </parameter>
     <parameter name="NAV_TRAFF_A_VER" default="500" type="FLOAT">
-      <short_desc>Set NAV TRAFFIC AVOID vertical distance</short_desc>
+      <short_desc>Crosstrack vertical separation threshold</short_desc>
       <min>10</min>
       <max>500</max>
       <unit>m</unit>
     </parameter>
     <parameter name="NAV_TRAFF_COLL_T" default="60" type="INT32">
-      <short_desc>Estimated time until collision</short_desc>
-      <long_desc>Minimum acceptable time until collsion.
-Assumes constant speed over 3d distance.
+      <short_desc>Crosstrack collision time threshold</short_desc>
+      <long_desc>A conflict is raised when the time estimate is below this threshold.
+The estimate is the current 3D separation divided by the sum of the ownship and traffic speed magnitudes.
 </long_desc>
       <min>1</min>
       <max>900000000</max>
@@ -10313,6 +10470,11 @@ The rest will be deprecated.
       <long_desc>This is the protocol used between the autopilot and a connected gimbal.
 
 Recommended is the MAVLink gimbal protocol v2 if the gimbal supports it.
+
+In AUX mode, the gimbal (and hence the gimbal manager) is only made
+available if at least one output channel is assigned a gimbal
+roll/pitch/yaw output function (checked once at startup, so newly
+assigned output functions require a reboot).
 </long_desc>
       <min>0</min>
       <max>2</max>
@@ -10661,9 +10823,8 @@ Unset if accurate position tracking during dynamic maneuvers is more important t
     </parameter>
     <parameter name="MPC_ACC_HOR_MAX" default="5.0" type="FLOAT">
       <short_desc>Maximum horizontal acceleration</short_desc>
-      <long_desc>MPC_POS_MODE
-1 just deceleration
-4 not used, use MPC_ACC_HOR instead
+      <long_desc>With MPC_POS_MODE=0 it limits deceleration.
+With MPC_POS_MODE=4 it is unused (see MPC_ACC_HOR).
 </long_desc>
       <min>2</min>
       <max>15</max>
@@ -13601,7 +13762,7 @@ to the waypoint (Set to -1 to disable corner cutting).
   </group>
   <group name="Rover Differential">
     <parameter name="RD_TRANS_DRV_TRN" default="0.174533" type="FLOAT">
-      <short_desc>Yaw error threshhold to switch from driving to spot turning</short_desc>
+      <short_desc>Yaw error threshold to switch from driving to spot turning</short_desc>
       <long_desc>This threshold is used for the state machine to switch from driving to turning based on the
 error between the desired and actual yaw. It is also used as the threshold whether the rover should come
 to a smooth stop at the next waypoint. This slow down effect is active if the angle between the
@@ -13615,7 +13776,7 @@ line segments from prevWP-currWP and currWP-nextWP is smaller then 180 - RD_TRAN
       <increment>0.01</increment>
     </parameter>
     <parameter name="RD_TRANS_TRN_DRV" default="0.0872665" type="FLOAT">
-      <short_desc>Yaw error threshhold to switch from spot turning to driving</short_desc>
+      <short_desc>Yaw error threshold to switch from spot turning to driving</short_desc>
       <long_desc>This threshold is used for the state machine to switch from turning to driving based on the
 error between the desired and actual yaw.
 
